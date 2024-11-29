@@ -83,9 +83,11 @@
     注意: 如果不克隆到上述目录，那么就要相应地修改toplevel.cmake或dev_src/CMakeLists.txt 中相应的内容；
     关于是否要克隆到顶层仓库，其实可以不这样做，但是这样会比较方便（我们后面会解释）
     3、接下来用CLion打开dev_ws目录即可。你应该可以看到如下界面：
+
 ![](imgs/clion-settings-build-cmake.jpg)
 
     然后点击Add enviroment选择From File ,添加ROS 2的setup.sh文件即可：
+
 ![](imgs/clion-settings-build-toolchains.jpg)
 
     如果你没有这个选项，说明你的CLion版本太老，可以更新至较新的版本。
@@ -122,6 +124,7 @@
     [Finished]
 
     6、到此已经完成了全部配置了。你可以发现各种build target已经全部出现（当然仅限于demo_nodes_cpp包内的）：
+
 ![](imgs/clion-targets.jpg)
     
     你可以选择性的引入一些其他的包，只要写在--packages-select后即可！
@@ -133,6 +136,7 @@
     
     编译目录
     修改Build directory，这是为了更符合ROS 2中的习惯：打开设置，选择Build, Execution, Deployment > CMake修改Build directory为build.
+
 ![](imgs/clion-set-buildpath.jpg)
     
     关闭CMake Dev警告
@@ -145,6 +149,7 @@
     src/demo_nodes_cpp/CMakeLists.txt:150 (ament_lint_auto_find_test_dependencies)
     This warning is for project developers.  Use -Wno-dev to suppress it.
     我们就直接关闭这个警告：
+
 ![](imgs/clion-close-dev-warning.jpg)
 
     这样CLion在加载CMake 项目时就不会有类似的警告了。
@@ -152,13 +157,16 @@
     编译含有自定义Interfaces的包
     当你需要使用自定义的消息类型，例如msg srv等等，往往会碰到报错。这部分有空补充。
     回调函数中clang-tidy的警告
+
 ![](imgs/clion-clang-tidy-warning.png)
 
     相信大家也见过类似的警告。其实是由于ConstSharedPtr这种类型的智能指针在拷贝时也会有开销，应该使用引用来避免拷贝。这里我们也可以直接关闭这个警告，只需要让检查器忽略以[Ptr|ptr|Ref|ref]结尾的类型即可：
     在下方工具栏点击.clang-tidy选择Configure Inspection Settings
+
 ![](imgs/clion-clang-tidy-configure-inspection-settings.jpg)
 
     然后点击Configure Clang-Tidy Checks Options...
+
 ![](imgs/clion-clang-tidy-check-options.jpg)
 
     找到选项：performance-unnecessary-value-param.AllowedTypes 修改为：
@@ -167,5 +175,6 @@
 
     即可。如下：
 ![](imgs/clion-clang-tidy-set-result.jpg)
+
     这里是用了clang-tidy基于正则的匹配规则，不多介绍了。
     这样一来，检查器的警告应该消失了。
