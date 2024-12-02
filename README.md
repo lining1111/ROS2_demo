@@ -1,5 +1,7 @@
 # Clion 中优雅的开发ROS2
 
+## 工程的来源及计划
+
 工程的源码采用的是官方的的demo 
 https://github.com/ros2/demos
 
@@ -7,9 +9,80 @@ https://github.com/ros2/demos
 https://zhuanlan.zhihu.com/p/693626476
 下面的文字就是将知乎上的拷贝下来
 
-clion打开的时候，在dev_ws这个目录(标准的ros2的colcon构建，是在这个目录下执行colcon build的，后面可以跟很多参数如功能包选择)
+工程内代码编写参考B站鱼香ROS的《ROS2机器人开发从入门到实践》
+https://www.bilibili.com/video/BV1GW42197Ck/?spm_id_from=333.1007.top_right_bar_window_custom_collection.content.click
 
-## 操作如下
+
+接下来项目分为三部分来说
+1、ros2环境安装以及标准情况下新建工程、构建工程的说明
+2、在Clion环境下新建工程、构建工程说明；及与标准情况的不同(其实特别的小)
+3、跟着小鱼学ROS2
+
+
+## ros2环境安装以及标准情况下新建工程、构建工程的说明
+
+ROS2 安装及对ament_cmake的理解
+
+### 安装ROS2
+首先得安装好CLion和ROS 2，这里就假设大家的ROS 2是安装在/opt/ros下的，这里就以Ubuntu 22.04和ROS 2 Humble下的配置为例，一步步带大家配置一遍CLion
+(我的环境是ubuntu20.04 ROS2 foxy，但是基本操作不差)
+
+安装ros可以参考鱼香ros的文章：https://fishros.org.cn/forum/topic/20/%E5%B0%8F%E9%B1%BC%E7%9A%84%E4%B8%80%E9%94%AE%E5%AE%89%E8%A3%85%E7%B3%BB%E5%88%97
+
+wget http://fishros.com/install -O fishros && . fishros
+
+### 新建工程
+
+新建工作空间 xx_ws（可随意命名）,就是新建目录 xx_ws，新建src(不可随意命名)目录
+
+ros2新建功能包，进入xx_ws/src/目录下，执行
+
+ros2 pkg create <package-name>  --build-type  {cmake,ament_cmake,ament_python}  --dependencies <依赖名字>
+
+如：ros2 pkg create helloworld_cpp --build-type ament_cmake --dependencies rclcpp --node-name helloworld
+
+修改代码 (代码的参考内容可以参考ros2的官方示例 https://github.com/ros2/demos)
+
+### 构建工程
+ros2的构建系统colcon(https://colcon.readthedocs.io/en/released/)是基于CMake的ament_cmake,
+对于工程需要理解 他的CMakeLists.txt 有哪些特色 需要了解ament_cmake https://github.com/ament/ament_cmake/
+由于官网的文档很少，可以参考ament_cmake_auto 参考 https://zhuanlan.zhihu.com/p/438191834
+而与ament_cmake同步使用的package.xml，由于是colcon自动生成的，所以不必特别放在心上
+** 对于上述改变完全没必要出现既然有cmake了，为什么还要再加一层ament_cmake。要从ROS2方便用户玩转ROS2的角度看，
+以VUE的工程新建方式来看待过程，就是执行ros2 pkg create 后，是用模板的方式，快速构建一个基于ament_cmake或者cmake的ros2工程范例。
+
+新建工作空间 ROS2_demo,就是新建目录 ROS2_demo，新建src目录
+
+ros2新建功能包，进入ROS2_demo/src/目录下，执行
+
+ros2 pkg create <package-name>  --build-type  {cmake,ament_cmake,ament_python}  --dependencies <依赖名字>
+
+如：ros2 pkg create helloworld_cpp --build-type ament_cmake --dependencies rclcpp --node-name helloworld
+
+构建
+在进入ROS2_demo目录下
+执行 colcon build --packages-select helloworld_cpp
+
+这样会在ROS2_demo目录下新出来 build install log 三个目录
+
+要运行自己的包
+在 ROS2_demo目录下
+source install/setup.bash
+然后就可以执行
+ros2 run helloworld_cpp helloworld
+
+** 注意 ros2 run 后可以tab 自动补全看看自己的包是否在环境变量中， 同样可以用 printenv | grep AME 来查看，自己的路径是否添加进 AMENT_PREFIX_PATH 中，
+
+** 下面经过改造后的工程结构和一般ros2的唯一的不同就是在执行 colcon build 时，无法选择包，但编译不报错，
+同样在source install/setup.bash 后 无法将自己工程的路径添加到 AMENT_PREFIX_PATH，从而导致无法通过ros2 run 来运行包，但是不影响执行运行可以执行程序。
+
+** 上面的情况可以通过把ROS2_demo目录下的CMakeLists.txt改名的方式，来断开自己修改的影响。
+这种情况适用于，在改造情况下通过clion完全的实验好代码后，再别名下CMakeLists.txt，通过标准的ros2构建 colcon build
+
+
+## 在Clion环境下新建工程、构建工程说明；及与标准情况的不同(其实特别的小)
+
+Clion上开发ROS2的操作
     
 ### 前情提要
 
@@ -22,59 +95,38 @@ clion打开的时候，在dev_ws这个目录(标准的ros2的colcon构建，是�
 
 那到底如何使用CLion来开发一个workspace下的一个或者多个package呢？
 
-### 基本配置
-
-首先得安装好CLion和ROS 2，这里就假设大家的ROS 2是安装在/opt/ros下的，这里就以Ubuntu 22.04和ROS 2 Humble下的配置为例，一步步带大家配置一遍CLion
-(我的环境是ubuntu20.04 ROS2 foxy，但是基本操作不差) 
-
-安装ros可以参考鱼香ros的文章：https://fishros.org.cn/forum/topic/20/%E5%B0%8F%E9%B1%BC%E7%9A%84%E4%B8%80%E9%94%AE%E5%AE%89%E8%A3%85%E7%B3%BB%E5%88%97
-
-wget http://fishros.com/install -O fishros && . fishros
 
 ### 工作空间管理
 
-首先你应该有一个worksapce，我的习惯是在某个项目下创建两个工作空间，分别是dev_ws和build_ws。
+参考 https://fishros.com/d2lros2/#/
+
+首先你应该有一个worksapce，我的习惯是在某个项目下创建工作空间，ROS2_demo。
 之所以要分开成两个工作空间，是为了在使用colcon编译工作空间时不影响CLion的使用（大家在后面会看到详细的原因）。
 
-mkdir -p demo/ demo/dev_ws demo/build_ws
+mkdir ROS2_demo 
 
-为了方便复现，这里就以ROS 2的demos仓库作为我们的src目录下的软件包。
+cd ROS2_demo
 
-cd <your_path_to_demo>/dev_ws/
-
-git clone https://github.com/ros2/demos src/
-
-也许你需要checkout到你对应的ROS版本，以Humble为例：
-
-cd src/
-
-git checkout humble
+mkdir src
 
 现在demo目录下应该如下（适当省略了）：
 
-    demo
-    ├── build_ws
-    └── dev_ws
+    ROS2_demo
         └── src
-            ├── action_tutorials
-            ├── ....
-            ....
-
-当然这里可以自己新建自己的工程，操作如下： 参考 https://fishros.com/d2lros2/#/
-
-ros2新建功能包，进入dev_ws/src/目录下，执行
+    
+ros2新建功能包，进入ROS2_demo/src/目录下，执行
 
 ros2 pkg create <package-name>  --build-type  {cmake,ament_cmake,ament_python}  --dependencies <依赖名字>
 
-如：ros2 pkg create pkg01_helloworld_cpp --build-type ament_cmake --dependencies rclcpp --node-name helloworld
+如：ros2 pkg create helloworld_cpp --build-type ament_cmake --dependencies rclcpp --node-name helloworld
 
-对于工程的理解，需要从ros2的构建系统讲起：
+这时目录的样子：
 
-ros2的构建系统colcon(https://colcon.readthedocs.io/en/released/)是基于CMake的ament_cmake,
-对于工程需要理解 他的CMakeLists.txt 有哪些特色 需要了解ament_cmake https://github.com/ament/ament_cmake/
-由于官网的文档很少，可以参考ament_cmake_auto 参考 https://zhuanlan.zhihu.com/p/438191834 
-而与ament_cmake同步使用的package.xml，由于是colcon自动生成的，所以不必特别放在心上
-
+    ROS2_demo
+        └── src
+            ├── helloworld_cpp
+            ├── ....
+            ....
 
 ### CMakeLists.txt配置
 
@@ -89,18 +141,19 @@ github真的是开源圣地！！！
 
 我们不想涉及太多细节了。来看怎么操作：
 
-1、首先，克隆这个仓库：
+1、新建 ros2 包
+ros2 pkg create helloworld_cpp --build-type ament_cmake --dependencies rclcpp --node-name helloworld
 
 git clone https://github.com/kai-waang/colcon-toplevel-cmake /opt/ros/scripts/cmake
 
 2、接下来只要将该目录下的toplevel.cmake拷贝到刚刚的工作目录顶层即可（也就是和src/目录同级）。
 
-cp /opt/ros/scripts/cmake/toplevel.cmake <your_path_to_demo>/dev_ws/CMakeLists.txt
+cp /opt/ros/scripts/cmake/toplevel.cmake <your_path_to_demo>/ROS2_demo/CMakeLists.txt
 
 注意: 如果不克隆到上述目录，那么就要相应地修改toplevel.cmake或dev_src/CMakeLists.txt 中相应的内容；
 关于是否要克隆到顶层仓库，其实可以不这样做，但是这样会比较方便（我们后面会解释）
 
-3、接下来用CLion打开dev_ws目录即可。你应该可以看到如下界面：
+3、接下来用CLion打开ROS2_demo目录即可。你应该可以看到如下界面：
 
 ![clion-settings-build-cmake](imgs/clion-settings-build-cmake.jpg)
 
@@ -203,3 +256,10 @@ cp /opt/ros/scripts/cmake/toplevel.cmake <your_path_to_demo>/dev_ws/CMakeLists.t
 
 这里是用了clang-tidy基于正则的匹配规则，不多介绍了。
 这样一来，检查器的警告应该消失了。
+
+
+## 跟着小鱼学ROS2
+
+### 话题
+
+
