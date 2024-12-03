@@ -16,7 +16,67 @@ https://www.bilibili.com/video/BV1GW42197Ck/?spm_id_from=333.1007.top_right_bar_
 接下来项目分为三部分来说
 1、ros2环境安装以及标准情况下新建工程、构建工程的说明
 2、在Clion环境下新建工程、构建工程说明；及与标准情况的不同(其实特别的小)
-3、跟着小鱼学ROS2
+3、跟着小鱼学ROS2(视频中用的例程多是python的，而本文是基于c++的，所以代码的功能是基于b站视频的，但是代码编写参考是基于小鱼ros的网站的)
+
+应该清楚ROS2的cpp是处于自己cpp编程的哪个位置，从ROS2是为机器人服务定位，基于节点Node的通信机制
+有话题(topic 发布订阅)、服务(service C/S)、参数(param)、动作(action )的通信机制，
+重点是对节点(node)的通信,整合到自己的cpp编程模块，再整合到自己的整个编程系统中。
+
+话题 topic
+发布
+rclcpp::Node::create_publisher()
+rclcpp::Publisher
+rclcpp::Publisher::publish()
+rclcpp::create_wall_timer() //不是必须的，有定时的，也有从设备读取到后，直接发布的
+订阅
+rclcpp::Node::create_subscription()
+
+命令行 ros2 topic pub/echo
+
+服务 service
+服务端
+rclcpp::Node::create_service()
+客户端
+rclcpp::Node::create_client()
+
+命令行 ros2 service call
+
+参数 param
+rclcpp::Node::declare_parameter
+rclcpp::Node::get_parameter
+这里参数一般都是通过命令行来设置的
+
+命令行 ros2 param get/set
+
+动作 action
+rclcpp_action::create_server()
+rclcpp_action::create_client()
+
+通信机制对比总结
+
+1.话题
+话题（Topic）是一种轻量级的通信方式，用于实现发布-订阅模式，即一个节点发布数据，另一个节点订阅数据。
+话题是一种单向的通信方式，发布者发布数据后，无法获知数据是否被订阅者成功接收。
+话题的数据类型可以是ROS中定义的任意消息类型。常见的使用话题实现的场景包括传感器数据的传递、节点间的状态信息交换等。
+
+2.服务
+服务是双向的，提供了一种客户端-服务器模式，即客户端向服务器发送请求，服务器响应请求并返回结果。
+服务可以实现双向通信，并且支持传递任意的ROS消息类型。
+服务的实现需要定义两个消息类型，一个用于请求，一个用于响应。常见的使用服务实现的场景包括节点之间的命令调用、请求数据等。
+
+3.参数
+参数（Parameter）是ROS 2中节点的一种配置机制，它可以用于对节点进行设置。
+参数可以存储整数、浮点数、布尔值、字符串等基本类型数据，也可以存储ROS消息类型。
+参数的读写操作可以通过服务实现。
+在节点启动时，可以通过ROS参数服务器将参数传递给节点，
+也可以在运行时动态修改参数。常见的使用参数的场景包括节点的配置、调试等。原理基于服务。
+
+4.动作
+动作（Action）是ROS 2中的高级通信机制，它可以实现异步的双向通信，并且支持取消、暂停、恢复等操作。
+动作通常用于需要执行较长时间的任务，如机器人的导航、物体识别等。
+与服务不同，动作可以通过话题实时发布执行状态、进度等信息，以便客户端监控执行情况。
+动作的实现需要定义三个消息类型，一个用于请求，一个用于响应，一个用于反馈。
+常见的使用动作的场景包括机器人的自主导航、物体抓取等。
 
 
 ## ros2环境安装以及标准情况下新建工程、构建工程的说明
@@ -257,9 +317,75 @@ cp /opt/ros/scripts/cmake/toplevel.cmake <your_path_to_demo>/ROS2_demo/CMakeList
 这里是用了clang-tidy基于正则的匹配规则，不多介绍了。
 这样一来，检查器的警告应该消失了。
 
+### 自定义接口文件
+
+可以直接将 build目录下的 工程名文件夹 下的 rosidl_generator_cpp 下的 文件夹 拷贝到 工程目录下的 include文件夹下
 
 ## 跟着小鱼学ROS2
 
 ### 话题
+
+有4个关键点
+1、发布者
+2、订阅者
+3、话题名称
+4、话题类型
+
+查看节点列表
+
+    ros2 node list
+查看指定节点信息
+    
+    ros2 node info xxxx（节点名称）
+    里面会有 内容都是以话题名称+话题类型 组织的
+    Subscribers 订阅者
+    Publishers  订阅者
+    Service Servers 
+    Service Clients
+    Action Servers
+    Action Clients
+
+查看话题情况
+
+    ros2 topic info xxxx
+
+查看本地默认的消息类型
+
+    ros2 interface list
+
+查看话题的消息类型
+
+    ros2 interface show xxxx
+
+
+#### 通过话题发布小说
+
+代码中采用的是最简单的发布订阅代码，同时内容还是简单。
+    
+#### 让小海龟画圆
+
+1、首先启动小海龟节点
+
+    ros2 run  turtlesim turtlesim_node
+
+2、查看话题列表
+
+    ros2 topic list -t
+
+    /parameter_events [rcl_interfaces/msg/ParameterEvent]
+    /rosout [rcl_interfaces/msg/Log]
+    /turtle1/cmd_vel [geometry_msgs/msg/Twist]
+    /turtle1/color_sensor [turtlesim/msg/Color]
+    /turtle1/pose [turtlesim/msg/Pose]
+
+3、主要通过向 /turtle1/cmd_vel 话题发布运行信息 cpp代码实现发布者 turtle_circle.cpp
+
+#### 告诉小海龟到指定位置，自己过去
+
+启动小海龟节点后
+通过订阅 /turtle1/pose 话题的位置信息，实时计算距离差和角度差，然后通过闭环控制来计算小海龟需要的线速度和角速度。
+然后通过发布 /turtle1/cmd_vel 话题的运行信息，实现海龟闭环运动到指定位置。
+
+#### 通过这个小工具查看系统的实时状态信息，还得让局域网内的其他主机也能查看这些数据
 
 
