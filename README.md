@@ -142,7 +142,8 @@ ros2 run helloworld_cpp helloworld
 
 ## 在Clion环境下新建工程、构建工程说明；及与标准情况的不同(其实特别的小)
 
-Clion上开发ROS2的操作
+Clion上开发ROS2的操作 
+**对于自定义接口的构建还是ROS2原生的套路，使用colcon build 来构建**
     
 ### 前情提要
 
@@ -388,4 +389,87 @@ cp /opt/ros/scripts/cmake/toplevel.cmake <your_path_to_demo>/ROS2_demo/CMakeList
 
 #### 通过这个小工具查看系统的实时状态信息，还得让局域网内的其他主机也能查看这些数据
 
+自定义接口 (很重要)
+    在ROS2_demo/src目录下
 
+    ros2 pkg create system_status_interface --dependencies builtin_interfaces rosidl_default_generators
+
+删除ROS2_demo/src/system_status_interface目录下的include src 目录，因为不需要
+在ROS2_demo/src/system_status_interface下新建msg目录，新建SystemStatus.msg文件(必须是首字母大写的驼峰 规则详见 https://docs.ros.org/en/foxy/Tutorials/Beginner-Client-Libraries/Custom-ROS2-Interfaces.html#)
+按要求编写好文件内容后，
+在ROS2_demo/src/system_status_interface目录下 将 <member_of_group>rosidl_interface_packages</member_of_group> 添加到 package.xml中
+在ROS2_demo/src/system_status_interface目录下 在 所有的find_package()后，添加生成接口文件的命令
+    
+    rosidl_generate_interfaces(${PROJECT_NAME}
+        "msg/SystemStatus.msg"
+        DEPENDENCIES builtin_interfaces
+    )
+
+在ROS2_demo目录下，将CMakeLists.txt 中 --packages-select 选择为要编译的接口工程 system_status_interface
+    
+    colcon_add_subdirectories(
+        BUILD_BASE "${PROJECT_SOURCE_DIR}/build"
+        BASE_PATHS "${PROJECT_SOURCE_DIR}/src/"
+        --packages-select
+        system_status_interface
+        #fishros_cpp
+)
+
+在ROS2_demo目录下 使用colcon build 编译 主要是为了在该目录下生成 install目录 里面有用接口文件所需的 .cmake 以及源文件。
+
+**其实上面的步骤完全可以当作新建一个接口的ros2工程，纯用colcon build 来构建。因为原则上 接口文件就是为了在工程间调用方便**
+
+**下面的步骤就是在clion的情况下引入使用接口**
+
+恢复要构建的工程
+在ROS2_demo目录下，将CMakeLists.txt 中 --packages-select 选择为要编译的接口工程 fishros_cpp
+
+    colcon_add_subdirectories(
+        BUILD_BASE "${PROJECT_SOURCE_DIR}/build"
+        BASE_PATHS "${PROJECT_SOURCE_DIR}/src/"
+        --packages-select
+        #system_status_interface
+        fishros_cpp
+)
+
+在ROS2_demo/src/fishros_cpp/目录下的CMakeLists.txt中添加接口的依赖
+
+    #[[ 对于自定义接口的使用，第一步，如果用CLION，则需增加接口包的XXXConfig.cmake文件路径，这样CLION才可以识别，
+    # 但是对于ROS2而言，使用colcon编译，则不需要这句话也能正常运行]]
+    set(system_status_interface_DIR
+        "/home/lining/CLionProjects/ROS2_demo/install/ROS2_demo/share/system_status_interface/cmake")
+
+    find_package(system_status_interface REQUIRED)
+
+上面的路径要选择自己系统下的正确路径，从这里也可以看出，接口文件是独立于使用工程的。
+添加依赖
+    
+    ament_target_dependencies(
+        system_status_pub
+        "rclcpp"
+        "system_status_interface"
+    )
+
+**经过上述操作后，工程代码可以顺利的引入自定义的接口，并编译完成，但是在debug的时候，会出现以下的错误**
+
+    [INFO] [1733293582.542308788] [SysStatusPub]: SysStatusPub 启动
+    Failed to find library 'system_status_interface__rosidl_typesupport_fastrtps_cpp'
+    terminate called after throwing an instance of 'rclcpp::exceptions::RCLError'
+    what():  could not create publisher: type support not from this implementation, at /tmp/binarydeb/ros-foxy-rmw-fastrtps-cpp-1.3.2/src/publisher.cpp:86, at /tmp/binarydeb/ros-foxy-rcl-1.1.14/src/rcl/publisher.c:180
+    Signal: SIGABRT (Aborted)
+    
+上面的错误主要是因为没有source 自定义接口的环境变量，引起 输入 ros2 interface list 的时候，在列表内找不到自定义接口的名称，从而造成程序运行时，ros2在动态加载接口的时候出现不识别的现象。
+解决的方法：
+    在启动clion之前，需要在终端 source下自定义接口的环境变量设置，然后从当前终端启动clion
+
+    source /home/lining/CLionProjects/ROS2_demo/install/ROS2_demo/share/system_status_interface/local_setup.bash
+
+这里就引出了其实clion也就是代码编辑器的作用，很多时候它编译出来的程序需要在特定的系统环境下才能运行。(clion的终端能正确运行ros2的命令，也是因为系统的/etc/bashrc.bash中添加了ros2的local_setup.sh)
+colcon build的原则： 为了不污染ros2原始的环境，所以自定义接口就没有install到ros2的环境中，而是以intall目录下工作空间(xxx_ws)的local_setup.bash include/ lib/ share/ 的形式呈现出来。
+和ros2安装后的环境样子很像。
+
+所以基于以上原因，我会在系统上新建一个开启clion的脚本，用于配合这种情况。这样的话，clion开启后，可以关闭该终端了。开启clion的脚本如下
+
+    ~/IDE/CLion-2023.3.5/clion-2023.3.5/bin/clion.sh &
+
+**自定义接口能够在系统中运行的主要原因是 ros2 列表接口的时候它能存在即 ros2 interface list | grep xxx_interface(自定义接口名称)**

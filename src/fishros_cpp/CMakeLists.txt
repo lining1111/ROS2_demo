@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.5)
 project(fishros_cpp)
 
+#[[ 对于自定义接口的使用，第一步，如果用CLION，则需增加接口包的XXXConfig.cmake文件路径，这样CLION才可以识别，
+# 但是对于ROS2而言，使用colcon编译，则不需要这句话也能正常运行]]
+set(system_status_interface_DIR
+        "/home/lining/CLionProjects/ROS2_demo/install/ROS2_demo/share/system_status_interface/cmake")
+
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
   set(CMAKE_C_STANDARD 99)
@@ -21,13 +26,8 @@ find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(turtlesim REQUIRED)
-find_package(builtin_interfaces REQUIRED)
-find_package(rosidl_default_generators REQUIRED)
 
-rosidl_generate_interfaces(${PROJECT_NAME}
-  "msg/SystemStatus.msg"
-  DEPENDENCIES builtin_interfaces
-)
+find_package(system_status_interface REQUIRED)
 
 
 ## topicPub
@@ -71,13 +71,15 @@ ament_target_dependencies(
 )
 
 ## system_status_pub
-add_executable(system_status_pub src/system_status_pub.cpp)
+add_executable(system_status_pub src/system_status_pub.cpp
+        systemStatus/systemStatus.cpp)
 target_include_directories(system_status_pub PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>)
 ament_target_dependencies(
         system_status_pub
         "rclcpp"
+        "system_status_interface"
 )
 
 
