@@ -22,37 +22,125 @@ https://www.bilibili.com/video/BV1GW42197Ck/?spm_id_from=333.1007.top_right_bar_
 有话题(topic 发布订阅)、服务(service C/S)、参数(param)、动作(action )的通信机制，
 重点是对节点(node)的通信,整合到自己的cpp编程模块，再整合到自己的整个编程系统中。
 
-话题 topic
-发布
-rclcpp::Node::create_publisher()
-rclcpp::Publisher
-rclcpp::Publisher::publish()
-rclcpp::create_wall_timer() //不是必须的，有定时的，也有从设备读取到后，直接发布的
-订阅
-rclcpp::Node::create_subscription()
+主函数的一般模式
 
-命令行 ros2 topic pub/echo
+    int main(int argc,char **argv){
+        rclcpp::init(argc,argv);
+        auto node = make_shared<>();
+        rclcpp::spin(node);
+        rclcpp::shutdown();
+        return 0;
+    }
+
+**下面的通信机制中 XXX表示通信接口 可以通过 ros2 interface list | grep XXX 查看接口是否存在，如果不存在可能需要在接口生成的工作空间内，source install/local_setup.bash**
+
+话题 topic
+
+    发布
+    rclcpp::Publisher<XXX>::SharedPtr pub_
+    rclcpp::Node::create_publisher()
+    rclcpp::Publisher::publish()
+        定时器
+    rclcpp::TimerBase::SharedPtr timer_
+    rclcpp::create_wall_timer() //(内有回调 void (void))，不是必须的，有定时的，也有从设备读取到后，直接发布的
+    
+    订阅
+    rclcpp::Subscription<XXX>::SharedPtr sub_
+    rclcpp::Node::create_subscription<XXX>()//(内有回调 void (XXX::::SharedPtr msg))
+    
+    命令行 ros2 topic pub/echo
 
 服务 service
-服务端
-rclcpp::Node::create_service()
-客户端
-rclcpp::Node::create_client()
 
-命令行 ros2 service call
+    服务端
+    rclcpp::Service<XXX>::SharedPtr server_
+    rclcpp::Node::create_service<XXX>()//内有回调 void handle(const std::shared_ptr<XXX::Request> request,std::shared_ptr<XXX::Response> response)
+    
+    客户端
+    rclcpp::Client<XXX>::SharedPtr client_
+    rclcpp::Node::create_client<XXX>()
+    void send_request(XXX::SharedPtr request)
+    void response_cb(rclcpp::Client<XXX>::SharedFuture result)
+    客户端调用send_request 函数发送请求
+    send_request 函数的一般处理过程 假设 客户端类为MyClient 类内的ros2 客户端handle为 _client
+        //1.等待服务上线
+        while (!_client->wait_for_service(std::chrono::seconds(1))) {
+            //等待时检测rclcpp的状态
+            if (!rclcpp::ok()) {
+                RCLCPP_ERROR(this->get_logger(), "等待服务的过程中被打断...");
+                return;
+            }
+            RCLCPP_INFO(this->get_logger(), "等待服务端上线中");
+        }
+        // 2.发送异步请求，然后等待返回，返回时调用回调函数
+        _client->async_send_request(
+                request, std::bind(&MyClient::response_cb, this,
+                                   std::placeholders::_1));
+
+
+    命令行 ros2 service call
 
 参数 param
-rclcpp::Node::declare_parameter
-rclcpp::Node::get_parameter
-这里参数一般都是通过命令行来设置的
 
-命令行 ros2 param get/set
+    rclcpp::Node::declare_parameter
+    rclcpp::Node::get_parameter
+        定时器
+    rclcpp::Node::create_wall_timer //通过定时器来达到能一直更新参数的目的
+    这里参数一般都是通过命令行来设置的
+    
+    命令行 ros2 param get/set
 
 动作 action
-rclcpp_action::create_server()
-rclcpp_action::create_client()
+
+    服务端 假设服务端类名为 ActionRobot
+    rclcpp_action::Server<XXX>::SharedPtr action_server_
+    rclcpp_action::create_server<XXX>(this,"action_server",
+                                    std::bind(&ActionRobot::handle_goal,this,std::placeholders::_1,std::placeholders::_2),
+                                                          std::bind(&ActionRobot::handle_cancel,this,std::placeholders::_1),
+                                                          std::bind(&ActionRobot::handle_accepted,this,std::placeholders::_1))
+
+    rclcpp_action::GoalResponse handle_goal(const rclcpp_action::GoalUUID &uuid, shared_ptr<const XXX::Goal> goal) //收到目标，反馈是否可以执行该目标，可以则返回ACCEPT_AND_EXECUTE,不可以则返回REJECT
+    rclcpp_action::CancelResponse handle_cancel(const std::shared_ptr<rclcpp_action::ServerGoalHandle<XXX>> goal_handle) //收到取消运行请求，可以则返回ACCEPT，不可以返回REJECT
+    void execute_move(const std::shared_ptr<rclcpp_action::ServerGoalHandle<XXX>> goal_handle) //处理接受请求，当handle_goal中对移动请求ACCEPT后则进入到这里进行执行，这里我们是单独开了个线程进行执行execute_move函数，目的是避免阻塞主线程
+
+    void handle_accepted(const std::shared_ptr<rclcpp_action::ServerGoalHandle<XXX>> goal_handle) {
+        using std::placeholders::_1;
+        std::thread{std::bind(&ActionRobot::execute_move, this, _1), goal_handle}
+                .detach();
+    }
+    execute_move 是主要执行函数
+    主要关注信息为 XXX::Goal XXX::Result XXX::Feedback 即.action文件中的第1 2 3段内容
+
+    客户端
+    rclcpp_action::Client<XXX>::SharedPtr client_ptr_
+    rclcpp_action::create_client<XXX>(this, "move_robot")
+
+    void goal_response_callback(shared_future<rclcpp_action::ClientGoalHandle<XXX>::SharedPtr> future)
+    void feedback_callback(
+            rclcpp_action::ClientGoalHandle<XXX>::SharedPtr,
+            const std::shared_ptr<const XXX::Feedback> feedback)
+    void result_callback(const rclcpp_action::ClientGoalHandle<XXX>::WrappedResult &result)
+
+    上面的三个函数是为了组成发送目标的
+        auto send_goal_options =
+                rclcpp_action::Client<MoveRobot>::SendGoalOptions();
+        send_goal_options.goal_response_callback =
+                std::bind(&ActionControl::goal_response_callback, this, placeholders::_1);
+        send_goal_options.feedback_callback =
+                std::bind(&ActionControl::feedback_callback, this, placeholders::_1, placeholders::_2);
+        send_goal_options.result_callback =
+                std::bind(&ActionControl::result_callback, this, placeholders::_1);
+        this->client_ptr_->async_send_goal(goal_msg, send_goal_options);
+
+    上面的会在  void send_goal() 调用
+
+    实验中用定时器，来作发送目标的任务
+    
+    命令行 ros2 action send_goal 
 
 通信机制对比总结
+
+话题、服务、动作都是有可能需要自定义接口的
 
 1.话题
 话题（Topic）是一种轻量级的通信方式，用于实现发布-订阅模式，即一个节点发布数据，另一个节点订阅数据。
@@ -78,6 +166,8 @@ rclcpp_action::create_client()
 动作的实现需要定义三个消息类型，一个用于请求，一个用于响应，一个用于反馈。
 常见的使用动作的场景包括机器人的自主导航、物体抓取等。
 
+不同节点之间消息同步的接口
+message_filters::TimeSynchronizer
 
 ## ros2环境安装以及标准情况下新建工程、构建工程的说明
 
@@ -405,45 +495,29 @@ cp /opt/ros/scripts/cmake/toplevel.cmake <your_path_to_demo>/ROS2_demo/CMakeList
         DEPENDENCIES builtin_interfaces
     )
 
-在ROS2_demo目录下，将CMakeLists.txt 中 --packages-select 选择为要编译的接口工程 system_status_interface
-    
-    colcon_add_subdirectories(
-        BUILD_BASE "${PROJECT_SOURCE_DIR}/build"
-        BASE_PATHS "${PROJECT_SOURCE_DIR}/src/"
-        --packages-select
-        system_status_interface
-        #fishros_cpp
-)
+在ROS2_demo目录下，将CMakeLists.txt重命名下，避免干扰colcon build  选择为要编译的接口工程 
+
+    colcon build --packages-select system_status_interface
 
 在ROS2_demo目录下 使用colcon build 编译 主要是为了在该目录下生成 install目录 里面有用接口文件所需的 .cmake 以及源文件。
+
+将新的接口添加到ros2的系统环境变量中
+在ROS2_demo/目录下输入
+
+    source install/setup.bash
 
 **其实上面的步骤完全可以当作新建一个接口的ros2工程，纯用colcon build 来构建。因为原则上 接口文件就是为了在工程间调用方便**
 
 **下面的步骤就是在clion的情况下引入使用接口**
 
 恢复要构建的工程
-在ROS2_demo目录下，将CMakeLists.txt 中 --packages-select 选择为要编译的接口工程 fishros_cpp
-
-    colcon_add_subdirectories(
-        BUILD_BASE "${PROJECT_SOURCE_DIR}/build"
-        BASE_PATHS "${PROJECT_SOURCE_DIR}/src/"
-        --packages-select
-        #system_status_interface
-        fishros_cpp
-)
+在ROS2_demo目录下，将改名后的CMakeLists.txt重命名回原始的名字即CMakeLists.txt 在终端输入 source install/setup.bash 在该终端打开clion
 
 在ROS2_demo/src/fishros_cpp/目录下的CMakeLists.txt中添加接口的依赖
-
-    #[[ 对于自定义接口的使用，第一步，如果用CLION，则需增加接口包的XXXConfig.cmake文件路径，这样CLION才可以识别，
-    # 但是对于ROS2而言，使用colcon编译，则不需要这句话也能正常运行]]
-    set(system_status_interface_DIR
-        "/home/lining/CLionProjects/ROS2_demo/install/ROS2_demo/share/system_status_interface/cmake")
+    
+添加依赖
 
     find_package(system_status_interface REQUIRED)
-
-上面的路径要选择自己系统下的正确路径，从这里也可以看出，接口文件是独立于使用工程的。
-添加依赖
-    
     ament_target_dependencies(
         system_status_pub
         "rclcpp"
@@ -462,7 +536,7 @@ cp /opt/ros/scripts/cmake/toplevel.cmake <your_path_to_demo>/ROS2_demo/CMakeList
 解决的方法：
     在启动clion之前，需要在终端 source下自定义接口的环境变量设置，然后从当前终端启动clion
 
-    source /home/lining/CLionProjects/ROS2_demo/install/ROS2_demo/share/system_status_interface/local_setup.bash
+    source /home/lining/CLionProjects/ROS2_demo/install/setup.bash
 
 这里就引出了其实clion也就是代码编辑器的作用，很多时候它编译出来的程序需要在特定的系统环境下才能运行。(clion的终端能正确运行ros2的命令，也是因为系统的/etc/bashrc.bash中添加了ros2的local_setup.sh)
 colcon build的原则： 为了不污染ros2原始的环境，所以自定义接口就没有install到ros2的环境中，而是以intall目录下工作空间(xxx_ws)的local_setup.bash include/ lib/ share/ 的形式呈现出来。
@@ -473,3 +547,20 @@ colcon build的原则： 为了不污染ros2原始的环境，所以自定义接
     ~/IDE/CLion-2023.3.5/clion-2023.3.5/bin/clion.sh &
 
 **自定义接口能够在系统中运行的主要原因是 ros2 列表接口的时候它能存在即 ros2 interface list | grep xxx_interface(自定义接口名称)**
+
+
+### rqt 工具
+
+    rqt 是一个用qt写的ros2的可视化工具，很多的命令就可以不用手输入了。很方便
+
+### 参数
+
+参数被视为节点的设置，是基于服务通信实现的
+
+
+#### 创建一个人脸检测服务，提供图像，返回人脸数量位置信息
+
+新建服务接口
+
+    
+

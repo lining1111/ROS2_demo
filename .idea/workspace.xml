@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="CMakePresetLoader">{
+  &quot;useNewFormat&quot;: true
+}</component>
+  <component name="CMakeReloadState">
+    <option name="reloaded" value="true" />
+  </component>
+  <component name="CMakeRunConfigurationManager">
+    <generated>
+      <config projectName="ROS2_demo" targetName="system_status_sub" />
+      <config projectName="ROS2_demo" targetName="face_recognition_server" />
+      <config projectName="ROS2_demo" targetName="system_status_pub" />
+      <config projectName="ROS2_demo" targetName="turtle_circle" />
+      <config projectName="ROS2_demo" targetName="fishros_cpp_uninstall" />
+      <config projectName="ROS2_demo" targetName="action_robot" />
+      <config projectName="ROS2_demo" targetName="topicSub" />
+      <config projectName="ROS2_demo" targetName="topicPub" />
+      <config projectName="ROS2_demo" targetName="action_control" />
+      <config projectName="ROS2_demo" targetName="example_parameters" />
+      <config projectName="ROS2_demo" targetName="uninstall" />
+      <config projectName="ROS2_demo" targetName="face_recognition_client" />
+      <config projectName="ROS2_demo" targetName="turtle_control" />
+    </generated>
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" ENABLED="true" GENERATION_DIR="build" CONFIG_NAME="Debug" BUILD_OPTIONS="-j4" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="48b2ae22-30c5-440b-b3ef-fc4634f32aeb" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/face_recognition/srv/FaceDetector.srv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fishros_cpp/include/fishros_cpp/robot.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fishros_cpp/src/action_control.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fishros_cpp/src/action_robot.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fishros_cpp/src/example_parameters.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fishros_cpp/src/face_recognition_client.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fishros_cpp/src/face_recognition_server.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fishros_cpp/src/robot.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fishros_cpp/src/system_status_sub.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/robot_control_interfaces/action/MoveRobot.action" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dev_ws.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/package.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/package.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectApplicationVersion">
+    <option name="ide" value="CLion" />
+    <option name="majorVersion" value="2023" />
+    <option name="minorVersion" value="3.5" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2pmnRcxaYFEY6dG8RLdnf478dBu" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "CMake Application.action_robot.executor": "Debug",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "structure.view.defaults.are.configured": "true",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager" selected="CMake Application.action_robot">
+    <configuration name="action_control" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ROS2_demo" TARGET_NAME="action_control" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ROS2_demo" RUN_TARGET_NAME="action_control">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="action_robot" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ROS2_demo" TARGET_NAME="action_robot" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ROS2_demo" RUN_TARGET_NAME="action_robot">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="example_parameters" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ROS2_demo" TARGET_NAME="example_parameters" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ROS2_demo" RUN_TARGET_NAME="example_parameters">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="face_recognition_client" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ROS2_demo" TARGET_NAME="face_recognition_client" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ROS2_demo" RUN_TARGET_NAME="face_recognition_client">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="face_recognition_server" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ROS2_demo" TARGET_NAME="face_recognition_server" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ROS2_demo" RUN_TARGET_NAME="face_recognition_server">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="fishros_cpp_uninstall" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ROS2_demo" TARGET_NAME="fishros_cpp_uninstall" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="system_status_pub" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ROS2_demo" TARGET_NAME="system_status_pub" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ROS2_demo" RUN_TARGET_NAME="system_status_pub">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="system_status_sub" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ROS2_demo" TARGET_NAME="system_status_sub" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ROS2_demo" RUN_TARGET_NAME="system_status_sub">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="topicPub" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ROS2_demo" TARGET_NAME="topicPub" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ROS2_demo" RUN_TARGET_NAME="topicPub">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="topicSub" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ROS2_demo" TARGET_NAME="topicSub" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ROS2_demo" RUN_TARGET_NAME="topicSub">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="turtle_circle" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ROS2_demo" TARGET_NAME="turtle_circle" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ROS2_demo" RUN_TARGET_NAME="turtle_circle">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="turtle_control" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ROS2_demo" TARGET_NAME="turtle_control" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ROS2_demo" RUN_TARGET_NAME="turtle_control">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="uninstall" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ROS2_demo" TARGET_NAME="uninstall" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="CMake Application.action_control" />
+      <item itemvalue="CMake Application.action_robot" />
+      <item itemvalue="CMake Application.example_parameters" />
+      <item itemvalue="CMake Application.face_recognition_client" />
+      <item itemvalue="CMake Application.face_recognition_server" />
+      <item itemvalue="CMake Application.fishros_cpp_uninstall" />
+      <item itemvalue="CMake Application.system_status_pub" />
+      <item itemvalue="CMake Application.system_status_sub" />
+      <item itemvalue="CMake Application.topicPub" />
+      <item itemvalue="CMake Application.topicSub" />
+      <item itemvalue="CMake Application.turtle_circle" />
+      <item itemvalue="CMake Application.turtle_control" />
+      <item itemvalue="CMake Application.uninstall" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="48b2ae22-30c5-440b-b3ef-fc4634f32aeb" name="Changes" comment="" />
+      <created>1733380113472</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1733380113472</updated>
+      <workItem from="1733380116371" duration="1382000" />
+      <workItem from="1733382122334" duration="305000" />
+      <workItem from="1733382689110" duration="775000" />
+      <workItem from="1733383572812" duration="1866000" />
+      <workItem from="1733385796252" duration="1900000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VCPKGProject">
+    <isAutomaticCheckingOnLaunch value="false" />
+    <isAutomaticFoundErrors value="true" />
+    <isAutomaticReloadCMake value="true" />
+  </component>
+</project>
