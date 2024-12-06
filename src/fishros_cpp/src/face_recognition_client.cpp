@@ -45,7 +45,7 @@ public:
 
     };
 
-    void send_request(face_recognition::srv::FaceDetector::Request::SharedPtr request){
+    void send_request(cv::Mat img){
         //1.等待服务上线
         while (!_client->wait_for_service(std::chrono::seconds(1))) {
             //等待时检测rclcpp的状态
@@ -56,6 +56,9 @@ public:
             RCLCPP_INFO(this->get_logger(), "等待服务端上线中");
         }
         // 2.发送异步请求，然后等待返回，返回时调用回调函数
+        auto ros2_img = cv_bridge::CvImage(std_msgs::msg::Header(),"bgr8",img).toImageMsg();
+        auto request = std::make_shared<face_recognition::srv::FaceDetector::Request>();
+        request->image = *ros2_img;
 
         _client->async_send_request(
                 request, std::bind(&FaceRecognitionClient::response_cb, this,
@@ -66,7 +69,7 @@ public:
 
     void response_cb(rclcpp::Client<face_recognition::srv::FaceDetector>::SharedFuture result){
         auto response = result.get();
-
+        //将返回的结果进行处理
     }
 };
 

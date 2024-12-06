@@ -26,9 +26,10 @@ find_package(cv_bridge REQUIRED)
 find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-find_package(system_status_interface REQUIRED)
-find_package(face_recognition REQUIRED)
-find_package(robot_control_interfaces REQUIRED)
+message("PROJECT_SOURCE_DIR ${PROJECT_SOURCE_DIR}")
+find_package(tf2_ros REQUIRED)
+find_package(tf2_geometry_msgs REQUIRED)
+
 
 #### --------话题
 ## topicPub
@@ -72,6 +73,7 @@ ament_target_dependencies(
 )
 
 ## system_status_pub
+find_package(system_status_interface REQUIRED)
 add_executable(system_status_pub src/system_status_pub.cpp
         systemStatus/systemStatus.cpp)
 target_include_directories(system_status_pub PUBLIC
@@ -97,6 +99,7 @@ ament_target_dependencies(
 #### --------服务
 
 ## face_recognition_server
+find_package(face_recognition REQUIRED)
 add_executable(face_recognition_server src/face_recognition_server.cpp)
 target_include_directories(face_recognition_server PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -132,6 +135,7 @@ ament_target_dependencies(
 
 
 #### --------动作
+find_package(robot_control_interfaces REQUIRED)
 add_executable(action_robot src/action_robot.cpp src/robot.cpp)
 target_include_directories(action_robot PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -155,10 +159,52 @@ ament_target_dependencies(
 )
 
 
-install(TARGETS topicPub topicSub turtle_circle turtle_control system_status_pub system_status_sub
+##----工具 tf2
+
+add_executable(demo_tf_static_broadcaster src/demo_tf_static_broadcaster.cpp)
+target_include_directories(demo_tf_static_broadcaster PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>)
+ament_target_dependencies(
+        demo_tf_static_broadcaster
+        "rclcpp"
+        "tf2_ros"
+        "tf2_geometry_msgs"
+)
+
+add_executable(demo_tf_dynamic_broadcaster src/demo_tf_dynamic_broadcaster.cpp)
+target_include_directories(demo_tf_dynamic_broadcaster PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>)
+ament_target_dependencies(
+        demo_tf_dynamic_broadcaster
+        "rclcpp"
+        "tf2_ros"
+        "tf2_geometry_msgs"
+)
+
+add_executable(demo_tf_listener src/demo_tf_listener.cpp)
+target_include_directories(demo_tf_listener PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>)
+ament_target_dependencies(
+        demo_tf_listener
+        "rclcpp"
+        "tf2_ros"
+        "tf2_geometry_msgs"
+)
+
+install(TARGETS
+        ##话题
+        topicPub topicSub turtle_circle turtle_control system_status_pub system_status_sub
+        ##服务
         face_recognition_server face_recognition_client
+        ## 参数
         example_parameters
+        ##动作
         action_robot action_control
+        ##tf2
+        demo_tf_static_broadcaster demo_tf_dynamic_broadcaster demo_tf_listener
   DESTINATION lib/${PROJECT_NAME})
 
 ament_package()

@@ -1,8 +1,0 @@
-sensor_msgs/Image image # 人脸图像
----
-int16 number #人脸数量
-float32 use_time #识别耗时
-int32[] top #人脸位置 top
-int32[] right
-int32[] bottom
-int32[] left

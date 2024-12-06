@@ -21,8 +21,9 @@ public:
         /*设置日志级别*/
         rcutils_logging_set_logger_level(get_logger().get_name(),log_level);
         using namespace std::literals::chrono_literals;
-        timer_ = this->create_wall_timer(
-                500ms, std::bind(&ParametersBasicNode::timer_callback, this));
+//        timer_ = this->create_wall_timer(
+//                500ms, std::bind(&ParametersBasicNode::timer_callback, this));
+        this->add_on_set_parameters_callback(std::bind(&ParametersBasicNode::parameters_cb, this,std::placeholders::_1));
     }
 private:
     int log_level;
@@ -37,6 +38,19 @@ private:
         RCLCPP_WARN(this->get_logger(), "我是WARN级别的日志，我被打印出来了!");
         RCLCPP_ERROR(this->get_logger(), "我是ERROR级别的日志，我被打印出来了!");
         RCLCPP_FATAL(this->get_logger(), "我是FATAL级别的日志，我被打印出来了!");
+    }
+
+    rcl_interfaces::msg::SetParametersResult parameters_cb(const std::vector<rclcpp::Parameter> &params){
+        rcl_interfaces::msg::SetParametersResult ret;
+        for (auto iter:params) {
+            if (iter.get_name() == "rcl_log_level"){
+                this->log_level = iter.get_value<int>();
+                RCLCPP_INFO(get_logger(),"rcl_log_level set %d",log_level);
+                ret.successful = true;
+                ret.reason="set success";
+            }
+        }
+        return ret;
     }
 };
 

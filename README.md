@@ -181,6 +181,9 @@ ROS2 安装及对ament_cmake的理解
 
 wget http://fishros.com/install -O fishros && . fishros
 
+安装完毕后，因为在 /etc/bashrc.bash中添加了ros2的环境变量 造成ros2的守护进程会一直存在(会很卡的，可以手动取消下)
+/usr/bin/python3 /opt/ros/foxy/bin/_ros2_daemon
+
 ### 新建工程
 
 新建工作空间 xx_ws（可随意命名）,就是新建目录 xx_ws，新建src(不可随意命名)目录
@@ -414,6 +417,12 @@ cp /opt/ros/scripts/cmake/toplevel.cmake <your_path_to_demo>/ROS2_demo/CMakeList
 
 ## 跟着小鱼学ROS2
 
+工程目录
+
+build 构建结果目录
+interfaces  自定义接口目录，要使用自定义接口，构建时 在ROS2_demo/interfaces目录下执行 colcon build，必须在ROS_demo目录下，执行 source interfaces/install/setup.bash
+src 真正的工程目录，可以构建多个ROS2 的Node
+
 ### 话题
 
 有4个关键点
@@ -480,38 +489,36 @@ cp /opt/ros/scripts/cmake/toplevel.cmake <your_path_to_demo>/ROS2_demo/CMakeList
 #### 通过这个小工具查看系统的实时状态信息，还得让局域网内的其他主机也能查看这些数据
 
 自定义接口 (很重要)
-    在ROS2_demo/src目录下
 
-    ros2 pkg create system_status_interface --dependencies builtin_interfaces rosidl_default_generators
+    在interfaces/目录下
+    ros2 pkg create system_status_interface --dependencies rosidl_default_generators builtin_interfaces 
+    然后删除 src/system_status_interface/目录下的 include src ，新建 msg 目录，新建SystemStatus.msg 
+    (必须是首字母大写的驼峰 规则详见 https://docs.ros.org/en/foxy/Tutorials/Beginner-Client-Libraries/Custom-ROS2-Interfaces.html#)，
+    输入以下内容
+    builtin_interfaces/Time stamp #记录时间戳
+    string host #主机名字
+    float32 cpu_percent #CPU使用率
+    float32 memory_percent #内存使用率
+    float32 memory_total #内存总大小
+    float32 memory_available #内存剩余
+    float64 net_sent #网络发送总量 MB
+    float64 net_recv #网络接收总量 MB
 
-删除ROS2_demo/src/system_status_interface目录下的include src 目录，因为不需要
-在ROS2_demo/src/system_status_interface下新建msg目录，新建SystemStatus.msg文件(必须是首字母大写的驼峰 规则详见 https://docs.ros.org/en/foxy/Tutorials/Beginner-Client-Libraries/Custom-ROS2-Interfaces.html#)
-按要求编写好文件内容后，
-在ROS2_demo/src/system_status_interface目录下 将 <member_of_group>rosidl_interface_packages</member_of_group> 添加到 package.xml中
-在ROS2_demo/src/system_status_interface目录下 在 所有的find_package()后，添加生成接口文件的命令
+    在interfaces/system_status_interface目录下修改CMakeLists.txt,在 所有的find_package()后，添加生成接口文件的命令
     
     rosidl_generate_interfaces(${PROJECT_NAME}
         "msg/SystemStatus.msg"
         DEPENDENCIES builtin_interfaces
     )
 
-在ROS2_demo目录下，将CMakeLists.txt重命名下，避免干扰colcon build  选择为要编译的接口工程 
-
-    colcon build --packages-select system_status_interface
-
-在ROS2_demo目录下 使用colcon build 编译 主要是为了在该目录下生成 install目录 里面有用接口文件所需的 .cmake 以及源文件。
-
-将新的接口添加到ros2的系统环境变量中
-在ROS2_demo/目录下输入
-
-    source install/setup.bash
-
-**其实上面的步骤完全可以当作新建一个接口的ros2工程，纯用colcon build 来构建。因为原则上 接口文件就是为了在工程间调用方便**
+    在interfaces/system_status_interface目录下修改package.xml,将 <member_of_group>rosidl_interface_packages</member_of_group> 添加到 package.xml中
+    
+    在 interfaces/ 目录下 执行 colcon build 把接口新建出来
 
 **下面的步骤就是在clion的情况下引入使用接口**
 
 恢复要构建的工程
-在ROS2_demo目录下，将改名后的CMakeLists.txt重命名回原始的名字即CMakeLists.txt 在终端输入 source install/setup.bash 在该终端打开clion
+在ROS2_demo目录下, 在终端输入 source interfaces/install/setup.bash 在该终端打开clion
 
 在ROS2_demo/src/fishros_cpp/目录下的CMakeLists.txt中添加接口的依赖
     
@@ -523,20 +530,6 @@ cp /opt/ros/scripts/cmake/toplevel.cmake <your_path_to_demo>/ROS2_demo/CMakeList
         "rclcpp"
         "system_status_interface"
     )
-
-**经过上述操作后，工程代码可以顺利的引入自定义的接口，并编译完成，但是在debug的时候，会出现以下的错误**
-
-    [INFO] [1733293582.542308788] [SysStatusPub]: SysStatusPub 启动
-    Failed to find library 'system_status_interface__rosidl_typesupport_fastrtps_cpp'
-    terminate called after throwing an instance of 'rclcpp::exceptions::RCLError'
-    what():  could not create publisher: type support not from this implementation, at /tmp/binarydeb/ros-foxy-rmw-fastrtps-cpp-1.3.2/src/publisher.cpp:86, at /tmp/binarydeb/ros-foxy-rcl-1.1.14/src/rcl/publisher.c:180
-    Signal: SIGABRT (Aborted)
-    
-上面的错误主要是因为没有source 自定义接口的环境变量，引起 输入 ros2 interface list 的时候，在列表内找不到自定义接口的名称，从而造成程序运行时，ros2在动态加载接口的时候出现不识别的现象。
-解决的方法：
-    在启动clion之前，需要在终端 source下自定义接口的环境变量设置，然后从当前终端启动clion
-
-    source /home/lining/CLionProjects/ROS2_demo/install/setup.bash
 
 这里就引出了其实clion也就是代码编辑器的作用，很多时候它编译出来的程序需要在特定的系统环境下才能运行。(clion的终端能正确运行ros2的命令，也是因为系统的/etc/bashrc.bash中添加了ros2的local_setup.sh)
 colcon build的原则： 为了不污染ros2原始的环境，所以自定义接口就没有install到ros2的环境中，而是以intall目录下工作空间(xxx_ws)的local_setup.bash include/ lib/ share/ 的形式呈现出来。
@@ -553,14 +546,133 @@ colcon build的原则： 为了不污染ros2原始的环境，所以自定义接
 
     rqt 是一个用qt写的ros2的可视化工具，很多的命令就可以不用手输入了。很方便
 
-### 参数
-
-参数被视为节点的设置，是基于服务通信实现的
-
+### 服务
 
 #### 创建一个人脸检测服务，提供图像，返回人脸数量位置信息
 
-新建服务接口
+    这里会用到ros2 的 sensor_msgs::Image 到OpenCV 的 cv::Mat 的数据转换库 cv_bridge。操作的参考为 https://blog.csdn.net/bigdog_1027/article/details/79090571    
 
+新建服务接口
     
+    在interfaces/目录下
+    ros2 pkg create face_recognition --dependencies rosidl_default_generators sensor_msgs
+    然后删除 src/face_recognition/目录下的 include src ，新建 srv目录，新建FaceDetector.srv，输入以下内容
+    sensor_msgs/Image image # 人脸图像
+    ---
+    int16 number #人脸数量
+    float32 use_time #识别耗时
+    int32[] top #人脸位置 top
+    int32[] right #人脸位置 right
+    int32[] bottom #人脸位置 bottom
+    int32[] left #人脸位置 left
+
+    在interfaces/face_recognition目录下修改CMakeLists.txt,在 所有的find_package()后，添加生成接口文件的命令
+    
+    rosidl_generate_interfaces(${PROJECT_NAME}
+        "srv/FaceDetector.srv"
+        DEPENDENCIES sensor_msgs
+    )
+
+    在interfaces/face_recognition目录下修改package.xml,将 <member_of_group>rosidl_interface_packages</member_of_group> 添加到 package.xml中
+
+    在 interfaces/ 目录下 执行 colcon build 把接口新建出来
+
+打开终端 在ROS2_demo 目录下 输入 source interfaces/install/setup.bash 后 启动clion
+在fishros_cpp的src/目录下，人脸识别的服务 face_recognition_server 人脸服务的客户端 face_recognition_client
+
+#### 
+
+### 参数
+
+参数被视为节点的设置，是基于**服务通信**实现的 代码是基于 https://fishros.com/d2lros2/#/humble/chapt4/get_started/2.%E5%8F%82%E6%95%B0%E4%B9%8BRCLCPP%E5%AE%9E%E7%8E%B0
+
+
+### 动作
+
+动作，是由话题和服务共同构建出来的（一个Action = 三个服务+两个话题） 
+三个服务分别是：1.目标传递服务 2.结果传递服务 3.取消执行服务 
+两个话题：1.反馈话题（服务发布，客户端订阅） 2.状态话题（服务端发布，客户端订阅）
+Action的三大组成部分目标、反馈和结果
+
+代码是基于 https://fishros.com/d2lros2/#/humble/chapt4/get_started/4.%E5%8A%A8%E4%BD%9C%EF%BC%88Action%EF%BC%89%E9%80%9A%E4%BF%A1%E4%B8%8E%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%A5%E5%8F%A3
+
+
+## 通信机制小结
+
+学习完4中通信机制后，可以在ros2的环境下进行节点间的对话，以及使用launch来启动一组节点。这个就是基础的框架完成了，就可以利用基础来进行进阶练习，比如数据的处理。
+
+## ROS2的工具 rqt---rviz2---ros2 bag
+
+### 坐标变换工具TF
+
+    基础的命令行操作
+    ros2 run tf2_ros static_transform_publisher --help
+    A command line utility for manually sending a transform.
+    Usage: static_transform_publisher x y z qx qy qz qw frame_id child_frame_id
+    OR
+    Usage: static_transform_publisher x y z yaw pitch roll frame_id child_frame_id
+
+    假设 小车的位置 base_link(0.0，0.0，0.0) 小车上的雷达 base_laser(0.1,0.0,0.2)  墙的点 wall_point(0.3,0.0,0.0)
+    看墙到小车的位置关系
+    ros2 run tf2_ros static_transform_publisher 0.1 0.0 0.2 0.0 0.0 0.0 base_link base_laser
+    ros2 run tf2_ros static_transform_publisher 0.3 0.0 0.0 0.0 0.0 0.0 base_laser wall_point
+    ros2 run tf2_ros tf2_echo base_link wall_point    
+    ros2 run tf2_tools view_frames 可以保存转换的关系为pdf文件
+    foxy和humble的版本输入和输出样子有所不同，但是结果是一样
+    
+    使用可视化工具
+    sudo apt install ros-foxy-mrpt2
+    启动 3d-rotation-converter
+
+编程用到的tf2
+
+    sudo apt install ros-foxy-tf-transformations
+    pip3 install transforms3d
+
+### 一个坐标关系的转换
+    
+假设地图坐标系为map，机器人坐标系为base_link 目标点为target_point，(这里的map可以理解为坐标原点)
+已知map到base_link之间的关系、map到target_point的关系，
+要控制机器人到达目标点，计算目标点和机器人之间的关系
+target_point (5.0,3.0,0.0   0,0,60)
+base_link (2.0,3.0,0.0   0, 0,30)
+demo_tf_static_broadcaster.cpp 描述目标的
+    
+    _broadcaster = std::make_shared<tf2_ros::StaticTransformBroadcaster>(this);
+    geometry_msgs::msg::TransformStamped transform;
+    transform.header.stamp = get_clock()->now();
+    transform.header.frame_id = "map";
+    transform.child_frame_id = "target_point";//(5.0,3.0,0.0    0,0,60)
+    transform.transform.translation.x = 5.0;
+    transform.transform.translation.y = 3.0;
+    transform.transform.translation.z = 0.0;
+    tf2::Quaternion q;
+    q.setRPY(0, 0, 60 * M_PI / 180);
+    transform.transform.rotation = tf2::toMsg(q);
+    this->_broadcaster->sendTransform(transform);
+
+demo_tf_dynamic_broadcaster.cpp 描述机器人的，
+    
+    _broadcaster = std::make_shared<tf2_ros::TransformBroadcaster>(this);
+    _timer = this->create_wall_timer(100ms,std::bind(&DynamicTFBroadcaster::publish_tf,this));
+
+    //发布函数
+    void publish_tf() {
+        geometry_msgs::msg::TransformStamped transform;
+        transform.header.stamp = get_clock()->now();
+        transform.header.frame_id = "map";
+        transform.child_frame_id = "base_link";//(2.0,3.0,0.0    0,0,30)
+        transform.transform.translation.x = 2.0;
+        transform.transform.translation.y = 3.0;
+        transform.transform.translation.z = 0.0;
+        tf2::Quaternion q;
+        q.setRPY(0, 0, 30 * M_PI / 180);
+        transform.transform.rotation = tf2::toMsg(q);
+        this->_broadcaster->sendTransform(transform);
+    }
+
+编程完毕后，可以通过rviz软件来查看
+计算坐标关系，原理是通过订阅 /tf /tf_static 收集所有坐标系关系，进行计算
+
+
 
