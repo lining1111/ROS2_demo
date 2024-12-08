@@ -35,26 +35,27 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="48b2ae22-30c5-440b-b3ef-fc4634f32aeb" name="Changes" comment="初步完成4种通信机制的代码编写，以此为模板，跟着小鱼学">
-      <change afterPath="$PROJECT_DIR$/src/fishros_cpp/src/demo_tf_dynamic_broadcaster.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/fishros_cpp/src/demo_tf_listener.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/fishros_cpp/src/demo_tf_static_broadcaster.cpp" afterDir="false" />
+    <list default="true" id="48b2ae22-30c5-440b-b3ef-fc4634f32aeb" name="Changes" comment="初步完成坐标变换工具tf2及rqt、rviz2的学习">
+      <change afterPath="$PROJECT_DIR$/fishbot/src/fishbot_description/config/fishbot_ros2_controller.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fishbot/src/fishbot_description/launch/display_robot.launch.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fishbot/src/fishbot_description/launch/gazebo_sim.launch.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/first_robot.urdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/fishbot/actuator/caster.urdf.xacro" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/fishbot/actuator/wheel.urdf.xacro" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/fishbot/base.urdf.xacro" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/fishbot/common_inertia.xacro" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/fishbot/fishbot.ros2_control.xacro" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/fishbot/fishbot.urdf.xacro" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/fishbot/plugins/gazebo_control_plugin.xacro" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/fishbot/plugins/gazebo_sensor_plugin.xacro" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/fishbot/sensor/camera.urdf.xacro" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/fishbot/sensor/imu.urdf.xacro" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/fishbot/sensor/laser.urdf.xacro" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ROS2_demo.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/face_recognition/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/face_recognition/package.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/face_recognition/srv/FaceDetector.srv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/src/example_parameters.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/src/example_parameters.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/src/face_recognition_client.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/src/face_recognition_client.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/robot_control_interfaces/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/robot_control_interfaces/action/MoveRobot.action" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/robot_control_interfaces/package.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/system_status_interface/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/system_status_interface/msg/SystemStatus.msg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/system_status_interface/package.xml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,13 +99,13 @@
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/lining/CLionProjects/ROS2_demo/src/fishros_cpp/src&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/lining/Downloads/ros-integrate-0.1.6.zip&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;CMakeSettings&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
     &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -112,6 +113,10 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/fishros_cpp/src" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/fishbot/src/fishbot_description/config/rviz" />
+      <recent name="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf" />
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.demo_tf_listener">
@@ -234,7 +239,20 @@
       <workItem from="1733452986821" duration="14222000" />
       <workItem from="1733471284117" duration="6055000" />
       <workItem from="1733484024007" duration="7000" />
-      <workItem from="1733484062760" duration="574000" />
+      <workItem from="1733484062760" duration="3479000" />
+      <workItem from="1733489956134" duration="453000" />
+      <workItem from="1733490427283" duration="93000" />
+      <workItem from="1733490555638" duration="1398000" />
+      <workItem from="1733492075105" duration="93000" />
+      <workItem from="1733533741829" duration="6161000" />
+      <workItem from="1733547231077" duration="654000" />
+      <workItem from="1733581274306" duration="1426000" />
+      <workItem from="1733583217813" duration="1555000" />
+      <workItem from="1733584833907" duration="1587000" />
+      <workItem from="1733619118620" duration="78000" />
+      <workItem from="1733619226878" duration="18127000" />
+      <workItem from="1733638386640" duration="1740000" />
+      <workItem from="1733640146860" duration="14000" />
     </task>
     <task id="LOCAL-00001" summary="初步完成4种通信机制的代码编写，以此为模板，跟着小鱼学">
       <option name="closed" value="true" />
@@ -244,7 +262,23 @@
       <option name="project" value="LOCAL" />
       <updated>1733387863638</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="初步完成坐标变换工具tf2及rqt、rviz2的学习">
+      <option name="closed" value="true" />
+      <created>1733485998002</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1733485998002</updated>
+    </task>
+    <task id="LOCAL-00003" summary="初步完成坐标变换工具tf2及rqt、rviz2的学习">
+      <option name="closed" value="true" />
+      <created>1733486008160</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1733486008160</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -257,6 +291,11 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="初步完成4种通信机制的代码编写，以此为模板，跟着小鱼学" />
-    <option name="LAST_COMMIT_MESSAGE" value="初步完成4种通信机制的代码编写，以此为模板，跟着小鱼学" />
+    <MESSAGE value="初步完成坐标变换工具tf2及rqt、rviz2的学习" />
+    <option name="LAST_COMMIT_MESSAGE" value="初步完成坐标变换工具tf2及rqt、rviz2的学习" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

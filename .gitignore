@@ -3,3 +3,7 @@ build
 interfaces/build
 interfaces/install
 interfaces/log
+
+fishbot/build
+fishbot/install
+fishbot/log

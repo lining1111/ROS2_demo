@@ -423,7 +423,9 @@ build 构建结果目录
 interfaces  自定义接口目录，要使用自定义接口，构建时 在ROS2_demo/interfaces目录下执行 colcon build，必须在ROS_demo目录下，执行 source interfaces/install/setup.bash
 src 真正的工程目录，可以构建多个ROS2 的Node
 
-### 话题
+### 1、四种基本通信机制
+
+#### 话题
 
 有4个关键点
 1、发布者
@@ -458,11 +460,11 @@ src 真正的工程目录，可以构建多个ROS2 的Node
     ros2 interface show xxxx
 
 
-#### 通过话题发布小说
+##### 通过话题发布小说
 
 代码中采用的是最简单的发布订阅代码，同时内容还是简单。
     
-#### 让小海龟画圆
+##### 让小海龟画圆
 
 1、首先启动小海龟节点
 
@@ -480,13 +482,13 @@ src 真正的工程目录，可以构建多个ROS2 的Node
 
 3、主要通过向 /turtle1/cmd_vel 话题发布运行信息 cpp代码实现发布者 turtle_circle.cpp
 
-#### 告诉小海龟到指定位置，自己过去
+##### 告诉小海龟到指定位置，自己过去
 
 启动小海龟节点后
 通过订阅 /turtle1/pose 话题的位置信息，实时计算距离差和角度差，然后通过闭环控制来计算小海龟需要的线速度和角速度。
 然后通过发布 /turtle1/cmd_vel 话题的运行信息，实现海龟闭环运动到指定位置。
 
-#### 通过这个小工具查看系统的实时状态信息，还得让局域网内的其他主机也能查看这些数据
+##### 通过这个小工具查看系统的实时状态信息，还得让局域网内的其他主机也能查看这些数据
 
 自定义接口 (很重要)
 
@@ -542,13 +544,13 @@ colcon build的原则： 为了不污染ros2原始的环境，所以自定义接
 **自定义接口能够在系统中运行的主要原因是 ros2 列表接口的时候它能存在即 ros2 interface list | grep xxx_interface(自定义接口名称)**
 
 
-### rqt 工具
+##### rqt 工具
 
     rqt 是一个用qt写的ros2的可视化工具，很多的命令就可以不用手输入了。很方便
 
-### 服务
+#### 服务
 
-#### 创建一个人脸检测服务，提供图像，返回人脸数量位置信息
+##### 创建一个人脸检测服务，提供图像，返回人脸数量位置信息
 
     这里会用到ros2 的 sensor_msgs::Image 到OpenCV 的 cv::Mat 的数据转换库 cv_bridge。操作的参考为 https://blog.csdn.net/bigdog_1027/article/details/79090571    
 
@@ -580,14 +582,12 @@ colcon build的原则： 为了不污染ros2原始的环境，所以自定义接
 打开终端 在ROS2_demo 目录下 输入 source interfaces/install/setup.bash 后 启动clion
 在fishros_cpp的src/目录下，人脸识别的服务 face_recognition_server 人脸服务的客户端 face_recognition_client
 
-#### 
-
-### 参数
+#### 参数
 
 参数被视为节点的设置，是基于**服务通信**实现的 代码是基于 https://fishros.com/d2lros2/#/humble/chapt4/get_started/2.%E5%8F%82%E6%95%B0%E4%B9%8BRCLCPP%E5%AE%9E%E7%8E%B0
 
 
-### 动作
+#### 动作
 
 动作，是由话题和服务共同构建出来的（一个Action = 三个服务+两个话题） 
 三个服务分别是：1.目标传递服务 2.结果传递服务 3.取消执行服务 
@@ -597,13 +597,13 @@ Action的三大组成部分目标、反馈和结果
 代码是基于 https://fishros.com/d2lros2/#/humble/chapt4/get_started/4.%E5%8A%A8%E4%BD%9C%EF%BC%88Action%EF%BC%89%E9%80%9A%E4%BF%A1%E4%B8%8E%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%A5%E5%8F%A3
 
 
-## 通信机制小结
+#### 通信机制小结
 
 学习完4中通信机制后，可以在ros2的环境下进行节点间的对话，以及使用launch来启动一组节点。这个就是基础的框架完成了，就可以利用基础来进行进阶练习，比如数据的处理。
 
-## ROS2的工具 rqt---rviz2---ros2 bag
+### 2、ROS2的工具 rqt---rviz2---ros2 bag
 
-### 坐标变换工具TF
+#### 坐标变换工具TF
 
     基础的命令行操作
     ros2 run tf2_ros static_transform_publisher --help
@@ -629,7 +629,7 @@ Action的三大组成部分目标、反馈和结果
     sudo apt install ros-foxy-tf-transformations
     pip3 install transforms3d
 
-### 一个坐标关系的转换
+#### 一个坐标关系的转换
     
 假设地图坐标系为map，机器人坐标系为base_link 目标点为target_point，(这里的map可以理解为坐标原点)
 已知map到base_link之间的关系、map到target_point的关系，
@@ -674,5 +674,24 @@ demo_tf_dynamic_broadcaster.cpp 描述机器人的，
 编程完毕后，可以通过rviz软件来查看
 计算坐标关系，原理是通过订阅 /tf /tf_static 收集所有坐标系关系，进行计算
 
+### 3、机器人建模和仿真
 
+移动机器人结构
+                    -->执行器-->
+            控制系统                环境+机器人
+                    <--传感器<--
+
+gazebo(https://gazebosim.org/home)是一个开源的3D机器人仿真器 使用的文件格式是sdf的，是继承和扩展了urdf的
+URDF(Unified Robot Description Format https://wiki.ros.org/cn/urdf 可以在维基百科上查看相应的文档) 统一机器人描述格式
+Xacro(XML Macros ，Xacro 是 XML 宏定义语言，方便模块化 http://www.ros.org/wiki/xacro 可以在维基百科上查看相应的文档)  可以简化URDF sudo apt install ros-foxy-xacro
+
+ros2_control 使用ros2进行机器人控制的框架。
+
+使用gazebo接入ros2_control,其实就是让gazebo按照ros2_control指定的接口提供数据。在ros2中利用相应的gazebo插件，
+可以方便的实现gazebo和ros2_control的对接 ros-foxy-gazebo-ros2-control
+
+能够熟练的使用
+rqt---查看节点的订阅发布情况
+rviz2---查看模型的情况
+gazebo---加载模型，并能通过gazebo-ros-control来进行操作的仿真
 
