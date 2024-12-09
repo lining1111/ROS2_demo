@@ -3,6 +3,7 @@ import launch_ros
 from ament_index_python.packages import get_package_share_directory
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
+
 def generate_launch_description():
     # 获取默认路径
     robot_name_in_model = "fishbot"
@@ -30,7 +31,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource([get_package_share_directory(
             'gazebo_ros'), '/launch', '/gazebo.launch.py']),
         # 传递参数
-        launch_arguments=[('world', default_world_path),('verbose','true')]
+        launch_arguments=[('world', default_world_path), ('verbose', 'true')]
     )
     # 请求 Gazebo 加载机器人
     spawn_entity_node = launch_ros.actions.Node(
@@ -48,11 +49,11 @@ def generate_launch_description():
 
     # 加载并激活 fishbot_effort_controller 控制器
     load_fishbot_effort_controller = launch.actions.ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'start','fishbot_effort_controller'],
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'start', 'fishbot_effort_controller'],
         output='screen')
 
     load_fishbot_diff_drive_controller = launch.actions.ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'start','fishbot_diff_drive_controller'],
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'start', 'fishbot_diff_drive_controller'],
         output='screen')
 
     return launch.LaunchDescription([
@@ -64,12 +65,12 @@ def generate_launch_description():
         launch.actions.RegisterEventHandler(
             event_handler=launch.event_handlers.OnProcessExit(
                 target_action=spawn_entity_node,
-                on_exit=[load_joint_state_controller],)
+                on_exit=[load_joint_state_controller], )
         ),
         # 事件动作，load_fishbot_effort_controller/load_fishbot_diff_drive_controller
         launch.actions.RegisterEventHandler(
             event_handler=launch.event_handlers.OnProcessExit(
                 target_action=load_joint_state_controller,
-                on_exit=[load_fishbot_diff_drive_controller],)
+                on_exit=[load_fishbot_diff_drive_controller], )
         ),
     ])

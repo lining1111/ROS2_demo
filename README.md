@@ -695,3 +695,28 @@ rqt---查看节点的订阅发布情况
 rviz2---查看模型的情况
 gazebo---加载模型，并能通过gazebo-ros-control来进行操作的仿真
 
+
+### 4、机器人导航
+
+使用slam_toolbox 构建导航地图。sudo apt install ros-foxy-slam-toolbox
+
+    可以在gazebo启动模拟后，
+    通过启动 slam_tool(ros2 launch slam_toolbox online_async_launch.py use_sim_time:=True)监听模拟器发出的标准信息结果，然后在rviz中通过将基坐标设置为odom,查看laserScan的建图情况
+使用nav2-map-server来将地图保存为文件。sudo apt install ros-foxy-nav2-map-server
+    ros2 run nav2_map_server map_saver_cli -f room
+
+navigation2(https://github.com/ros-navigation/navigation2)是一个开源的机器人导航框架。
+sudo apt install ros-foxy-navigation2
+sudo apt install ros-foxy-nav2-bringup
+
+**实验的时候，和小鱼视频的不一样，可以先打开nav2的launch，在打开gazebo的launch**
+
+可以查看 acml节点的信息 ros2 info /acml
+可以通过命令行进行机器人位置的初始化
+ros2 topic pub /initialpose geometry_msgs/msg/PoseWithCovarianceStamped "{header: {frame_id: map}}" --once
+
+#### 小结
+
+nav2 slam-toolbox gazebo 都是基于ros2的优秀的仿真软件，什么叫基于，就是基于roa2的通信机制。
+熟练的使用ros2的命令行和rqt查看ros2工作节点间的通信内容、rviz查看tf间的坐标关系、以及工具提供的标准的话题和服务的接口
+是完整运行建图与导航的关键。

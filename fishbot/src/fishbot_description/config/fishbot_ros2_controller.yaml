@@ -8,10 +8,8 @@ controller_manager:
       use_sim_time: true
     fishbot_effort_controller:
       type: effort_controllers/JointGroupEffortController
-      use_sim_time: true
     fishbot_diff_drive_controller:
       type: diff_drive_controller/DiffDriveController
-      use_sim_time: true
 
 fishbot_effort_controller:
   ros__parameters:
