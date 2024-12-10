@@ -35,12 +35,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="48b2ae22-30c5-440b-b3ef-fc4634f32aeb" name="Changes" comment="初步完成机器人导航的学习，未学习巡检机器人的部分">
+    <list default="true" id="48b2ae22-30c5-440b-b3ef-fc4634f32aeb" name="Changes" comment="删除helloworld例程">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/helloworld_cpp/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/helloworld_cpp/package.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/helloworld_cpp/src/helloworld.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/helloworld_cpp/src/person_node.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -257,7 +254,7 @@
       <workItem from="1733731775017" duration="554000" />
       <workItem from="1733732364668" duration="3671000" />
       <workItem from="1733793192626" duration="175000" />
-      <workItem from="1733793422934" duration="75000" />
+      <workItem from="1733793422934" duration="4045000" />
     </task>
     <task id="LOCAL-00001" summary="初步完成4种通信机制的代码编写，以此为模板，跟着小鱼学">
       <option name="closed" value="true" />
@@ -299,7 +296,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733730382463</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="删除helloworld例程">
+      <option name="closed" value="true" />
+      <created>1733793763027</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1733793763028</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -315,7 +320,8 @@
     <MESSAGE value="初步完成坐标变换工具tf2及rqt、rviz2的学习" />
     <MESSAGE value="初步完成机器人建模的学习" />
     <MESSAGE value="初步完成机器人导航的学习，未学习巡检机器人的部分" />
-    <option name="LAST_COMMIT_MESSAGE" value="初步完成机器人导航的学习，未学习巡检机器人的部分" />
+    <MESSAGE value="删除helloworld例程" />
+    <option name="LAST_COMMIT_MESSAGE" value="删除helloworld例程" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

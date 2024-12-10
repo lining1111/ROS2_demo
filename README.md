@@ -1,5 +1,12 @@
 # Clion 中优雅的开发ROS2
 
+    其实学习ROS2更应该理解的是，cpp、go、python等都是构建一个大型软件的编程或者说启动的一部分，但一的编程语言不足以支撑复杂的大型应用。
+    明确语言的优劣，充分利用优势和标准化来完成复杂的构建是关键。比如cpp注重效率但维护和三方环境偏弱；go效率、维护、三方比较适中但机器学习不行；
+    python除去效率不行外机器学习、三方、维护都好。可以找一种思路，
+    比如python训练好学习的模型，python作脚本使用，作启动的系列动作；
+    由cpp来完成编码动作如模型加载、识别等，通过标准的接口，如tcp、websocket、ros2接口等对外提供服务；
+    go来完成服务组织及web相关的(类似前端接口、后台管理等)。
+
 ## 工程的来源及计划
 
 工程的源码采用的是官方的的demo 
@@ -417,11 +424,28 @@ cp /opt/ros/scripts/cmake/toplevel.cmake <your_path_to_demo>/ROS2_demo/CMakeList
 
 ## 跟着小鱼学ROS2
 
-工程目录
+### 几个概念
 
-build 构建结果目录
-interfaces  自定义接口目录，要使用自定义接口，构建时 在ROS2_demo/interfaces目录下执行 colcon build，必须在ROS_demo目录下，执行 source interfaces/install/setup.bash
-src 真正的工程目录，可以构建多个ROS2 的Node
+---工作空间 workspace 是一个约定的概念问题，里面有
+    src目录，各种功能包就在其中
+    build目录，构建完成的功能包执行文件
+    install目录，构建完成的环境配置(colcon build 特有的)
+    log目录，构建的日志目录(colcon build 特有的)
+
+### 工程目录
+---build 
+    构建结果目录
+---interfaces  
+    自定义接口目录，相当于工作空间。
+    新建自定义接口，在interfaces/src目录，执行 ros2 pkg create xxx --dependencies rosidl_default_generators mmm,其中，xxx为自定义接口包的名称，mmm为依赖的ros2的标准数据类型包名称(可以后续在CMakeLists.txt中加)
+    构建自定义接口，在interfaces目录下执行 colcon build，
+    使用自定义接口，打开新的终端，执行 source install/setup.bash。(此处例子在interfaces 目录下打开的终端，可以在任意目录下打开终端，只要source 后面的路径对)。在此终端下打开开发IDE
+---src 
+    真正的工程目录，可以构建多个功能包
+    新建功能包，在src目录，执行 ros2 pkg create xxx --dependencies rclcpp mmm，其中 xxx为功能包名，mmm为ros2的标准依赖包
+    构建功能包，如果有依赖的自定义包，执行完自定义包的source install/setup.bash 后，打开相应的ide进行开发
+---fishbot 
+    小鱼小车的仿真环境
 
 ### 1、四种基本通信机制
 
