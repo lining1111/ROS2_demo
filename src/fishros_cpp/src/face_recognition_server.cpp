@@ -3,7 +3,7 @@
 //
 
 #include "rclcpp/rclcpp.hpp"
-#include "face_recognition/srv/face_detector.hpp"
+#include "fishros//srv/face_detector.hpp"
 #include "cv_bridge/cv_bridge.h"
 #include <opencv2/opencv.hpp>
 #include <string>
@@ -11,12 +11,13 @@
 using namespace std;
 
 class FaceRecognitionServer : public rclcpp::Node {
+    using FaceDetector = fishros::srv::FaceDetector;
 private:
-    rclcpp::Service<face_recognition::srv::FaceDetector>::SharedPtr _server;
+    rclcpp::Service<FaceDetector>::SharedPtr _server;
     cv_bridge::CvImagePtr cv_ptr;
 
-    void handle(const std::shared_ptr<face_recognition::srv::FaceDetector::Request> request,
-                std::shared_ptr<face_recognition::srv::FaceDetector::Response> response) {
+    void handle(const std::shared_ptr<FaceDetector::Request> request,
+                std::shared_ptr<FaceDetector::Response> response) {
         //将获取的图像通过cvBridge库来转换为opencv识别的
         try {
             cv_ptr = cv_bridge::toCvCopy(request->image);
@@ -41,7 +42,7 @@ private:
 public:
     FaceRecognitionServer() : rclcpp::Node("FaceRecognitionServer") {
         RCLCPP_INFO(get_logger(), "FaceRecognitionServer start");
-        _server = create_service<face_recognition::srv::FaceDetector>("face_recognition_srv",
+        _server = create_service<FaceDetector>("face_recognition_srv",
                                                                       std::bind(&FaceRecognitionServer::handle, this,
                                                                                 std::placeholders::_1,
                                                                                 std::placeholders::_2));

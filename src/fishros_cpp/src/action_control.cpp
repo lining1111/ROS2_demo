@@ -3,14 +3,14 @@
 //
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
-#include "robot_control_interfaces/action/move_robot.hpp"
+#include "fishros/action/move_robot.hpp"
 
 using namespace std;
 using namespace std::chrono_literals;
 
 class ActionControl : public rclcpp::Node {
 public:
-    using MoveRobot = robot_control_interfaces::action::MoveRobot;
+    using MoveRobot = fishros::action::MoveRobot;
 
     ActionControl(const string &name, const rclcpp::NodeOptions &node_options = rclcpp::NodeOptions())
             : rclcpp::Node(name, node_options) {

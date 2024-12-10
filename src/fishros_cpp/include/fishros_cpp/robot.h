@@ -6,11 +6,11 @@
 #define ROBOT_H
 
 #include "rclcpp/rclcpp.hpp"
-#include "robot_control_interfaces/action/move_robot.hpp"
+#include "fishros/action/move_robot.hpp"
 
 class Robot {
 public:
-    using MoveRobot = robot_control_interfaces::action::MoveRobot;
+    using MoveRobot = fishros::action::MoveRobot;
 
     Robot() = default;
 

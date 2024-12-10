@@ -29,7 +29,7 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 message("PROJECT_SOURCE_DIR ${PROJECT_SOURCE_DIR}")
 find_package(tf2_ros REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
-
+find_package(fishros REQUIRED)
 
 #### --------话题
 ## topicPub
@@ -69,11 +69,20 @@ target_include_directories(turtle_control PUBLIC
         $<INSTALL_INTERFACE:include>)
 ament_target_dependencies(
         turtle_control
-        "rclcpp" "geometry_msgs" "turtlesim"
+        "rclcpp" "geometry_msgs" "turtlesim" "fishros"
+)
+
+## patrol_client
+add_executable(patrol_client src/patrol_client.cpp)
+target_include_directories(patrol_client PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>)
+ament_target_dependencies(
+        patrol_client
+        "rclcpp" "geometry_msgs" "turtlesim" "fishros"
 )
 
 ## system_status_pub
-find_package(system_status_interface REQUIRED)
 add_executable(system_status_pub src/system_status_pub.cpp
         systemStatus/systemStatus.cpp)
 target_include_directories(system_status_pub PUBLIC
@@ -82,7 +91,7 @@ target_include_directories(system_status_pub PUBLIC
 ament_target_dependencies(
         system_status_pub
         "rclcpp"
-        "system_status_interface"
+        "fishros"
 )
 
 ## system_status_sub
@@ -93,13 +102,12 @@ target_include_directories(system_status_sub PUBLIC
 ament_target_dependencies(
         system_status_sub
         "rclcpp"
-        "system_status_interface"
+        "fishros"
 )
 
 #### --------服务
 
 ## face_recognition_server
-find_package(face_recognition REQUIRED)
 add_executable(face_recognition_server src/face_recognition_server.cpp)
 target_include_directories(face_recognition_server PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -107,7 +115,8 @@ target_include_directories(face_recognition_server PUBLIC
 ament_target_dependencies(
         face_recognition_server
         "rclcpp"
-        "face_recognition" "cv_bridge"
+        "cv_bridge"
+        "fishros"
 )
 
 ## face_recognition_client
@@ -118,7 +127,8 @@ target_include_directories(face_recognition_client PUBLIC
 ament_target_dependencies(
         face_recognition_client
         "rclcpp"
-        "face_recognition" "cv_bridge"
+        "cv_bridge"
+        "fishros"
 )
 
 #### --------参数
@@ -135,7 +145,6 @@ ament_target_dependencies(
 
 
 #### --------动作
-find_package(robot_control_interfaces REQUIRED)
 add_executable(action_robot src/action_robot.cpp src/robot.cpp)
 target_include_directories(action_robot PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -144,7 +153,7 @@ ament_target_dependencies(
         action_robot
         "rclcpp"
         "rclcpp_action"
-        "robot_control_interfaces"
+        "fishros"
 )
 
 add_executable(action_control src/action_control.cpp )
@@ -155,7 +164,7 @@ ament_target_dependencies(
         action_control
         "rclcpp"
         "rclcpp_action"
-        "robot_control_interfaces"
+        "fishros"
 )
 
 
@@ -196,9 +205,11 @@ ament_target_dependencies(
 
 install(TARGETS
         ##话题
-        topicPub topicSub turtle_circle turtle_control system_status_pub system_status_sub
+        topicPub topicSub turtle_circle system_status_pub system_status_sub
         ##服务
         face_recognition_server face_recognition_client
+        ##话题和服务的混合
+        turtle_control patrol_client
         ## 参数
         example_parameters
         ##动作

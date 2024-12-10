@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(face_recognition)
+project(fishros)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -17,12 +17,17 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
+find_package(builtin_interfaces REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
+	"msg/SystemStatus.msg"
         "srv/FaceDetector.srv"
-        DEPENDENCIES sensor_msgs
+        "srv/Patrol.srv"
+        "action/MoveRobot.action"
+
+	DEPENDENCIES builtin_interfaces sensor_msgs
 )
 
 if(BUILD_TESTING)

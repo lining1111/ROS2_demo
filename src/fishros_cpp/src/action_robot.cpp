@@ -4,7 +4,7 @@
 #include "fishros_cpp/robot.h"
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
-#include "robot_control_interfaces/action/move_robot.hpp"
+#include "fishros/action/move_robot.hpp"
 #include <chrono>
 
 
@@ -12,7 +12,7 @@ using namespace std;
 
 class ActionRobot : public rclcpp::Node {
 public:
-    using MoveRobot = robot_control_interfaces::action::MoveRobot;
+    using MoveRobot = fishros::action::MoveRobot;
     ActionRobot(const string &name) : rclcpp::Node(name) {
         RCLCPP_INFO(this->get_logger(), "节点已启动：%s.", name.c_str());
 

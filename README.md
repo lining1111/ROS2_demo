@@ -4,20 +4,14 @@
     明确语言的优劣，充分利用优势和标准化来完成复杂的构建是关键。比如cpp注重效率但维护和三方环境偏弱；go效率、维护、三方比较适中但机器学习不行；
     python除去效率不行外机器学习、三方、维护都好。可以找一种思路，
     比如python训练好学习的模型，python作脚本使用，作启动的系列动作；
-    由cpp来完成编码动作如模型加载、识别等，通过标准的接口，如tcp、websocket、ros2接口等对外提供服务；
+    由cpp来完成编码动作如模型加载、识别等，通过链路如tcp、websocket、ros2接口等对外符合提供标准协议的服务；
     go来完成服务组织及web相关的(类似前端接口、后台管理等)。
 
 ## 工程的来源及计划
 
-工程的源码采用的是官方的的demo 
-https://github.com/ros2/demos
-
-操作方法采用的是知乎上的一个文章
-https://zhuanlan.zhihu.com/p/693626476
-下面的文字就是将知乎上的拷贝下来
-
-工程内代码编写参考B站鱼香ROS的《ROS2机器人开发从入门到实践》
-https://www.bilibili.com/video/BV1GW42197Ck/?spm_id_from=333.1007.top_right_bar_window_custom_collection.content.click
+工程内参考(鱼香ROS的《ROS2机器人开发从入门到实践》)
+代码:https://gitee.com/ohhuo/ros2bookcode.git
+视频:https://www.bilibili.com/video/BV1GW42197Ck/?spm_id_from=333.1007.top_right_bar_window_custom_collection.content.click
 
 
 接下来项目分为三部分来说
@@ -41,7 +35,7 @@ https://www.bilibili.com/video/BV1GW42197Ck/?spm_id_from=333.1007.top_right_bar_
 
 **下面的通信机制中 XXX表示通信接口 可以通过 ros2 interface list | grep XXX 查看接口是否存在，如果不存在可能需要在接口生成的工作空间内，source install/local_setup.bash**
 
-话题 topic
+---话题 topic
 
     发布
     rclcpp::Publisher<XXX>::SharedPtr pub_
@@ -57,7 +51,7 @@ https://www.bilibili.com/video/BV1GW42197Ck/?spm_id_from=333.1007.top_right_bar_
     
     命令行 ros2 topic pub/echo
 
-服务 service
+---服务 service
 
     服务端
     rclcpp::Service<XXX>::SharedPtr server_
@@ -87,7 +81,7 @@ https://www.bilibili.com/video/BV1GW42197Ck/?spm_id_from=333.1007.top_right_bar_
 
     命令行 ros2 service call
 
-参数 param
+---参数 param
 
     rclcpp::Node::declare_parameter
     rclcpp::Node::get_parameter
@@ -97,7 +91,7 @@ https://www.bilibili.com/video/BV1GW42197Ck/?spm_id_from=333.1007.top_right_bar_
     
     命令行 ros2 param get/set
 
-动作 action
+---动作 action
 
     服务端 假设服务端类名为 ActionRobot
     rclcpp_action::Server<XXX>::SharedPtr action_server_
@@ -145,7 +139,7 @@ https://www.bilibili.com/video/BV1GW42197Ck/?spm_id_from=333.1007.top_right_bar_
     
     命令行 ros2 action send_goal 
 
-通信机制对比总结
+--通信机制对比总结
 
 话题、服务、动作都是有可能需要自定义接口的
 
@@ -242,6 +236,10 @@ ros2 run helloworld_cpp helloworld
 
 ## 在Clion环境下新建工程、构建工程说明；及与标准情况的不同(其实特别的小)
 
+操作方法采用的是知乎上的一个文章
+https://zhuanlan.zhihu.com/p/693626476
+下面的文字就是将知乎上的拷贝下来
+
 Clion上开发ROS2的操作 
 **对于自定义接口的构建还是ROS2原生的套路，使用colcon build 来构建**
     
@@ -279,13 +277,13 @@ ros2新建功能包，进入ROS2_demo/src/目录下，执行
 
 ros2 pkg create <package-name>  --build-type  {cmake,ament_cmake,ament_python}  --dependencies <依赖名字>
 
-如：ros2 pkg create helloworld_cpp --build-type ament_cmake --dependencies rclcpp --node-name helloworld
+如：ros2 pkg create fishros_cpp --build-type ament_cmake --dependencies rclcpp --node-name helloworld ，<node name 可以随便写一个，主要是为了出那个添加执行的例子>
 
 这时目录的样子：
 
     ROS2_demo
         └── src
-            ├── helloworld_cpp
+            ├── fishros_cpp
             ├── ....
             ....
 
@@ -417,10 +415,6 @@ cp /opt/ros/scripts/cmake/toplevel.cmake <your_path_to_demo>/ROS2_demo/CMakeList
 
 这里是用了clang-tidy基于正则的匹配规则，不多介绍了。
 这样一来，检查器的警告应该消失了。
-
-### 自定义接口文件
-
-可以直接将 build目录下的 工程名文件夹 下的 rosidl_generator_cpp 下的 文件夹 拷贝到 工程目录下的 include文件夹下
 
 ## 跟着小鱼学ROS2
 

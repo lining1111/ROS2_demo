@@ -7,5 +7,5 @@ include("/opt/ros/scripts/cmake/colcon.cmake")
 colcon_add_subdirectories(
         BUILD_BASE "${PROJECT_SOURCE_DIR}/build"
         BASE_PATHS "${PROJECT_SOURCE_DIR}/src/"
-        --packages-select  fishros_cpp
+        --packages-select fishros_cpp
 )

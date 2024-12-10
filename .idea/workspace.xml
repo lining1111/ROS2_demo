@@ -16,17 +16,18 @@
       <config projectName="ROS2_demo" targetName="system_status_pub" />
       <config projectName="ROS2_demo" targetName="turtle_circle" />
       <config projectName="ROS2_demo" targetName="fishros_cpp_uninstall" />
+      <config projectName="ROS2_demo" targetName="patrol_client" />
       <config projectName="ROS2_demo" targetName="demo_tf_dynamic_broadcaster" />
-      <config projectName="ROS2_demo" targetName="action_robot" />
       <config projectName="ROS2_demo" targetName="topicSub" />
-      <config projectName="ROS2_demo" targetName="demo_tf_static_broadcaster" />
       <config projectName="ROS2_demo" targetName="topicPub" />
       <config projectName="ROS2_demo" targetName="demo_tf_listener" />
+      <config projectName="ROS2_demo" targetName="face_recognition_client" />
+      <config projectName="ROS2_demo" targetName="turtle_control" />
+      <config projectName="ROS2_demo" targetName="action_robot" />
+      <config projectName="ROS2_demo" targetName="demo_tf_static_broadcaster" />
       <config projectName="ROS2_demo" targetName="action_control" />
       <config projectName="ROS2_demo" targetName="example_parameters" />
       <config projectName="ROS2_demo" targetName="uninstall" />
-      <config projectName="ROS2_demo" targetName="face_recognition_client" />
-      <config projectName="ROS2_demo" targetName="turtle_control" />
     </generated>
   </component>
   <component name="CMakeSettings">
@@ -35,9 +36,31 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="48b2ae22-30c5-440b-b3ef-fc4634f32aeb" name="Changes" comment="删除helloworld例程">
+    <list default="true" id="48b2ae22-30c5-440b-b3ef-fc4634f32aeb" name="Changes" comment="优化readme文件">
+      <change afterPath="$PROJECT_DIR$/src/fishros_cpp/launch/fishros.launch.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fishros_cpp/src/patrol_client.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaces/src/face_recognition/CMakeLists.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaces/src/face_recognition/package.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaces/src/face_recognition/srv/FaceDetector.srv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaces/src/robot_control_interfaces/CMakeLists.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaces/src/robot_control_interfaces/action/MoveRobot.action" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaces/src/robot_control_interfaces/package.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaces/src/system_status_interface/CMakeLists.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaces/src/system_status_interface/msg/SystemStatus.msg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaces/src/system_status_interface/package.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/include/fishros_cpp/robot.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/include/fishros_cpp/robot.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/package.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/package.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/src/action_control.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/src/action_control.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/src/action_robot.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/src/action_robot.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/src/face_recognition_client.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/src/face_recognition_client.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/src/face_recognition_server.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/src/face_recognition_server.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/src/system_status_pub.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/src/system_status_pub.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/src/system_status_sub.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/src/system_status_sub.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/src/turtle_control.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/src/turtle_control.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +71,13 @@
     <option name="formatViaClangd" value="false" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -81,7 +111,7 @@
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/lining/CLionProjects/ROS2_demo/fishbot/src/fishbot_application/fishbot_application&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/lining/CLionProjects/ROS2_demo/interfaces/src/patrol/srv&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -94,10 +124,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/interfaces/src/patrol/srv" />
+      <recent name="$PROJECT_DIR$/src/fishros_cpp/src" />
       <recent name="$PROJECT_DIR$/fishbot/src/fishbot_application/fishbot_application" />
       <recent name="$PROJECT_DIR$/fishbot/src/fishbot_navigation2/launch" />
       <recent name="$PROJECT_DIR$/fishbot/src/fishbot_navigation2/maps" />
-      <recent name="$PROJECT_DIR$/src/fishros_cpp/src" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/fishbot/src/fishbot_description/config/rviz" />
@@ -155,6 +186,11 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="patrol_client" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ROS2_demo" TARGET_NAME="patrol_client" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ROS2_demo" RUN_TARGET_NAME="patrol_client">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="system_status_pub" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ROS2_demo" TARGET_NAME="system_status_pub" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ROS2_demo" RUN_TARGET_NAME="system_status_pub">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -200,6 +236,7 @@
       <item itemvalue="CMake Application.face_recognition_client" />
       <item itemvalue="CMake Application.face_recognition_server" />
       <item itemvalue="CMake Application.fishros_cpp_uninstall" />
+      <item itemvalue="CMake Application.patrol_client" />
       <item itemvalue="CMake Application.system_status_pub" />
       <item itemvalue="CMake Application.system_status_sub" />
       <item itemvalue="CMake Application.topicPub" />
@@ -254,7 +291,12 @@
       <workItem from="1733731775017" duration="554000" />
       <workItem from="1733732364668" duration="3671000" />
       <workItem from="1733793192626" duration="175000" />
-      <workItem from="1733793422934" duration="4045000" />
+      <workItem from="1733793422934" duration="4640000" />
+      <workItem from="1733801637195" duration="845000" />
+      <workItem from="1733802518576" duration="54000" />
+      <workItem from="1733803450419" duration="1970000" />
+      <workItem from="1733807399864" duration="135000" />
+      <workItem from="1733807559270" duration="769000" />
     </task>
     <task id="LOCAL-00001" summary="初步完成4种通信机制的代码编写，以此为模板，跟着小鱼学">
       <option name="closed" value="true" />
@@ -304,7 +346,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733793763028</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="优化readme文件">
+      <option name="closed" value="true" />
+      <created>1733797963593</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1733797963593</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -321,7 +371,8 @@
     <MESSAGE value="初步完成机器人建模的学习" />
     <MESSAGE value="初步完成机器人导航的学习，未学习巡检机器人的部分" />
     <MESSAGE value="删除helloworld例程" />
-    <option name="LAST_COMMIT_MESSAGE" value="删除helloworld例程" />
+    <MESSAGE value="优化readme文件" />
+    <option name="LAST_COMMIT_MESSAGE" value="优化readme文件" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

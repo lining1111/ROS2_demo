@@ -3,7 +3,7 @@
 //
 
 #include "rclcpp/rclcpp.hpp"
-#include "face_recognition/srv/face_detector.hpp"
+#include "fishros/srv/face_detector.hpp"
 #include "cv_bridge/cv_bridge.h"
 #include <opencv2/opencv.hpp>
 #include <string>
@@ -11,12 +11,13 @@
 using namespace std;
 
 class FaceRecognitionClient : public rclcpp::Node {
+    using FaceDetector = fishros::srv::FaceDetector;
 private:
-    rclcpp::Client<face_recognition::srv::FaceDetector>::SharedPtr _client;
+    rclcpp::Client<FaceDetector>::SharedPtr _client;
     cv_bridge::CvImagePtr cv_ptr;
 
-    void handle(const std::shared_ptr<face_recognition::srv::FaceDetector::Request> request,
-                std::shared_ptr<face_recognition::srv::FaceDetector::Response> response) {
+    void handle(const std::shared_ptr<FaceDetector::Request> request,
+                std::shared_ptr<FaceDetector::Response> response) {
         //将获取的图像通过cvBridge库来转换为opencv识别的
         try {
             cv_ptr = cv_bridge::toCvCopy(request->image);
@@ -41,7 +42,7 @@ private:
 public:
     FaceRecognitionClient() : rclcpp::Node("FaceRecognitionClient") {
         RCLCPP_INFO(get_logger(), "FaceRecognitionClient start");
-        _client = create_client<face_recognition::srv::FaceDetector>("face_recognition_srv");
+        _client = create_client<FaceDetector>("face_recognition_srv");
 
     };
 
@@ -57,7 +58,7 @@ public:
         }
         // 2.发送异步请求，然后等待返回，返回时调用回调函数
         auto ros2_img = cv_bridge::CvImage(std_msgs::msg::Header(),"bgr8",img).toImageMsg();
-        auto request = std::make_shared<face_recognition::srv::FaceDetector::Request>();
+        auto request = std::make_shared<FaceDetector::Request>();
         request->image = *ros2_img;
 
         _client->async_send_request(
@@ -67,7 +68,7 @@ public:
 
 
 
-    void response_cb(rclcpp::Client<face_recognition::srv::FaceDetector>::SharedFuture result){
+    void response_cb(rclcpp::Client<FaceDetector>::SharedFuture result){
         auto response = result.get();
         //将返回的结果进行处理
     }
