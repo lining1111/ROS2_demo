@@ -35,16 +35,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="48b2ae22-30c5-440b-b3ef-fc4634f32aeb" name="Changes" comment="初步完成机器人建模的学习">
-      <change afterPath="$PROJECT_DIR$/fishbot/src/fishbot_navigation2/launch/navigation2.launch.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fishbot/src/fishbot_navigation2/maps/room.pgm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fishbot/src/fishbot_navigation2/maps/room.yaml" afterDir="false" />
+    <list default="true" id="48b2ae22-30c5-440b-b3ef-fc4634f32aeb" name="Changes" comment="初步完成机器人导航的学习，未学习巡检机器人的部分">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/config/fishbot_ros2_controller.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/fishbot/src/fishbot_description/config/fishbot_ros2_controller.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/launch/gazebo_sim.launch.py" beforeDir="false" afterPath="$PROJECT_DIR$/fishbot/src/fishbot_description/launch/gazebo_sim.launch.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/world/custom_room.world" beforeDir="false" afterPath="$PROJECT_DIR$/fishbot/src/fishbot_description/world/custom_room.world" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/world/room/model.sdf" beforeDir="false" afterPath="$PROJECT_DIR$/fishbot/src/fishbot_description/world/room/model.sdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/helloworld_cpp/CMakeLists.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/helloworld_cpp/package.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/helloworld_cpp/src/helloworld.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/helloworld_cpp/src/person_node.cpp" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,30 +71,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "CMake Application.action_robot.executor": "Debug",
-    "CMake Application.demo_tf.executor": "Debug",
-    "CMake Application.demo_tf_dynamic_broadcaster.executor": "Debug",
-    "CMake Application.demo_tf_listener.executor": "Debug",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "/home/lining/CLionProjects/ROS2_demo/fishbot/src/fishbot_application/fishbot_application",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "structure.view.defaults.are.configured": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;CMake Application.action_robot.executor&quot;: &quot;Debug&quot;,
+    &quot;CMake Application.demo_tf.executor&quot;: &quot;Debug&quot;,
+    &quot;CMake Application.demo_tf_dynamic_broadcaster.executor&quot;: &quot;Debug&quot;,
+    &quot;CMake Application.demo_tf_listener.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/lining/CLionProjects/ROS2_demo/fishbot/src/fishbot_application/fishbot_application&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
+    &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/fishbot/src/fishbot_application/fishbot_application" />
@@ -112,6 +108,11 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.demo_tf_listener">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="action_control" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ROS2_demo" TARGET_NAME="action_control" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ROS2_demo" RUN_TARGET_NAME="action_control">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -252,7 +253,11 @@
       <workItem from="1733711322733" duration="1065000" />
       <workItem from="1733712675001" duration="3661000" />
       <workItem from="1733721368550" duration="623000" />
-      <workItem from="1733722017483" duration="8279000" />
+      <workItem from="1733722017483" duration="8447000" />
+      <workItem from="1733731775017" duration="554000" />
+      <workItem from="1733732364668" duration="3671000" />
+      <workItem from="1733793192626" duration="175000" />
+      <workItem from="1733793422934" duration="75000" />
     </task>
     <task id="LOCAL-00001" summary="初步完成4种通信机制的代码编写，以此为模板，跟着小鱼学">
       <option name="closed" value="true" />
@@ -286,7 +291,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733640184201</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="初步完成机器人导航的学习，未学习巡检机器人的部分">
+      <option name="closed" value="true" />
+      <created>1733730382462</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1733730382463</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -301,7 +314,8 @@
     <MESSAGE value="初步完成4种通信机制的代码编写，以此为模板，跟着小鱼学" />
     <MESSAGE value="初步完成坐标变换工具tf2及rqt、rviz2的学习" />
     <MESSAGE value="初步完成机器人建模的学习" />
-    <option name="LAST_COMMIT_MESSAGE" value="初步完成机器人建模的学习" />
+    <MESSAGE value="初步完成机器人导航的学习，未学习巡检机器人的部分" />
+    <option name="LAST_COMMIT_MESSAGE" value="初步完成机器人导航的学习，未学习巡检机器人的部分" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
