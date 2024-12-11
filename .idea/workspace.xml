@@ -19,15 +19,15 @@
       <config projectName="ROS2_demo" targetName="patrol_client" />
       <config projectName="ROS2_demo" targetName="demo_tf_dynamic_broadcaster" />
       <config projectName="ROS2_demo" targetName="topicSub" />
-      <config projectName="ROS2_demo" targetName="topicPub" />
-      <config projectName="ROS2_demo" targetName="demo_tf_listener" />
-      <config projectName="ROS2_demo" targetName="face_recognition_client" />
-      <config projectName="ROS2_demo" targetName="turtle_control" />
       <config projectName="ROS2_demo" targetName="action_robot" />
       <config projectName="ROS2_demo" targetName="demo_tf_static_broadcaster" />
+      <config projectName="ROS2_demo" targetName="topicPub" />
+      <config projectName="ROS2_demo" targetName="demo_tf_listener" />
       <config projectName="ROS2_demo" targetName="action_control" />
       <config projectName="ROS2_demo" targetName="example_parameters" />
       <config projectName="ROS2_demo" targetName="uninstall" />
+      <config projectName="ROS2_demo" targetName="face_recognition_client" />
+      <config projectName="ROS2_demo" targetName="turtle_control" />
     </generated>
   </component>
   <component name="CMakeSettings">
@@ -36,31 +36,15 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="48b2ae22-30c5-440b-b3ef-fc4634f32aeb" name="Changes" comment="优化readme文件">
-      <change afterPath="$PROJECT_DIR$/src/fishros_cpp/launch/fishros.launch.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/fishros_cpp/src/patrol_client.cpp" afterDir="false" />
+    <list default="true" id="48b2ae22-30c5-440b-b3ef-fc4634f32aeb" name="Changes" comment="将自定义接口工程统一到fishros包内">
+      <change afterPath="$PROJECT_DIR$/src/fishros_cpp/launch/actions.launch.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interfaces/src/face_recognition/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/interfaces/src/face_recognition/package.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/interfaces/src/face_recognition/srv/FaceDetector.srv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/interfaces/src/robot_control_interfaces/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/interfaces/src/robot_control_interfaces/action/MoveRobot.action" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/interfaces/src/robot_control_interfaces/package.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/interfaces/src/system_status_interface/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/interfaces/src/system_status_interface/msg/SystemStatus.msg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/interfaces/src/system_status_interface/package.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/include/fishros_cpp/robot.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/include/fishros_cpp/robot.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/package.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/package.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/src/action_control.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/src/action_control.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/src/action_robot.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/src/action_robot.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/src/face_recognition_client.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/src/face_recognition_client.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/src/face_recognition_server.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/src/face_recognition_server.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/src/system_status_pub.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/src/system_status_pub.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/src/system_status_sub.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/src/system_status_sub.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/src/turtle_control.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/src/turtle_control.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/first_robot.gv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/first_robot.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/first_robot.urdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/first_robot.xacro" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/launch/fishros.launch.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/launch/fishros.launch.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,6 +88,8 @@
     &quot;CMake Application.demo_tf.executor&quot;: &quot;Debug&quot;,
     &quot;CMake Application.demo_tf_dynamic_broadcaster.executor&quot;: &quot;Debug&quot;,
     &quot;CMake Application.demo_tf_listener.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.fishros.launch.executor&quot;: &quot;Run&quot;,
+    &quot;Python.node_demo.executor&quot;: &quot;Debug&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
@@ -111,7 +97,7 @@
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/lining/CLionProjects/ROS2_demo/interfaces/src/patrol/srv&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/lining/CLionProjects/ROS2_demo/unitree_b2/src/b2_description/urdf&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -124,23 +110,18 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/unitree_b2/src/b2_description/urdf" />
+      <recent name="$PROJECT_DIR$/unitree_b2/src/b2_description" />
       <recent name="$PROJECT_DIR$/interfaces/src/patrol/srv" />
       <recent name="$PROJECT_DIR$/src/fishros_cpp/src" />
       <recent name="$PROJECT_DIR$/fishbot/src/fishbot_application/fishbot_application" />
-      <recent name="$PROJECT_DIR$/fishbot/src/fishbot_navigation2/launch" />
-      <recent name="$PROJECT_DIR$/fishbot/src/fishbot_navigation2/maps" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/fishbot/src/fishbot_description/config/rviz" />
       <recent name="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf" />
     </key>
   </component>
-  <component name="RunManager" selected="CMake Application.demo_tf_listener">
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="Python.fishros.launch">
     <configuration name="action_control" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ROS2_demo" TARGET_NAME="action_control" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ROS2_demo" RUN_TARGET_NAME="action_control">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -226,6 +207,50 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="fishros.launch" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ROS2_demo" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/fishros_cpp/launch" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/fishros_cpp/launch/fishros.launch.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="node_demo" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ROS2_demo" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/fishros_python/fishros_python" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/fishros_python/fishros_python/node_demo.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="CMake Application.action_control" />
       <item itemvalue="CMake Application.action_robot" />
@@ -244,7 +269,15 @@
       <item itemvalue="CMake Application.turtle_circle" />
       <item itemvalue="CMake Application.turtle_control" />
       <item itemvalue="CMake Application.uninstall" />
+      <item itemvalue="Python.fishros.launch" />
+      <item itemvalue="Python.node_demo" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.fishros.launch" />
+        <item itemvalue="Python.node_demo" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -296,7 +329,15 @@
       <workItem from="1733802518576" duration="54000" />
       <workItem from="1733803450419" duration="1970000" />
       <workItem from="1733807399864" duration="135000" />
-      <workItem from="1733807559270" duration="769000" />
+      <workItem from="1733807559270" duration="1188000" />
+      <workItem from="1733812379558" duration="5171000" />
+      <workItem from="1733828481172" duration="2983000" />
+      <workItem from="1733831862499" duration="2698000" />
+      <workItem from="1733835575629" duration="919000" />
+      <workItem from="1733881261424" duration="5056000" />
+      <workItem from="1733894600325" duration="7740000" />
+      <workItem from="1733904696836" duration="19000" />
+      <workItem from="1733904844889" duration="3290000" />
     </task>
     <task id="LOCAL-00001" summary="初步完成4种通信机制的代码编写，以此为模板，跟着小鱼学">
       <option name="closed" value="true" />
@@ -354,7 +395,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733797963593</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="将自定义接口工程统一到fishros包内">
+      <option name="closed" value="true" />
+      <created>1733808479617</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1733808479617</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -365,6 +414,17 @@
     <isAutomaticFoundErrors value="true" />
     <isAutomaticReloadCMake value="true" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="初步完成4种通信机制的代码编写，以此为模板，跟着小鱼学" />
     <MESSAGE value="初步完成坐标变换工具tf2及rqt、rviz2的学习" />
@@ -372,7 +432,8 @@
     <MESSAGE value="初步完成机器人导航的学习，未学习巡检机器人的部分" />
     <MESSAGE value="删除helloworld例程" />
     <MESSAGE value="优化readme文件" />
-    <option name="LAST_COMMIT_MESSAGE" value="优化readme文件" />
+    <MESSAGE value="将自定义接口工程统一到fishros包内" />
+    <option name="LAST_COMMIT_MESSAGE" value="将自定义接口工程统一到fishros包内" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

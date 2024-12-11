@@ -1,11 +1,16 @@
 # Clion 中优雅的开发ROS2
 
+    ROS2 环境的感受，底层用cpp来实现，并提供标准的接口，用python来封装好，方便多节点启动。这里面用到了一些标准：命名空间(小写开头)和函数(大写开头)。
+
     其实学习ROS2更应该理解的是，cpp、go、python等都是构建一个大型软件的编程或者说启动的一部分，但一的编程语言不足以支撑复杂的大型应用。
     明确语言的优劣，充分利用优势和标准化来完成复杂的构建是关键。比如cpp注重效率但维护和三方环境偏弱；go效率、维护、三方比较适中但机器学习不行；
-    python除去效率不行外机器学习、三方、维护都好。可以找一种思路，
-    比如python训练好学习的模型，python作脚本使用，作启动的系列动作；
-    由cpp来完成编码动作如模型加载、识别等，通过链路如tcp、websocket、ros2接口等对外符合提供标准协议的服务；
-    go来完成服务组织及web相关的(类似前端接口、后台管理等)。
+    python除去效率不行外机器学习、三方、维护都好。可以找一种思路，比如
+    1、python训练好学习的模型，python作脚本使用，作启动的系列动作；
+        (用python作启动脚本的例子可以从代码ROS2_demo/src/fishros_cpp/launch/下的文件开始学习，
+            结合小鱼视频https://www.bilibili.com/video/BV1hdtLeZE9y?spm_id_from=333.788.player.switch&vd_source=d5fa5216fd2846a4da58ccfad53b6049
+            用python来作启动脚本，贯穿了后面建图、导航单元的讲解，也很重要。也体现了多节点复杂系统启动的模式)
+    2、由cpp来完成编码动作如模型加载、识别等，通过链路如tcp、websocket、ros2接口等对外符合提供标准协议的服务；
+    3、go来完成服务组织及web相关的(类似前端接口、后台管理等)。
 
 ## 工程的来源及计划
 
@@ -619,7 +624,17 @@ Action的三大组成部分目标、反馈和结果
 
 学习完4中通信机制后，可以在ros2的环境下进行节点间的对话，以及使用launch来启动一组节点。这个就是基础的框架完成了，就可以利用基础来进行进阶练习，比如数据的处理。
 
-### 2、ROS2的工具 rqt---rviz2---ros2 bag
+
+### 2、ros2 launch 启动多个节点
+
+    launch 三大组件 动作、条件、替换
+    launch.actions 动作，可以启动一个节点，一句打印，一段终端指令，甚至是启动另外的launch文件
+    launch.event_handlers 条件
+    launch.substitutions 替换
+
+**学习ros launch文件的编写，对后面学习复杂的建图、导航很重要**
+
+### 3、ROS2的工具 rqt---rviz2---ros2 bag
 
 #### 坐标变换工具TF
 
@@ -692,7 +707,7 @@ demo_tf_dynamic_broadcaster.cpp 描述机器人的，
 编程完毕后，可以通过rviz软件来查看
 计算坐标关系，原理是通过订阅 /tf /tf_static 收集所有坐标系关系，进行计算
 
-### 3、机器人建模和仿真
+### 4、机器人建模和仿真
 
 移动机器人结构
                     -->执行器-->
@@ -714,7 +729,7 @@ rviz2---查看模型的情况
 gazebo---加载模型，并能通过gazebo-ros-control来进行操作的仿真
 
 
-### 4、机器人导航
+### 5、机器人导航
 
 使用slam_toolbox 构建导航地图。sudo apt install ros-foxy-slam-toolbox
 
@@ -733,6 +748,32 @@ sudo apt install ros-foxy-nav2-bringup
 可以通过命令行进行机器人位置的初始化
 ros2 topic pub /initialpose geometry_msgs/msg/PoseWithCovarianceStamped "{header: {frame_id: map}}" --once
 
+pluginlib库 是ros中用于动态加载和管理插件的库，它简化了插件的使用和管理。
+在ROS中，插件是指在运行时可以动态加载的模块，它们是实现特定功能的独立类。
+pluginlib 提供了一种机制，使得主应用程序能够在运行时根据需要加载、使用和卸载这些插件，而不需要在编译时将插件链接到主应用程序中。
+
+导航过程中，当前坐标点和实际地图的变换
+假设实际的点P(x,y)，
+地图的信息Info{
+    resolution: 实际距离/像素距离
+    origin{
+        x :实际的原点x
+        y：实际的原点y
+    }
+    width:图像的宽
+    height：图像的高
+    int8 data[] 图像数据
+}
+
+实际点在图像的位置
+    row_index = (y-info.origin.y)/resolution
+    col_index = (x-info.origin.x)/resolution
+该点的像素值(导航中称为占有率)
+    value = data[row_index*map_width + col_index]
+这里的矩阵运算就是
+    [x      [ originX       
+ (       -              ) /resolution
+    y]         originY]
 #### 小结
 
 nav2 slam-toolbox gazebo 都是基于ros2的优秀的仿真软件，什么叫基于，就是基于roa2的通信机制。
