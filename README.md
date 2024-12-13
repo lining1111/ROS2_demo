@@ -12,12 +12,21 @@
     2、由cpp来完成编码动作如模型加载、识别等，通过链路如tcp、websocket、ros2接口等对外符合提供标准协议的服务；
     3、go来完成服务组织及web相关的(类似前端接口、后台管理等)。
 
+下面文章的宗旨就三个
+1、完成在clion这个IDE开发ros2的操作配置，其实就是需要配置下ros2的工作空间目录下的顶级CMakeLists.txt，
+    然后在clion中配置下适合该ros2工作空间的工具链，主要是在工具链的环境变量配置文件那里选择该工作空间下的install/setup.bash
+![clion_toolchains](imgs/clion_toolchains.png)
+2、学习ros2的体系知识，并由此剥离出数据处理的方法，即数据传输、数据修正、数据计算
+3、在ros2的体系上，结合具体的功能要求，完成机器人的各种需求
+
+
 ## 工程的来源及计划
 
 工程内参考(鱼香ROS的《ROS2机器人开发从入门到实践》)
 代码:https://gitee.com/ohhuo/ros2bookcode.git
 视频:https://www.bilibili.com/video/BV1GW42197Ck/?spm_id_from=333.1007.top_right_bar_window_custom_collection.content.click
 
+工程打开方式，需要在ROS2_demo/interfaces/目录下输入colcon build，然后输入 source install/setup.bash (由于工程存在自定义接口的问题),然后再选择合适的IDE打开CMake工程
 
 接下来项目分为三部分来说
 1、ros2环境安装以及标准情况下新建工程、构建工程的说明
@@ -237,6 +246,7 @@ ros2 run helloworld_cpp helloworld
 
 ** 上面的情况可以通过把ROS2_demo目录下的CMakeLists.txt改名的方式，来断开自己修改的影响。
 这种情况适用于，在改造情况下通过clion完全的实验好代码后，再别名下CMakeLists.txt，通过标准的ros2构建 colcon build
+编写了一个脚本 ros2_colcon_build.sh 来完成这个操作
 
 
 ## 在Clion环境下新建工程、构建工程说明；及与标准情况的不同(其实特别的小)
@@ -425,6 +435,31 @@ cp /opt/ros/scripts/cmake/toplevel.cmake <your_path_to_demo>/ROS2_demo/CMakeList
 
 ### 几个概念
 
+---ROS2的系统树形分布
+
+中间层：由DDS(数据分发服务)/RTPS(实时订阅发布)与ROS2封装的关于机器人开发的中间件组成
+
+应用层：以功能包为核心，包含基于四种通信机制的node。
+
+**由ros2的中间件层的特性决定，首先应该优先查看支持的包及消息类型,对于自定义消息类型这点很重要，否则中间件层工作不正常**
+
+    ros2 interface list 列出所有支持的消息类型
+    ros2 interface show /xxx    列出制定消息类型的详情
+
+    针对应用常用rqt，来查看系统的节点通信图，也可以使用命令行
+    ros2 node list 查看启动的节点
+
+    ros2 topic list -t  列出所有的话题，并显示话题的消息类型
+    ros2 topic info /topic_name 查看特定话题的详情
+
+    ros2 service list -t  列出所有的服务，并显示话题的消息类型
+    ros2 service call 
+
+    ros2 action list -t  列出所有的动作，并显示话题的消息类型
+    ros2 action info 
+    ros2 action send_goal
+
+
 ---工作空间 workspace 是一个约定的概念问题，里面有
     src目录，各种功能包就在其中
     build目录，构建完成的功能包执行文件
@@ -432,19 +467,25 @@ cp /opt/ros/scripts/cmake/toplevel.cmake <your_path_to_demo>/ROS2_demo/CMakeList
     log目录，构建的日志目录(colcon build 特有的)
 
 ### 工程目录
----build 
+---build install log
     构建结果目录
----interfaces  
+
+---src/fishros  
     自定义接口目录，相当于工作空间。
     新建自定义接口，在interfaces/src目录，执行 ros2 pkg create xxx --dependencies rosidl_default_generators mmm,其中，xxx为自定义接口包的名称，mmm为依赖的ros2的标准数据类型包名称(可以后续在CMakeLists.txt中加)
     构建自定义接口，在interfaces目录下执行 colcon build，
     使用自定义接口，打开新的终端，执行 source install/setup.bash。(此处例子在interfaces 目录下打开的终端，可以在任意目录下打开终端，只要source 后面的路径对)。在此终端下打开开发IDE
----src 
+---src/fishro_cpp 
     真正的工程目录，可以构建多个功能包
     新建功能包，在src目录，执行 ros2 pkg create xxx --dependencies rclcpp mmm，其中 xxx为功能包名，mmm为ros2的标准依赖包
     构建功能包，如果有依赖的自定义包，执行完自定义包的source install/setup.bash 后，打开相应的ide进行开发
----fishbot 
-    小鱼小车的仿真环境
+---src/fishbot_description
+    小鱼小车的仿真描述
+---src/fishbot_navigation2
+    基于小鱼小车的nav2仿真
+
+使用方法：clion在设置工具链的时候，要在环境变量这里选择文件，选择 工程目录下的install/setup.bash，，cmake选择工具链的时候，就选择这个工具链
+这样clion的fishros_cpp包依赖的fishros就添加到clion启动的环境变量中了
 
 ### 1、四种基本通信机制
 
@@ -459,6 +500,7 @@ cp /opt/ros/scripts/cmake/toplevel.cmake <your_path_to_demo>/ROS2_demo/CMakeList
 查看节点列表
 
     ros2 node list
+
 查看指定节点信息
     
     ros2 node info xxxx（节点名称）
@@ -638,6 +680,8 @@ Action的三大组成部分目标、反馈和结果
 
 #### 坐标变换工具TF
 
+在机器人开发中，坐标变换是常用的一个技巧。这里有一个欧拉角YPR、四元数Quaternion、旋转矩阵ConversionMatrix
+
     基础的命令行操作
     ros2 run tf2_ros static_transform_publisher --help
     A command line utility for manually sending a transform.
@@ -654,7 +698,7 @@ Action的三大组成部分目标、反馈和结果
     foxy和humble的版本输入和输出样子有所不同，但是结果是一样
     
     使用可视化工具
-    sudo apt install ros-foxy-mrpt2
+    sudo apt install ros-foxy-mrpt2 图形化的操作旋转YPR得到旋转矩阵
     启动 3d-rotation-converter
 
 编程用到的tf2
@@ -771,9 +815,18 @@ pluginlib 提供了一种机制，使得主应用程序能够在运行时根据�
 该点的像素值(导航中称为占有率)
     value = data[row_index*map_width + col_index]
 这里的矩阵运算就是
-    [x      [ originX       
- (       -              ) /resolution
-    y]         originY]
+
+        [x      [ originX       
+    (       -              ) /resolution
+        y]         originY]
+
+可以用一个矩阵运算(叉乘)来表示，即
+
+    【   1/resolution    0               -originX/resolution                 [x
+        0               1/resolution    -orgininY/resolution        X         y 
+        0               0               1                   ]                 1 ]
+
+
 #### 小结
 
 nav2 slam-toolbox gazebo 都是基于ros2的优秀的仿真软件，什么叫基于，就是基于roa2的通信机制。

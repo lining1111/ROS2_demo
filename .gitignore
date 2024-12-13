@@ -1,8 +1,10 @@
 build
+install
+log
 .idea
-interfaces/build
-interfaces/install
-interfaces/log
+fishros_interfaces/build
+fishros_interfaces/install
+fishros_interfaces/log
 
 fishbot/build
 fishbot/install

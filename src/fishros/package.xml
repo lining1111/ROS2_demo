@@ -3,7 +3,7 @@
 <package format="3">
   <name>fishros</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>fishros interface</description>
   <maintainer email="770677655@qq.com">lining</maintainer>
   <license>TODO: License declaration</license>
 

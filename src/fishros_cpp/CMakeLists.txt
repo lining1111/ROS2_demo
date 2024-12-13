@@ -2,18 +2,18 @@ cmake_minimum_required(VERSION 3.5)
 project(fishros_cpp)
 
 # Default to C99
-if(NOT CMAKE_C_STANDARD)
-  set(CMAKE_C_STANDARD 99)
-endif()
+if (NOT CMAKE_C_STANDARD)
+    set(CMAKE_C_STANDARD 99)
+endif ()
 
 # Default to C++14
-if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
-endif()
+if (NOT CMAKE_CXX_STANDARD)
+    set(CMAKE_CXX_STANDARD 14)
+endif ()
 
-if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-Wall -Wextra -Wpedantic)
-endif()
+if (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    add_compile_options(-Wall -Wextra -Wpedantic)
+endif ()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
@@ -45,11 +45,11 @@ ament_target_dependencies(
 ## topicSub
 add_executable(topicSub src/topicSub.cpp)
 target_include_directories(topicSub PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>)
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>)
 ament_target_dependencies(
-  topicSub
-  "rclcpp" "std_msgs"
+        topicSub
+        "rclcpp" "std_msgs"
 )
 
 ## turtle_circle
@@ -156,7 +156,7 @@ ament_target_dependencies(
         "fishros"
 )
 
-add_executable(action_control src/action_control.cpp )
+add_executable(action_control src/action_control.cpp)
 target_include_directories(action_control PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>)
@@ -203,6 +203,7 @@ ament_target_dependencies(
         "tf2_geometry_msgs"
 )
 
+
 install(TARGETS
         ##话题
         topicPub topicSub turtle_circle system_status_pub system_status_sub
@@ -216,6 +217,9 @@ install(TARGETS
         action_robot action_control
         ##tf2
         demo_tf_static_broadcaster demo_tf_dynamic_broadcaster demo_tf_listener
-  DESTINATION lib/${PROJECT_NAME})
+        DESTINATION lib/${PROJECT_NAME})
+
+install(DIRECTORY launch
+        DESTINATION share/${PROJECT_NAME})
 
 ament_package()
