@@ -8,7 +8,9 @@
                         <namespace>/</namespace>
                         <remapping>~/out:=scan</remapping>
                     </ros>
+                    <!--                    数据类型-->
                     <output_type>sensor_msgs/LaserScan</output_type>
+                    <!--                    数据中坐标系-->
                     <frame_name>laser_link</frame_name>
                 </plugin>
                 <always_on>true</always_on>
@@ -41,7 +43,6 @@
                 </ray>
             </sensor>
         </gazebo>
-
 
 
         <gazebo reference="imu_link">
@@ -131,6 +132,7 @@
                     <format>R8G8B8</format>
                 </image>
                 <distortion>
+                    <!--                    通过标定得到的相机的畸变参数-->
                     <k1>0.0</k1>
                     <k2>0.0</k2>
                     <k3>0.0</k3>

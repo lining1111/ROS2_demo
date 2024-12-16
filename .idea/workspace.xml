@@ -32,53 +32,26 @@
   </component>
   <component name="CMakeSettings">
     <configurations>
-      <configuration PROFILE_NAME="Debug-fishros_cpp" ENABLED="true" GENERATION_DIR="build" CONFIG_NAME="Debug" TOOLCHAIN_NAME="ROS2_fishbot" GENERATION_OPTIONS="-Wno-dev" BUILD_OPTIONS="-j4" />
+      <configuration PROFILE_NAME="Debug-fishros_cpp" ENABLED="true" GENERATION_DIR="build" CONFIG_NAME="Debug" GENERATION_OPTIONS="-Wno-dev" BUILD_OPTIONS="-j4" />
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="48b2ae22-30c5-440b-b3ef-fc4634f32aeb" name="Changes" comment="调整工程内容，准备二刷">
-      <change afterPath="$PROJECT_DIR$/imgs/clion_toolchains.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/fishros_cpp/launch/tf.launch.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="48b2ae22-30c5-440b-b3ef-fc4634f32aeb" name="Changes" comment="调整工程目录">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/config/fishbot_ros2_controller.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/config/rviz/display_robot_model.rviz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/launch/display_robot.launch.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/launch/gazebo_sim.launch.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/package.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/fishbot/actuator/caster.urdf.xacro" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/fishbot/actuator/wheel.urdf.xacro" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/fishbot/base.urdf.xacro" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/fishbot/common_inertia.xacro" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/fishbot/fishbot.ros2_control.xacro" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/fishbot/fishbot.urdf.xacro" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/fishbot/plugins/gazebo_control_plugin.xacro" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/fishbot/plugins/gazebo_sensor_plugin.xacro" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/fishbot/sensor/camera.urdf.xacro" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/fishbot/sensor/imu.urdf.xacro" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf/fishbot/sensor/laser.urdf.xacro" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/world/custom_room.world" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/world/room/model.config" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_description/world/room/model.sdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_navigation2/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_navigation2/config/nav2_params.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_navigation2/launch/navigation2.launch.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_navigation2/maps/room.pgm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_navigation2/maps/room.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fishbot/src/fishbot_navigation2/package.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/interfaces/colcon_build_script.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/interfaces/src/fishros/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/interfaces/src/fishros/action/MoveRobot.action" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/interfaces/src/fishros/msg/SystemStatus.msg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/interfaces/src/fishros/package.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/interfaces/src/fishros/srv/FaceDetector.srv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/interfaces/src/fishros/srv/Patrol.srv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/start_clion.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/clion_toolchains.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishbot_description/launch/display_robot.launch.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/launch/display_robot.launch.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishbot_description/launch/gazebo_sim.launch.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/launch/gazebo_sim.launch.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishbot_description/package.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/package.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/actuator/caster.urdf.xacro" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/actuator/caster.urdf.xacro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/actuator/wheel.urdf.xacro" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/actuator/wheel.urdf.xacro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/base.urdf.xacro" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/base.urdf.xacro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/common_inertia.xacro" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/common_inertia.xacro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/plugins/gazebo_control_plugin.xacro" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/plugins/gazebo_control_plugin.xacro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/plugins/gazebo_sensor_plugin.xacro" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/plugins/gazebo_sensor_plugin.xacro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/sensor/camera.urdf.xacro" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/sensor/camera.urdf.xacro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/sensor/laser.urdf.xacro" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/sensor/laser.urdf.xacro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/launch/actions.launch.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/launch/actions.launch.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,32 +89,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "CMake Application.action_robot.executor": "Debug",
-    "CMake Application.demo_tf.executor": "Debug",
-    "CMake Application.demo_tf_dynamic_broadcaster.executor": "Debug",
-    "CMake Application.demo_tf_listener.executor": "Debug",
-    "Python.fishros.launch.executor": "Run",
-    "Python.node_demo.executor": "Debug",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "/home/lining/CLionProjects/ROS2_demo/imgs/clion_toolchains.png",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "CPPToolchains",
-    "structure.view.defaults.are.configured": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;CMake Application.action_robot.executor&quot;: &quot;Debug&quot;,
+    &quot;CMake Application.demo_tf.executor&quot;: &quot;Debug&quot;,
+    &quot;CMake Application.demo_tf_dynamic_broadcaster.executor&quot;: &quot;Debug&quot;,
+    &quot;CMake Application.demo_tf_listener.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.fishros.launch.executor&quot;: &quot;Run&quot;,
+    &quot;Python.node_demo.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/lining/CLionProjects/ROS2_demo/imgs/clion_toolchains.png&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.fileTypes&quot;,
+    &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/imgs" />
@@ -384,7 +357,16 @@
       <workItem from="1734051821984" duration="102000" />
       <workItem from="1734052151285" duration="332000" />
       <workItem from="1734052663011" duration="1381000" />
-      <workItem from="1734054068979" duration="593000" />
+      <workItem from="1734054068979" duration="1281000" />
+      <workItem from="1734078578156" duration="3560000" />
+      <workItem from="1734088478104" duration="115000" />
+      <workItem from="1734088627581" duration="1316000" />
+      <workItem from="1734246305013" duration="3042000" />
+      <workItem from="1734259882980" duration="1447000" />
+      <workItem from="1734313691872" duration="7514000" />
+      <workItem from="1734325476200" duration="143000" />
+      <workItem from="1734325649474" duration="10003000" />
+      <workItem from="1734339274870" duration="923000" />
     </task>
     <task id="LOCAL-00001" summary="初步完成4种通信机制的代码编写，以此为模板，跟着小鱼学">
       <option name="closed" value="true" />
@@ -458,11 +440,22 @@
       <option name="project" value="LOCAL" />
       <updated>1733908459682</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="调整工程目录">
+      <option name="closed" value="true" />
+      <created>1734054727964</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1734054727964</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.xacro" />
   </component>
   <component name="VCPKGProject">
     <isAutomaticCheckingOnLaunch value="false" />
@@ -489,7 +482,8 @@
     <MESSAGE value="优化readme文件" />
     <MESSAGE value="将自定义接口工程统一到fishros包内" />
     <MESSAGE value="调整工程内容，准备二刷" />
-    <option name="LAST_COMMIT_MESSAGE" value="调整工程内容，准备二刷" />
+    <MESSAGE value="调整工程目录" />
+    <option name="LAST_COMMIT_MESSAGE" value="调整工程目录" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

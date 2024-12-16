@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
     <xacro:include filename="$(find fishbot_description)/urdf/fishbot/common_inertia.xacro"/>
-    <!--    机器人的IMU部件，惯性测量传感器-->
+    <!--    机器人的激光雷达-->
     <xacro:macro name="laser_xacro" params="laser_name xyz">
         <!--        gazebo扩展-->
         <gazebo reference="laser_cylinder_link">

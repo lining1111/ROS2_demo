@@ -4,7 +4,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 
 def generate_launch_description():
-    # 声明是否启动rqt
+    # 声明是否启动rqt 可以直接使用 startup_rqt:=True/False
     action_declare_startup_rqt = launch.actions.DeclareLaunchArgument('startup_rqt', default_value='False')
     startup_rqt = launch.substitutions.LaunchConfiguration('startup_rqt', default_value='False')
 

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
     <xacro:include filename="$(find fishbot_description)/urdf/fishbot/common_inertia.xacro"/>
-    <!--    机器人的IMU部件，惯性测量传感器-->
+    <!--    机器人的万相轮-->
     <xacro:macro name="caster_xacro" params="caster_name xyz">
         <gazebo reference="${caster_name}_link">
             <!--            切向摩擦系数-->

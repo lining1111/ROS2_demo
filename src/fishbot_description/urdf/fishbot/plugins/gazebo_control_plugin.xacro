@@ -5,9 +5,12 @@
             <plugin name='diff_drive' filename='libgazebo_ros_diff_drive.so'>
                 <ros>
                     <namespace>/</namespace>
+                    <!--                    订阅话题名-->
                     <remapping>cmd_vel:=cmd_vel</remapping>
+                    <!--                    发布话题名-->
                     <remapping>odom:=odom</remapping>
                 </ros>
+                <!--                发布频率-->
                 <update_rate>30</update_rate>
                 <!-- wheels -->
                 <left_joint>left_wheel_joint</left_joint>

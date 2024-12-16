@@ -14,8 +14,7 @@
 
 下面文章的宗旨就三个
 1、完成在clion这个IDE开发ros2的操作配置，其实就是需要配置下ros2的工作空间目录下的顶级CMakeLists.txt，
-    然后在clion中配置下适合该ros2工作空间的工具链，主要是在工具链的环境变量配置文件那里选择该工作空间下的install/setup.bash
-![clion_toolchains](imgs/clion_toolchains.png)
+    执行colcon build脚本 有了install文件夹后，在终端，执行 source install/setup.bash，然后在终端打开ide
 2、学习ros2的体系知识，并由此剥离出数据处理的方法，即数据传输、数据修正、数据计算
 3、在ros2的体系上，结合具体的功能要求，完成机器人的各种需求
 
@@ -484,8 +483,7 @@ cp /opt/ros/scripts/cmake/toplevel.cmake <your_path_to_demo>/ROS2_demo/CMakeList
 ---src/fishbot_navigation2
     基于小鱼小车的nav2仿真
 
-使用方法：clion在设置工具链的时候，要在环境变量这里选择文件，选择 工程目录下的install/setup.bash，，cmake选择工具链的时候，就选择这个工具链
-这样clion的fishros_cpp包依赖的fishros就添加到clion启动的环境变量中了
+使用方法：在ROS2_demo目录下打开终端，输入 source install/setup.bash 把当前工作空间的环境变量添加进当前的终端，在该终端以命令行的形式打开clion
 
 ### 1、四种基本通信机制
 
@@ -753,25 +751,71 @@ demo_tf_dynamic_broadcaster.cpp 描述机器人的，
 
 ### 4、机器人建模和仿真
 
+该段内容，配合src/fishbot_description来使用
+
 移动机器人结构
                     -->执行器-->
             控制系统                环境+机器人
                     <--传感器<--
 
-gazebo(https://gazebosim.org/home)是一个开源的3D机器人仿真器 使用的文件格式是sdf的，是继承和扩展了urdf的
-URDF(Unified Robot Description Format https://wiki.ros.org/cn/urdf 可以在维基百科上查看相应的文档) 统一机器人描述格式
-Xacro(XML Macros ，Xacro 是 XML 宏定义语言，方便模块化 http://www.ros.org/wiki/xacro 可以在维基百科上查看相应的文档)  可以简化URDF sudo apt install ros-foxy-xacro
+什么是ROS2中的机器人建模(用URDF文件和启动launch来完成以下3个变换关系)
+    
+    在ROS中使用不同坐标框架的命名约定和语义含义：
+    base_link:是连接机器人固定位置的坐标框架，通常位于其主要底盘和旋转中心处
+    odom:是相对于机器人起始位置的固定坐标框架，主要用于局部一致的距离表示
+    map:是一个固定的世界坐标框架,用于全局一致的距离表示
+    map--->odom--->base_link
+    1、map--->odom：通常由处理定位和建图的(如AMCL)的其他ROS包(slam-toolbox)来提供第一个变换 map--->odom，这个变换在使用过程中实时更新，因此不在机器人的TF中(即URDF文件中)设置静态值。所有符合ROS标准的SLAM和定位包将在启动时自动为您提供此变换
+    2、odom--->base_link：是由里程计系统(URDF中的gazebo插件)使用诸如轮式编码器之类的传感器发布的，通常使用robot_localization软件包对里程计传感器(IMU，轮式编码器，VIO等)进行传感器融合来计算的
+    3、URDF文件则是描述base_link到各个传感器、执行器坐标系的变换树
 
-ros2_control 使用ros2进行机器人控制的框架。
+下面是相关的知识：
 
-使用gazebo接入ros2_control,其实就是让gazebo按照ros2_control指定的接口提供数据。在ros2中利用相应的gazebo插件，
-可以方便的实现gazebo和ros2_control的对接 ros-foxy-gazebo-ros2-control
+
+---URDF base_link--->各种传感器、执行器(Unified Robot Description Format https://wiki.ros.org/cn/urdf 可以在维基百科上查看相应的文档) 统一机器人描述格式
+    Xacro(XML Macros ，Xacro 是 XML 宏定义语言，方便模块化 http://www.ros.org/wiki/xacro 可以在维基百科上查看相应的文档)  可以简化URDF
+sudo apt install ros-foxy-xacro
+
+    1、URDF一个最基础的功能就是<link> 和<joint>节点，通过joint节点的父子link关系以及origin来表示父子坐标框架的TF变换，以供给robot_state_publisher使用
+    
+    2、URDF的另外一个功能就是定义机器人的物理属性，这些属性会被物理模拟器(如Gazebo)用于模拟机器人在环境中的交互
+
+---Navigation2 map--->odom
+    
+    Navigation2的一个要求是从 base_link 到各种传感器和参考坐标系的变换。这个变换树可以是一个简单的树，只有一个链接从 base_link 到 laser_link，
+    也可以是一个由位于不同位置的多个传感器组成的树，每个传感器都有自己的坐标系。创建多个发布者来处理所有这些坐标系的变换可能会变得繁琐。
+    因此，我们将使用机器人状态发布器包来发布我们的变换。
+    机器人状态发布包(robot_state_publisher)是ROS2的一个包，它与tf2包交互，发布可以直接从机器人的几何和结构中推断出的所有必要转换。我们需要提供正确的URDF给它，它将自动处理转换的发布
+
+---里程计，odom--->base_link，框架为ros2_control(https://ros-controls.github.io/control.ros.org/)，该框架包含了用于在ROS 2中实时控制机器人的各种软件包
+
+    里程计系统根据机器人的运动提供局部精确的姿态和速度估计。
+    里程计信息可以从各种来源获取，例如惯性测量单元 (IMU)、激光雷达 (LIDAR)、雷达 (RADAR)、视觉惯性里程计 (VIO) 和轮子编码器。
+    需要注意的是，IMU会随时间漂移，而轮子编码器会随行驶距离漂移，因此通常将它们结合使用以抵消彼此的负面特征。
+    Nav2 发布的里程计信息数据类型 nav_msgs/Odometry，还发布必须的odom--->base_link变换
+    为 Nav2 设置物理机器人的里程计系统主要取决于机器人可用的里程计传感器。
+    设置里程计的目标是计算里程计信息，并通过ROS 2发布``nav_msgs/Odometry``消息和``odom`` => ``base_link``转换。
+
+---gazebo(https://gazebosim.org/home)是一个开源的3D机器人仿真器 使用的文件格式是sdf(Simulation Description Format)的。
+Gazebo 可以自动将兼容的 URDF 文件转换为 SDF。使 URDF 与 Gazebo 兼容的主要要求是在每个 <link> 元素中具有一个 <inertia> 元素
+
+    URDF中的gazebo插件使用,是在urdf文件中以gazebo标签出现,内部有一些设置,比如差速轮、IMU、雷达、相机等用gazebo_ros的库来实现仿真机器人在gazebo软件中的属性，
+    这些库以libgazebo_ros开头的动态库。具体看项目中urdf/fishbot/plugins/下的
+
+---ros2_control,通用的机器人控制框架
+    
+    使用gazebo接入ros2_control,其实就是让gazebo按照ros2_control指定的接口提供数据。在ros2中利用相应的gazebo插件，
+    可以方便的实现gazebo和ros2_control的对接 ros-foxy-gazebo-ros2-control
 
 能够熟练的使用
 rqt---查看节点的订阅发布情况
 rviz2---查看模型的情况
 gazebo---加载模型，并能通过gazebo-ros-control来进行操作的仿真
 
+#### 小结
+
+机器人建模和仿真，主要是要理解ROS2的URDF文件编写、以及基于ROS2的Gazebo插件使用、还有ROS-Control与Gazebo插件配合使用。
+理清ROS2框架下，各个建模仿真软件gazebo、ros-control的组织关系
 
 ### 5、机器人导航
 
@@ -786,7 +830,7 @@ navigation2(https://github.com/ros-navigation/navigation2)是一个开源的机�
 sudo apt install ros-foxy-navigation2
 sudo apt install ros-foxy-nav2-bringup
 
-**实验的时候，和小鱼视频的不一样，可以先打开nav2的launch，在打开gazebo的launch**
+**实验的时候，和小鱼视频的不一样，可以先打开nav2的launch，再打开gazebo的launch**
 
 可以查看 acml节点的信息 ros2 info /acml
 可以通过命令行进行机器人位置的初始化

@@ -7,6 +7,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 def generate_launch_description():
     # 获取默认路径
     robot_name_in_model = "fishbot"
+    # 获取功能包的share路径
     urdf_tutorial_path = get_package_share_directory('fishbot_description')
     default_model_path = urdf_tutorial_path + '/urdf/fishbot/fishbot.urdf.xacro'
     default_world_path = urdf_tutorial_path + '/world/custom_room.world'
@@ -26,14 +27,13 @@ def generate_launch_description():
         parameters=[{'robot_description': robot_description}]
     )
 
-    # 通过 IncludeLaunchDescription 包含另外一个 launch 文件
+    # 通过 IncludeLaunchDescription 包含另外一个 launch 文件 相当于 ros2 launch gazebo_ros gazebo.launch.py world:=XXX verbose:=true
     launch_gazebo = launch.actions.IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([get_package_share_directory(
-            'gazebo_ros'), '/launch', '/gazebo.launch.py']),
+        PythonLaunchDescriptionSource([get_package_share_directory('gazebo_ros'), '/launch', '/gazebo.launch.py']),
         # 传递参数
         launch_arguments=[('world', default_world_path), ('verbose', 'true')]
     )
-    # 请求 Gazebo 加载机器人
+    # 请求 Gazebo 加载机器人 相当于 ros2 run gazebo_ros spawn_entity.py -topic /robot_description -entity fishbot
     spawn_entity_node = launch_ros.actions.Node(
         package='gazebo_ros',
         executable='spawn_entity.py',

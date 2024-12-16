@@ -6,6 +6,9 @@
     <link name="base_footprint"/>
     <!--    机器人的身体部分-->
     <xacro:macro name="base_xacro" params="length radius">
+        <gazebo reference="base_link">
+            <material>Gazebo/White</material>
+        </gazebo>
         <link name="base_link">
             <!-- 部件的外观描述-->
             <visual>

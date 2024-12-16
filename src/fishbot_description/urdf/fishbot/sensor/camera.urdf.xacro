@@ -19,7 +19,7 @@
                     <color rgba="0.0 0.0 0.0 0.5"/>
                 </material>
             </visual>
-<!--            碰撞属性-->
+            <!--            碰撞属性-->
             <collision>
                 <!-- 沿着自己几何中心的偏移和旋转-->
                 <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
@@ -33,14 +33,16 @@
                     <color rgba="0.0 0.0 0.0 0.5"/>
                 </material>
             </collision>
-            <xacro:box_inertia m="0.01" w="0.02" h="0.10" d="0.02" />
+            <xacro:box_inertia m="0.01" w="0.02" h="0.10" d="0.02"/>
         </link>
+        <!--        虚拟部件，用于修正相机坐标系-->
         <link name="${camera_name}_optical_link"></link>
 
         <joint name="${camera_name}_optical_joint" type="fixed">
-            <parent link="${camera_name}_link" />
-            <child link="${camera_name}_optical_link" />
-            <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}" />
+            <parent link="${camera_name}_link"/>
+            <child link="${camera_name}_optical_link"/>
+            <!--            右手坐标系，将相机的旋转到，X轴正向和base_link的右一个方向，Y轴正向和base_link的下一个方向，Z轴和base_link的X轴一个方向-->
+            <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
         </joint>
         <!--    机器人的关节，用来组合机器人的部件-->
         <joint name="${camera_name}_joint" type="fixed">

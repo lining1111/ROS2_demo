@@ -3,6 +3,7 @@ import launch
 import launch_ros
 from ament_index_python.packages import get_package_share_path
 
+
 def generate_launch_description():
     # 获取默认urdf的路径
     urdf_package_path = get_package_share_path('fishbot_description')
@@ -13,17 +14,20 @@ def generate_launch_description():
         name='model', default_value=str(default_urdf_path), description='加载的模型文件路径'
     )
 
-    # 通过文件路径，获取内容，并转换为参数值对象，以供传入robot_state_publisher
-    substitutions_command_result = launch.substitutions.Command(['xacro ',
-                                                                 launch.substitutions.LaunchConfiguration('model')])
+    # 通过文件路径，获取内容
+    substitutions_command_result = launch.substitutions.Command(
+        ['xacro ', launch.substitutions.LaunchConfiguration('model')])
+
+    # 将内容转换为参数值对象
     robot_description_value = launch_ros.descriptions.ParameterValue(substitutions_command_result, value_type=str)
 
+    # 相当于 ros2 run robot_state_publisher robot_state_publisher --ros-args --ros-args --p robot_description:=URDF文件的内容
     action_robot_state_publisher = launch_ros.actions.Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
         parameters=[{'robot_description': robot_description_value}]
     )
-
+    # 相当于 ros2 run joint_state_publisher joint_state_publisher --ros-args --ros-args --p robot_description:=URDF文件的内容
     action_joint_state_publisher = launch_ros.actions.Node(
         package='joint_state_publisher',
         executable='joint_state_publisher',
