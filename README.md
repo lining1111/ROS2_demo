@@ -758,6 +758,9 @@ demo_tf_dynamic_broadcaster.cpp 描述机器人的，
             控制系统                环境+机器人
                     <--传感器<--
 
+**机器人的建模文件URDF，不管是以ros2本身的节点来读取，还是以gazebo来读取，都是围绕节点 /robot_state_publisher来开展的，启动后，可以通过 ros2 node info /robot_state_publisher 来查看节点的信息**
+
+
 什么是ROS2中的机器人建模(用URDF文件和启动launch来完成以下3个变换关系)
     
     在ROS中使用不同坐标框架的命名约定和语义含义：
@@ -770,7 +773,6 @@ demo_tf_dynamic_broadcaster.cpp 描述机器人的，
     3、URDF文件则是描述base_link到各个传感器、执行器坐标系的变换树
 
 下面是相关的知识：
-
 
 ---URDF base_link--->各种传感器、执行器(Unified Robot Description Format https://wiki.ros.org/cn/urdf 可以在维基百科上查看相应的文档) 统一机器人描述格式
     Xacro(XML Macros ，Xacro 是 XML 宏定义语言，方便模块化 http://www.ros.org/wiki/xacro 可以在维基百科上查看相应的文档)  可以简化URDF
@@ -802,15 +804,25 @@ Gazebo 可以自动将兼容的 URDF 文件转换为 SDF。使 URDF 与 Gazebo �
     URDF中的gazebo插件使用,是在urdf文件中以gazebo标签出现,内部有一些设置,比如差速轮、IMU、雷达、相机等用gazebo_ros的库来实现仿真机器人在gazebo软件中的属性，
     这些库以libgazebo_ros开头的动态库。具体看项目中urdf/fishbot/plugins/下的
 
----ros2_control,通用的机器人控制框架
+---ros2_control(https://control.ros.org/foxy/doc/getting_started/getting_started.html),通用的机器人控制框架
+    ros-foxy-ros2-control
+    ros-foxy-ros2-controllers
     
     使用gazebo接入ros2_control,其实就是让gazebo按照ros2_control指定的接口提供数据。在ros2中利用相应的gazebo插件，
     可以方便的实现gazebo和ros2_control的对接 ros-foxy-gazebo-ros2-control
+
+    ros2-control的命令行操作，都是通过服务来实现的。
+    在(gazebo的)ros2_control插件加载完成后，
+    可以通过命令行 ros2 service list | grep controller 来查看相关的服务是否启动。可以看到以/controller_manager/开头的很多服务
+    可以通过命令行 ros2 control list_hardware_interfaces 来查看gazebo模拟的机器人系统的硬件接口
+
 
 能够熟练的使用
 rqt---查看节点的订阅发布情况
 rviz2---查看模型的情况
 gazebo---加载模型，并能通过gazebo-ros-control来进行操作的仿真
+
+gazebo是用来加载机器人的urdf文件，仿真模拟机器人，在urdf文件中配置gazebo的一些插件(如gazebo-ros2-control)，就可以通过ros2-control来控制
 
 #### 小结
 

@@ -21,7 +21,7 @@
                 <!-- limits -->
                 <max_wheel_torque>20</max_wheel_torque>
                 <max_wheel_acceleration>1.0</max_wheel_acceleration>
-                <!-- output -->
+                <!-- output 发布一些话题，会影响rviz2中机器人的显示-->
                 <publish_odom>true</publish_odom>
                 <publish_odom_tf>true</publish_odom_tf>
                 <publish_wheel_tf>true</publish_wheel_tf>

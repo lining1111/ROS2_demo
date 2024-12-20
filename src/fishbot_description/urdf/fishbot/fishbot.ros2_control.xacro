@@ -3,9 +3,12 @@
     <xacro:macro name="fishbot_ros2_control">
         <ros2_control name="FishBotGazeboSystem" type="system">
             <hardware>
+                <!--                硬件插件驱动库的名字-->
                 <plugin>gazebo_ros2_control/GazeboSystem</plugin>
             </hardware>
+            <!--            下面的关节名字要和机器人的保持一致-->
             <joint name="left_wheel_joint">
+                <!--                command_interface 执行器接口，state_interface 传感器接口-->
                 <command_interface name="velocity">
                     <param name="min">-1</param>
                     <param name="max">1</param>
@@ -14,9 +17,9 @@
                     <param name="min">-0.1</param>
                     <param name="max">0.1</param>
                 </command_interface>
-                <state_interface name="position" />
-                <state_interface name="velocity" />
-                <state_interface name="effort" />
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+                <state_interface name="effort"/>
             </joint>
             <joint name="right_wheel_joint">
                 <command_interface name="velocity">
@@ -27,15 +30,18 @@
                     <param name="min">-0.1</param>
                     <param name="max">0.1</param>
                 </command_interface>
-                <state_interface name="position" />
-                <state_interface name="velocity" />
-                <state_interface name="effort" />
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+                <state_interface name="effort"/>
             </joint>
         </ros2_control>
         <gazebo>
+            <!--            gazebo插件加载，该插件会解析 ros2_control标签的内容-->
             <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+                <!--                gazebo_ros2_control插件的参数-->
                 <parameters>$(find fishbot_description)/config/fishbot_ros2_controller.yaml</parameters>
                 <ros>
+                    <!--                    话题重映射-->
                     <remapping>/fishbot_diff_drive_controller/cmd_vel_unstamped:=/cmd_vel</remapping>
                     <remapping>/fishbot_diff_drive_controller/odom:=/odom</remapping>
                 </ros>

@@ -36,22 +36,13 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="48b2ae22-30c5-440b-b3ef-fc4634f32aeb" name="Changes" comment="调整工程目录">
+    <list default="true" id="48b2ae22-30c5-440b-b3ef-fc4634f32aeb" name="Changes" comment="二刷到机器人建模和仿真">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/clion_toolchains.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishbot_description/launch/display_robot.launch.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/launch/display_robot.launch.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishbot_description/launch/gazebo_sim.launch.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/launch/gazebo_sim.launch.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishbot_description/package.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/package.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/actuator/caster.urdf.xacro" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/actuator/caster.urdf.xacro" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/actuator/wheel.urdf.xacro" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/actuator/wheel.urdf.xacro" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/base.urdf.xacro" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/base.urdf.xacro" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/common_inertia.xacro" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/common_inertia.xacro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishbot_description/config/fishbot_ros2_controller.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/config/fishbot_ros2_controller.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/fishbot.ros2_control.xacro" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/fishbot.ros2_control.xacro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/fishbot.urdf.xacro" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/fishbot.urdf.xacro" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/plugins/gazebo_control_plugin.xacro" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/plugins/gazebo_control_plugin.xacro" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/plugins/gazebo_sensor_plugin.xacro" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/plugins/gazebo_sensor_plugin.xacro" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/sensor/camera.urdf.xacro" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/sensor/camera.urdf.xacro" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/sensor/laser.urdf.xacro" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/sensor/laser.urdf.xacro" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishros_cpp/launch/actions.launch.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishros_cpp/launch/actions.launch.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -366,7 +357,10 @@
       <workItem from="1734313691872" duration="7514000" />
       <workItem from="1734325476200" duration="143000" />
       <workItem from="1734325649474" duration="10003000" />
-      <workItem from="1734339274870" duration="923000" />
+      <workItem from="1734339274870" duration="1046000" />
+      <workItem from="1734407311867" duration="175000" />
+      <workItem from="1734674456804" duration="3193000" />
+      <workItem from="1734677710272" duration="2896000" />
     </task>
     <task id="LOCAL-00001" summary="初步完成4种通信机制的代码编写，以此为模板，跟着小鱼学">
       <option name="closed" value="true" />
@@ -448,7 +442,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734054727964</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="二刷到机器人建模和仿真">
+      <option name="closed" value="true" />
+      <created>1734340249854</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1734340249854</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -483,7 +485,8 @@
     <MESSAGE value="将自定义接口工程统一到fishros包内" />
     <MESSAGE value="调整工程内容，准备二刷" />
     <MESSAGE value="调整工程目录" />
-    <option name="LAST_COMMIT_MESSAGE" value="调整工程目录" />
+    <MESSAGE value="二刷到机器人建模和仿真" />
+    <option name="LAST_COMMIT_MESSAGE" value="二刷到机器人建模和仿真" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
