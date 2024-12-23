@@ -774,9 +774,14 @@ demo_tf_dynamic_broadcaster.cpp 描述机器人的，
 
 下面是相关的知识：
 
----URDF base_link--->各种传感器、执行器(Unified Robot Description Format https://wiki.ros.org/cn/urdf 可以在维基百科上查看相应的文档) 统一机器人描述格式
-    Xacro(XML Macros ，Xacro 是 XML 宏定义语言，方便模块化 http://www.ros.org/wiki/xacro 可以在维基百科上查看相应的文档)  可以简化URDF
-sudo apt install ros-foxy-xacro
+---URDF base_link--->各种传感器、执行器(Universal Robot Description Format https://wiki.ros.org/cn/urdf 可以在维基百科上查看相应的文档) 统一机器人描述格式
+    可以通过安装URDF文件检查工具来查看文件 
+    sudo apt install liburdfdom-tools
+    check_urdf xxx.urdf
+    教程 https://wiki.ros.org/cn/urdf/Tutorials
+    示例 https://wiki.ros.org/urdf/Examples
+    ---Xacro(XML Macros ，Xacro 是 XML 宏定义语言，方便模块化 http://www.ros.org/wiki/xacro 可以在维基百科上查看相应的文档)  可以简化URDF
+    sudo apt install ros-foxy-xacro
 
     1、URDF一个最基础的功能就是<link> 和<joint>节点，通过joint节点的父子link关系以及origin来表示父子坐标框架的TF变换，以供给robot_state_publisher使用
     
@@ -837,10 +842,39 @@ gazebo是用来加载机器人的urdf文件，仿真模拟机器人，在urdf文
     通过启动 slam_tool(ros2 launch slam_toolbox online_async_launch.py use_sim_time:=True)监听模拟器发出的标准信息结果，然后在rviz中通过将基坐标设置为odom,查看laserScan的建图情况
 使用nav2-map-server来将地图保存为文件。sudo apt install ros-foxy-nav2-map-server
     ros2 run nav2_map_server map_saver_cli -f room
+    导航地图的yaml文件说明：
+    resolution:现实1m/1像素，一般是0.05
+    origin:地图坐标系原点位于世界坐标系的位置，单位m
+    negate:是否对地图取反
 
-navigation2(https://github.com/ros-navigation/navigation2)是一个开源的机器人导航框架。
+ROS2中几个坐标系
+1、world坐标系和map坐标系
+    World坐标系表示真实的物理世界的坐标，常用单位为m，常用数据类型为float或double。
+    Map坐标系表示按照设定的精度，也就是分辨率resolution，将真实物理世界建模为栅格地图的坐标，真实的物理世界的坐标，无单位，常用数据类型为unsigned int 或int
+    SLAM建图生成的yaml文件中的参数resolution表明了建图时的分辨率，如resolution: 0.05，即表示将真实世界中每0.05mx0.05m的一个小正方形建模为栅格地图中的一个小栅格，也是SLAM建图生成的pgm格式的图片文件中的一个像素点。
+    World坐标系与Map坐标系的方向是相同的，而且固定的，即这两个坐标系都是静态的，不会发生旋转和平移等改变。
+    SLAM建图算法会将启动建图程序的那一刻机器人处于真实世界的位置设定为World坐标系的原点，将SLAM建图生成的pgm图片文件的左下角那个点作为Map坐标系的原点。
+    两者之前的坐标关系，可由建图生成的yaml文件中的参数origin确定。如 [-18.600000, -17.000000, 0.000000]，表示Map坐标系的原点在World坐标系的-18.600000m, -17.000000m处，这两个参数也确定了两个坐标系原点之间的相对位置关系。
+    ROS中常使用Costmap2D功能包中提供的mapToWorld和worldToMap两个函数进行World坐标系与Map坐标系的互相转换
+2、ROS最常用的坐标系为map、odom、base_link、base_footprint、base_laser坐标系。
+    map地图坐标系
+    一般设该坐标系为固定坐标系（fixed frame），一般与机器人所在的world坐标系一致。
+    base_link机器人本体（基座）坐标系
+    与机器人中心重合，坐标系原点一般为机器人的旋转中心。
+    base_footprint坐标系
+    原点为base_link原点在地面的投影，有些许区别（z值不同）。
+    odom里程计坐标系
+    这里要区分开odom topic，这是两个概念。一个是坐标系，一个是根据编码器（或者视觉等）计算的里程计。但是两者也有关系，odom topic 转化的位姿矩阵是odom–>base_link的tf关系。  
+    base_laser激光雷达坐标系
+    与激光雷达的安装点有关，其与base_link的tf为固定的。
+
+navigation2(https://github.com/ros-navigation/navigation2)是一个开源的机器人导航框架。机器人导航的三点：路径规划、避障、脱困
 sudo apt install ros-foxy-navigation2
-sudo apt install ros-foxy-nav2-bringup
+sudo apt install ros-foxy-nav2-bringup  nav2 启动示例功能包
+从nav2的框图出发，nav2外部需要
+输入：tf变换、map地图信息、传感器信息PointCloud2 LaserScan、行为树XML
+交互：导航到姿态 NavigateToPose
+输出：cmd_vel
 
 **实验的时候，和小鱼视频的不一样，可以先打开nav2的launch，再打开gazebo的launch**
 
@@ -888,3 +922,10 @@ pluginlib 提供了一种机制，使得主应用程序能够在运行时根据�
 nav2 slam-toolbox gazebo 都是基于ros2的优秀的仿真软件，什么叫基于，就是基于roa2的通信机制。
 熟练的使用ros2的命令行和rqt查看ros2工作节点间的通信内容、rviz查看tf间的坐标关系、以及工具提供的标准的话题和服务的接口
 是完整运行建图与导航的关键。
+
+## ROS 机器人系统开发指导
+
+基础：理解ROS2的基本通信机制
+在有了这些基础后，需要就ROS导航的系统，来理解各个开源包所实现的节点及节点功能
+如：gazebo是为了实现/robot_description来描述机器人，家在ros2_control插件发布map的全局地图，同时生成了各个tf 如 map、basefoot_print、base_link、以及odom
+nav2 通过gazebo的发布，来完成导航系统的外部信息交互

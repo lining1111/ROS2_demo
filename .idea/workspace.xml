@@ -36,13 +36,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="48b2ae22-30c5-440b-b3ef-fc4634f32aeb" name="Changes" comment="二刷到机器人建模和仿真">
+    <list default="true" id="48b2ae22-30c5-440b-b3ef-fc4634f32aeb" name="Changes" comment="完成二刷阶段的机器人建模">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishbot_description/config/fishbot_ros2_controller.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/config/fishbot_ros2_controller.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/fishbot.ros2_control.xacro" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/fishbot.ros2_control.xacro" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/fishbot.urdf.xacro" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/fishbot.urdf.xacro" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/plugins/gazebo_control_plugin.xacro" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishbot_description/urdf/fishbot/plugins/gazebo_control_plugin.xacro" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +97,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.fileTypes&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -360,7 +356,9 @@
       <workItem from="1734339274870" duration="1046000" />
       <workItem from="1734407311867" duration="175000" />
       <workItem from="1734674456804" duration="3193000" />
-      <workItem from="1734677710272" duration="2896000" />
+      <workItem from="1734677710272" duration="6549000" />
+      <workItem from="1734869468060" duration="3345000" />
+      <workItem from="1734918499645" duration="2124000" />
     </task>
     <task id="LOCAL-00001" summary="初步完成4种通信机制的代码编写，以此为模板，跟着小鱼学">
       <option name="closed" value="true" />
@@ -450,7 +448,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734340249854</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="完成二刷阶段的机器人建模">
+      <option name="closed" value="true" />
+      <created>1734682010117</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1734682010118</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -486,7 +492,8 @@
     <MESSAGE value="调整工程内容，准备二刷" />
     <MESSAGE value="调整工程目录" />
     <MESSAGE value="二刷到机器人建模和仿真" />
-    <option name="LAST_COMMIT_MESSAGE" value="二刷到机器人建模和仿真" />
+    <MESSAGE value="完成二刷阶段的机器人建模" />
+    <option name="LAST_COMMIT_MESSAGE" value="完成二刷阶段的机器人建模" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
