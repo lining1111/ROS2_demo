@@ -929,3 +929,31 @@ nav2 slam-toolbox gazebo 都是基于ros2的优秀的仿真软件，什么叫基
 在有了这些基础后，需要就ROS导航的系统，来理解各个开源包所实现的节点及节点功能
 如：gazebo是为了实现/robot_description来描述机器人，家在ros2_control插件发布map的全局地图，同时生成了各个tf 如 map、basefoot_print、base_link、以及odom
 nav2 通过gazebo的发布，来完成导航系统的外部信息交互
+
+
+## fishbot 采用的框架
+
+个人学习途径：
+
+    其实机器人及基于机器人的人工智能，细节的部分很多，但是都是基于特定套路的组合，先大概的理解各个模块的组成，然后找个实际的例子学习模块，最后组合起来，是正确的学习途径。
+
+fishbot小车，通过单片机ESP32运行micro-ros，结合小鱼作的外设驱动库，与上位机的ros2进行通信。
+    
+micro-ros(https://micro.ros.org/)
+micro-ros框架图
+![micro-ROS_architecture](imgs/micro-ROS_architecture.png)
+
+1、fishbot小车安装micro-ros
+    参考 https://zhuanlan.zhihu.com/p/626129527
+    在小车的platformio的库配置上，增加 http://gitee.com/ohhuo/micro_ros_platformio.git
+
+2、ros2系统中通过安装ros2-agent来和小车的micro-ros进行通信
+    新建工作空间 micro-ros-agent_ws
+    新建src  micro-ros-agent_ws/src
+    在src下下载源码
+        git clone http://github.com/micro-ROS/micro-ROS-Agent.git -b $ROS_DISTRO
+        git clone http://github.com/micro-ROS/micro-ros-msgs.git -b $ROS_DISTRO
+    在micro-ros-agent_ws目录下执行
+    colcon build 构建源码
+    运行 source install/setup.bash
+        ros2 run micro_ros_agent micro_ro_agent udp4 --port 8888

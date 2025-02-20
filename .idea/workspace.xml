@@ -6,6 +6,9 @@
   <component name="CMakePresetLoader">{
   &quot;useNewFormat&quot;: true
 }</component>
+  <component name="CMakeProjectFlavorService">
+    <option name="flavorId" value="CMakePlainProjectFlavor" />
+  </component>
   <component name="CMakeReloadState">
     <option name="reloaded" value="true" />
   </component>
@@ -13,8 +16,8 @@
     <generated>
       <config projectName="fishros_cpp" targetName="example_parameters" />
       <config projectName="fishros_cpp" targetName="demo_tf_dynamic_broadcaster" />
-      <config projectName="fishros_cpp" targetName="fishros_cpp_uninstall" />
       <config projectName="fishros_cpp" targetName="system_status_pub" />
+      <config projectName="fishros_cpp" targetName="fishros_cpp_uninstall" />
       <config projectName="fishros_cpp" targetName="system_status_sub" />
       <config projectName="fishros_cpp" targetName="turtle_circle" />
       <config projectName="fishros_cpp" targetName="face_recognition_client" />
@@ -32,11 +35,13 @@
   </component>
   <component name="CMakeSettings">
     <configurations>
-      <configuration PROFILE_NAME="Debug-fishros_cpp" ENABLED="true" GENERATION_DIR="build" CONFIG_NAME="Debug" GENERATION_OPTIONS="-Wno-dev" BUILD_OPTIONS="-j4" />
+      <configuration PROFILE_NAME="Debug-fishros_cpp" ENABLED="true" GENERATION_DIR="build" CONFIG_NAME="Debug" TOOLCHAIN_NAME="fishbot-ros2" GENERATION_OPTIONS="-Wno-dev" BUILD_OPTIONS="-j 4" />
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="48b2ae22-30c5-440b-b3ef-fc4634f32aeb" name="Changes" comment="完成二刷阶段的机器人建模">
+    <list default="true" id="48b2ae22-30c5-440b-b3ef-fc4634f32aeb" name="Changes" comment="完成二刷阶段的机器人导航">
+      <change afterPath="$PROJECT_DIR$/imgs/micro-ROS_architecture.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
@@ -87,17 +92,19 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/lining/CLionProjects/ROS2_demo/imgs/clion_toolchains.png&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/lining/CLionProjects/ROS2_demo/imgs/micro-ROS_architecture.png&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;CMakeSettings&quot;,
     &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -115,7 +122,7 @@
       <recent name="$PROJECT_DIR$/fishbot/src/fishbot_description/urdf" />
     </key>
   </component>
-  <component name="RunManager" selected="CMake Application.demo_tf_listener">
+  <component name="RunManager" selected="Python.fishros.launch">
     <configuration name="action_control" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="fishros_cpp" TARGET_NAME="action_control" CONFIG_NAME="Debug-fishros_cpp" RUN_TARGET_PROJECT_NAME="fishros_cpp" RUN_TARGET_NAME="action_control">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -358,7 +365,16 @@
       <workItem from="1734674456804" duration="3193000" />
       <workItem from="1734677710272" duration="6549000" />
       <workItem from="1734869468060" duration="3345000" />
-      <workItem from="1734918499645" duration="2124000" />
+      <workItem from="1734918499645" duration="4361000" />
+      <workItem from="1734933262929" duration="13000" />
+      <workItem from="1738829248317" duration="1062000" />
+      <workItem from="1738833262540" duration="8000" />
+      <workItem from="1738996590317" duration="4607000" />
+      <workItem from="1739150173021" duration="54000" />
+      <workItem from="1740020051406" duration="167000" />
+      <workItem from="1740020252914" duration="5000" />
+      <workItem from="1740020565821" duration="2486000" />
+      <workItem from="1740023761201" duration="147000" />
     </task>
     <task id="LOCAL-00001" summary="初步完成4种通信机制的代码编写，以此为模板，跟着小鱼学">
       <option name="closed" value="true" />
@@ -456,7 +472,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734682010118</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="完成二刷阶段的机器人导航">
+      <option name="closed" value="true" />
+      <created>1734924009449</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1734924009449</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -493,7 +517,8 @@
     <MESSAGE value="调整工程目录" />
     <MESSAGE value="二刷到机器人建模和仿真" />
     <MESSAGE value="完成二刷阶段的机器人建模" />
-    <option name="LAST_COMMIT_MESSAGE" value="完成二刷阶段的机器人建模" />
+    <MESSAGE value="完成二刷阶段的机器人导航" />
+    <option name="LAST_COMMIT_MESSAGE" value="完成二刷阶段的机器人导航" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
