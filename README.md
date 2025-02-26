@@ -937,7 +937,7 @@ nav2 通过gazebo的发布，来完成导航系统的外部信息交互
 
     其实机器人及基于机器人的人工智能，细节的部分很多，但是都是基于特定套路的组合，先大概的理解各个模块的组成，然后找个实际的例子学习模块，最后组合起来，是正确的学习途径。
 
-fishbot小车，通过单片机ESP32运行micro-ros，结合小鱼作的外设驱动库，与上位机的ros2进行通信。
+fishbot小车，通过单片机ESP32运行micro-ros，结合小鱼作的外设驱动库，与上位机的ros2进行通信。小车还有一个雷达转接板也是esp32的，负责通过串口读取雷达数据，然后通过wifi上传到ros系统
     
 micro-ros(https://micro.ros.org/)
 micro-ros框架图
@@ -957,3 +957,27 @@ micro-ros框架图
     colcon build 构建源码
     运行 source install/setup.bash
         ros2 run micro_ros_agent micro_ro_agent udp4 --port 8888
+3、(/cmd)esp小板通过步进电机(通过正向/反向引脚通电来控制正转反转，通过pwm来控制转速)，结合运动学正逆解，发布控制话题/cmd
+    1、通电与通过设置频率控制转速
+    2、通过电机上的霍尔传感器，来计算车轮行驶的距离
+    3、利用PID控制原理，来控制轮子的转速，到这步就完成了单个轮子的速度控制。
+    4、运动学正逆解，完成两轮情况下，正解计算(已知左轮速度v_l和右轮速度v_r，两轮之间的安装间距l，求机器人的线速度v，和角速度w)；逆解计算(已知机器人的线速度v，和角速度w，求左轮速度v_l和右轮速度v_r)，逆解就是/cmd话题要完成的事情
+        数学模型是这样的：(角速度是逆时针为正)
+            v_l |---v?---| v_r
+                |<--l--->|
+        正解过程就是: v=(v_l+v_r)/2
+                    w=(v_r-v_l)/l
+        逆解过程就是: v_l=(v-wl)/2
+                    v_r=(v+wl)/2
+4、(/odom)通过esp小板发布里程计话题/odom
+    有了小车的速度信息(线速度v和角速度w)，就可以通过对两者的积分计算小车的位置信息
+    题目是这样的：已知小车现在的位置为x_in,y_in，朝向为angle_in，小车现在的线速度为v，角速度为w,求小车经过时间t后，的位置x_out，y_out和角度angle_out
+        变化量:    距离d=v*t
+                  转过的角度angle_change=w*t
+        结果:     angle_out=angle_in+angle_change
+                 x_out=x_in+d*cos(angle_out)
+                y_out=y_in+d*sin(angle_out)
+5、(/scan)驱动并显示雷达
+    小车的雷达是这样的连接结构
+        雷达---转接板---wifi---主机的转接板驱动生成本地接口/tmp/tty_laser---雷达驱动---发布/scan话题
+    雷达转接板有三种模式，选择串口转wifi模式即可
