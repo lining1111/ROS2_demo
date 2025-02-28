@@ -937,6 +937,13 @@ nav2 通过gazebo的发布，来完成导航系统的外部信息交互
 
     其实机器人及基于机器人的人工智能，细节的部分很多，但是都是基于特定套路的组合，先大概的理解各个模块的组成，然后找个实际的例子学习模块，最后组合起来，是正确的学习途径。
 
+移动机器人的坐标系框架
+    https://www.ros.org/reps/rep-0105.html#id5
+    earth--map--odom--base_link----sensor
+                                |--actuator
+    在nav2中 map到odom的发布是由amcl来作的
+    在slam-toolbox时，是由slam-toolbox内部组件来完成map到odom的发布
+
 fishbot小车，通过单片机ESP32运行micro-ros，结合小鱼作的外设驱动库，与上位机的ros2进行通信。小车还有一个雷达转接板也是esp32的，负责通过串口读取雷达数据，然后通过wifi上传到ros系统
     
 micro-ros(https://micro.ros.org/)
@@ -981,3 +988,4 @@ micro-ros框架图
     小车的雷达是这样的连接结构
         雷达---转接板---wifi---主机的转接板驱动生成本地接口/tmp/tty_laser---雷达驱动---发布/scan话题
     雷达转接板有三种模式，选择串口转wifi模式即可
+6、编写机器人的URDF，通过 robot_state_publisher 来发布机器人的tf
