@@ -1,6 +1,7 @@
 build
 install
 log
+venv
 .idea
 fishros_interfaces/build
 fishros_interfaces/install
