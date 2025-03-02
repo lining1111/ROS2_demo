@@ -916,76 +916,629 @@ pluginlib 提供了一种机制，使得主应用程序能够在运行时根据�
         0               1/resolution    -orgininY/resolution        X         y 
         0               0               1                   ]                 1 ]
 
-
-#### 小结
-
-nav2 slam-toolbox gazebo 都是基于ros2的优秀的仿真软件，什么叫基于，就是基于roa2的通信机制。
-熟练的使用ros2的命令行和rqt查看ros2工作节点间的通信内容、rviz查看tf间的坐标关系、以及工具提供的标准的话题和服务的接口
-是完整运行建图与导航的关键。
-
-## ROS 机器人系统开发指导
+#### ROS 机器人系统开发指导
 
 基础：理解ROS2的基本通信机制
 在有了这些基础后，需要就ROS导航的系统，来理解各个开源包所实现的节点及节点功能
 如：gazebo是为了实现/robot_description来描述机器人，家在ros2_control插件发布map的全局地图，同时生成了各个tf 如 map、basefoot_print、base_link、以及odom
 nav2 通过gazebo的发布，来完成导航系统的外部信息交互
 
-
-## fishbot 采用的框架
-
-个人学习途径：
-
+### 6、真机实验
+    该章节因为没有购买真机(主要是工作了没有时间在真机上实践了)，所以重点还是以看视频，理解真机下框架为主。
+    代码就不写入到工程了，具体的可以参考作者的代码仓库 https://gitee.com/ohhuo/ros2bookcode.git
+#### 6.1、个人学习途径：
     其实机器人及基于机器人的人工智能，细节的部分很多，但是都是基于特定套路的组合，先大概的理解各个模块的组成，然后找个实际的例子学习模块，最后组合起来，是正确的学习途径。
 
-移动机器人的坐标系框架
+#### 6.2、移动机器人的坐标系框架
     https://www.ros.org/reps/rep-0105.html#id5
-    earth--map--odom--base_link----sensor
+    earth--map--odom--base_footprint--base_link----sensor
                                 |--actuator
     在nav2中 map到odom的发布是由amcl来作的
     在slam-toolbox时，是由slam-toolbox内部组件来完成map到odom的发布
 
-fishbot小车，通过单片机ESP32运行micro-ros，结合小鱼作的外设驱动库，与上位机的ros2进行通信。小车还有一个雷达转接板也是esp32的，负责通过串口读取雷达数据，然后通过wifi上传到ros系统
+#### 6.3、fishbot 采用的框架
+    fishbot小车，通过单片机ESP32运行micro-ros，结合小鱼作的外设驱动库，与上位机的ros2进行通信。小车还有一个雷达转接板也是esp32的，负责通过串口读取雷达数据，然后通过wifi上传到ros系统
     
-micro-ros(https://micro.ros.org/)
-micro-ros框架图
-![micro-ROS_architecture](imgs/micro-ROS_architecture.png)
+    micro-ros(https://micro.ros.org/)
+    micro-ros框架图
+    ![micro-ROS_architecture](imgs/micro-ROS_architecture.png)
+    
+##### 6.3.1、fishbot小车安装micro-ros
+        参考 https://zhuanlan.zhihu.com/p/626129527
+        在小车的platformio的库配置上，增加 http://gitee.com/ohhuo/micro_ros_platformio.git
+    
+##### 6.3.2、ros2系统中通过安装ros2-agent来和小车的micro-ros进行通信
+        新建工作空间 micro-ros-agent_ws
+        新建src  micro-ros-agent_ws/src
+        在src下下载源码
+            git clone http://github.com/micro-ROS/micro-ROS-Agent.git -b $ROS_DISTRO
+            git clone http://github.com/micro-ROS/micro-ros-msgs.git -b $ROS_DISTRO
+        在micro-ros-agent_ws目录下执行
+        colcon build 构建源码
+        运行 source install/setup.bash
+            ros2 run micro_ros_agent micro_ro_agent udp4 --port 8888
 
-1、fishbot小车安装micro-ros
-    参考 https://zhuanlan.zhihu.com/p/626129527
-    在小车的platformio的库配置上，增加 http://gitee.com/ohhuo/micro_ros_platformio.git
+##### 6.3.3、/cmd_vel
+        ros2 interface show  geometry_msgs/msg/Twist
 
-2、ros2系统中通过安装ros2-agent来和小车的micro-ros进行通信
-    新建工作空间 micro-ros-agent_ws
-    新建src  micro-ros-agent_ws/src
-    在src下下载源码
-        git clone http://github.com/micro-ROS/micro-ROS-Agent.git -b $ROS_DISTRO
-        git clone http://github.com/micro-ROS/micro-ros-msgs.git -b $ROS_DISTRO
-    在micro-ros-agent_ws目录下执行
-    colcon build 构建源码
-    运行 source install/setup.bash
-        ros2 run micro_ros_agent micro_ro_agent udp4 --port 8888
-3、(/cmd)esp小板通过步进电机(通过正向/反向引脚通电来控制正转反转，通过pwm来控制转速)，结合运动学正逆解，发布控制话题/cmd
-    1、通电与通过设置频率控制转速
-    2、通过电机上的霍尔传感器，来计算车轮行驶的距离
-    3、利用PID控制原理，来控制轮子的转速，到这步就完成了单个轮子的速度控制。
-    4、运动学正逆解，完成两轮情况下，正解计算(已知左轮速度v_l和右轮速度v_r，两轮之间的安装间距l，求机器人的线速度v，和角速度w)；逆解计算(已知机器人的线速度v，和角速度w，求左轮速度v_l和右轮速度v_r)，逆解就是/cmd话题要完成的事情
-        数学模型是这样的：(角速度是逆时针为正)
-            v_l |---v?---| v_r
-                |<--l--->|
-        正解过程就是: v=(v_l+v_r)/2
-                    w=(v_r-v_l)/l
-        逆解过程就是: v_l=(v-wl)/2
-                    v_r=(v+wl)/2
-4、(/odom)通过esp小板发布里程计话题/odom
-    有了小车的速度信息(线速度v和角速度w)，就可以通过对两者的积分计算小车的位置信息
-    题目是这样的：已知小车现在的位置为x_in,y_in，朝向为angle_in，小车现在的线速度为v，角速度为w,求小车经过时间t后，的位置x_out，y_out和角度angle_out
-        变化量:    距离d=v*t
-                  转过的角度angle_change=w*t
-        结果:     angle_out=angle_in+angle_change
-                 x_out=x_in+d*cos(angle_out)
-                y_out=y_in+d*sin(angle_out)
-5、(/scan)驱动并显示雷达
-    小车的雷达是这样的连接结构
-        雷达---转接板---wifi---主机的转接板驱动生成本地接口/tmp/tty_laser---雷达驱动---发布/scan话题
-    雷达转接板有三种模式，选择串口转wifi模式即可
-6、编写机器人的URDF，通过 robot_state_publisher 来发布机器人的tf
+        esp小板通过步进电机(通过正向/反向引脚通电来控制正转反转，通过pwm来控制转速)，结合运动学正逆解，发布控制话题/cmd
+        1、通电与通过设置频率控制转速
+        2、通过电机上的霍尔传感器，来计算车轮行驶的距离
+        3、利用PID控制原理，来控制轮子的转速，到这步就完成了单个轮子的速度控制。
+        4、运动学正逆解，完成两轮情况下，正解计算(已知左轮速度v_l和右轮速度v_r，两轮之间的安装间距l，求机器人的线速度v，和角速度w)；逆解计算(已知机器人的线速度v，和角速度w，求左轮速度v_l和右轮速度v_r)，逆解就是/cmd话题要完成的事情
+            数学模型是这样的：(角速度是逆时针为正)
+                v_l |---v?---| v_r
+                    |<--l--->|
+            正解过程就是: v=(v_l+v_r)/2
+                        w=(v_r-v_l)/l
+            逆解过程就是: v_l=(v-wl)/2
+                        v_r=(v+wl)/2
+
+##### 6.3.4、/odom
+        ros2 interface show nav_msgs/msg/Odometry
+
+        通过esp小板发布里程计话题/odom
+        有了小车的速度信息(线速度v和角速度w)，就可以通过对两者的积分计算小车的位置信息
+        题目是这样的：已知小车现在的位置为x_in,y_in，朝向为angle_in，小车现在的线速度为v，角速度为w,求小车经过时间t后，的位置x_out，y_out和角度angle_out
+            变化量:    距离d=v*t
+                      转过的角度angle_change=w*t
+            结果:     angle_out=angle_in+angle_change
+                     x_out=x_in+d*cos(angle_out)
+                    y_out=y_in+d*sin(angle_out)
+        这里/odom的位置信息，可以被后面7节使用，用来发布/odom到/base_footprint的tf
+        里程计很重要，它的详解可以参考 https://blog.csdn.net/m0_73640344/article/details/145838906
+
+##### 6.3.5、/scan
+        ros2 interface show sensor_msgs/msg/LaserScan
+
+        驱动并显示雷达
+        小车的雷达是这样的连接结构
+            雷达---雷达转接板---wifi---主机的转接板驱动生成本地接口/tmp/tty_laser---雷达驱动---发布/scan话题
+        雷达转接板有三种模式，选择串口转wifi模式即可
+        
+        6.3.5.1 雷达转接板驱动是一个用python写的，启动一个tcpserver然后将读取到数据，透传的方式写入到本地虚拟文件
+            ros_serial2wifi/ros_serial2wifi/tcpserver.py,内容：
+            import os
+            import pty
+            import socket
+            import select
+            import subprocess
+            import rclpy
+            from rclpy.node import Node
+            import time
+            
+            class TcpSocketServerNode(Node):
+            def __init__(self):
+            super().__init__('tcp_socket_server_node')
+            
+                    # 声明 ROS 2 参数
+                    self.declare_parameter('tcp_port', 8889)
+                    self.declare_parameter('serial_port', '/tmp/laserport')
+                    
+                    # 获取 ROS 2 参数
+                    self.tcp_port = self.get_parameter('tcp_port').get_parameter_value().integer_value
+                    self.serial_port = self.get_parameter('serial_port').get_parameter_value().string_value
+            
+                def run(self):
+                    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+                    s.bind(('0.0.0.0', self.tcp_port))
+                    s.listen(1)
+                    
+                    master, slave = pty.openpty()
+                    if os.path.exists(self.serial_port):
+                        os.remove(self.serial_port)
+                    os.symlink(os.ttyname(slave), self.serial_port)
+            
+                    self.get_logger().info(f"TCP端口:{self.tcp_port}，已映射到串口设备:{self.serial_port}")
+                    mypoll = select.poll()
+                    mypoll.register(master, select.POLLIN)
+                    try:
+                        while True:
+                            self.get_logger().info("等待接受连接..")
+                            s.settimeout(None)
+                            client, client_address = s.accept()
+                            mypoll.register(client.fileno(), select.POLLIN)
+                            self.get_logger().info(f'来自{client_address}的连接已建立')
+                            is_connect = True
+                            last_exchange_data_time = time.time()
+                            try:
+                                while is_connect:
+                                    fdlist = mypoll.poll(256)
+                                    for fd, event in fdlist:
+                                        last_exchange_data_time = time.time()
+                                        data = os.read(fd, 256)
+                                        write_fd = client.fileno() if fd == master else master
+                                        if len(data) == 0:
+                                            is_connect = False
+                                            break
+                                        # print(write_fd,data,event)
+                                        os.write(write_fd, data)
+                                    # 如果一段时间没有任何数据则断开连接
+                                    if time.time()-last_exchange_data_time>5:
+                                        is_connect = False
+                                        print('5s no data.')
+                                        break
+                            except Exception:
+                                is_connect = False
+                            finally:
+                                mypoll.unregister(client.fileno())
+                                client.close()
+                    finally:
+                        s.close()
+            
+            
+            def main():
+            rclpy.init()
+            node = TcpSocketServerNode()
+            node.run()
+            rclpy.shutdown()
+            
+            if __name__ == "__main__":
+            main()
+
+        6.3.5.2 雷达驱动是一个用python写的雷达驱动程序，它通过串口读取雷达数据，然后发布/scan话题
+            ydlidar_ros2/src/ydlidar_node.cpp和ydlidar_ros2/launch/ydlidar.launch.py配合使用
+
+        ydlidar_ros2/src/ydlidar_node.cpp 内容如下：
+        #ifdef _MSC_VER
+        #ifndef _USE_MATH_DEFINES
+        #define _USE_MATH_DEFINES
+        #endif
+        #endif
+        
+        #include "src/CYdLidar.h"
+        #include <math.h>
+        #include <chrono>
+        #include <iostream>
+        #include <memory>
+        #include "sensor_msgs/msg/point_cloud.hpp"
+        #include "rclcpp/clock.hpp"
+        #include "rclcpp/rclcpp.hpp"
+        #include "rclcpp/time_source.hpp"
+        #include "sensor_msgs/msg/laser_scan.hpp"
+        #include "std_srvs/srv/empty.hpp"
+        #include <vector>
+        #include <iostream>
+        #include <string>
+        #include <signal.h>
+        
+        #define ROS2Verision "1.0.1"
+        
+        
+        int main(int argc, char *argv[]) {
+        rclcpp::init(argc, argv);
+        
+        auto node = rclcpp::Node::make_shared("ydlidar_ros2_driver_node");
+        
+        RCLCPP_INFO(node->get_logger(), "[YDLIDAR INFO] Current ROS Driver Version: %s\n", ((std::string)ROS2Verision).c_str());
+        
+        CYdLidar laser;
+        std::string str_optvalue = "/dev/ydlidar";
+        node->declare_parameter("port", str_optvalue);
+        node->get_parameter("port", str_optvalue);
+        ///lidar port
+        laser.setlidaropt(LidarPropSerialPort, str_optvalue.c_str(), str_optvalue.size());
+        ///ignore array
+        str_optvalue = "";
+        node->declare_parameter("ignore_array", str_optvalue);
+        node->get_parameter("ignore_array", str_optvalue);
+        laser.setlidaropt(LidarPropIgnoreArray, str_optvalue.c_str(), str_optvalue.size());
+        
+        std::string frame_id = "laser_frame";
+        node->declare_parameter("frame_id", frame_id);
+        node->get_parameter("frame_id", frame_id);
+        
+        //////////////////////int property/////////////////
+        /// lidar baudrate
+        int optval = 230400;
+        node->declare_parameter("baudrate", optval);
+        node->get_parameter("baudrate", optval);
+        laser.setlidaropt(LidarPropSerialBaudrate, &optval, sizeof(int));
+        /// tof lidar
+        optval = TYPE_TRIANGLE;
+        node->declare_parameter("lidar_type", optval);
+        node->get_parameter("lidar_type", optval);
+        laser.setlidaropt(LidarPropLidarType, &optval, sizeof(int));
+        /// device type
+        optval = YDLIDAR_TYPE_SERIAL;
+        node->declare_parameter("device_type", optval);
+        node->get_parameter("device_type", optval);
+        laser.setlidaropt(LidarPropDeviceType, &optval, sizeof(int));
+        /// sample rate
+        optval = 9;
+        node->declare_parameter("sample_rate", optval);
+        node->get_parameter("sample_rate", optval);
+        laser.setlidaropt(LidarPropSampleRate, &optval, sizeof(int));
+        /// abnormal count
+        optval = 4;
+        node->declare_parameter("abnormal_check_count", optval);
+        node->get_parameter("abnormal_check_count", optval);
+        laser.setlidaropt(LidarPropAbnormalCheckCount, &optval, sizeof(int));
+        
+        /// Intenstiy bit count
+        optval = 8;
+        node->declare_parameter("intensity_bit", optval);
+        node->get_parameter("intensity_bit", optval);
+        laser.setlidaropt(LidarPropIntenstiyBit, &optval, sizeof(int));
+        
+        //////////////////////bool property/////////////////
+        /// fixed angle resolution
+        bool b_optvalue = false;
+        node->declare_parameter("fixed_resolution", b_optvalue);
+        node->get_parameter("fixed_resolution", b_optvalue);
+        laser.setlidaropt(LidarPropFixedResolution, &b_optvalue, sizeof(bool));
+        /// rotate 180
+        b_optvalue = true;
+        node->declare_parameter("reversion", b_optvalue);
+        node->get_parameter("reversion", b_optvalue);
+        laser.setlidaropt(LidarPropReversion, &b_optvalue, sizeof(bool));
+        /// Counterclockwise
+        b_optvalue = true;
+        node->declare_parameter("inverted", b_optvalue);
+        node->get_parameter("inverted", b_optvalue);
+        laser.setlidaropt(LidarPropInverted, &b_optvalue, sizeof(bool));
+        b_optvalue = true;
+        node->declare_parameter("auto_reconnect", b_optvalue);
+        node->get_parameter("auto_reconnect", b_optvalue);
+        laser.setlidaropt(LidarPropAutoReconnect, &b_optvalue, sizeof(bool));
+        /// one-way communication
+        b_optvalue = false;
+        node->declare_parameter("isSingleChannel", b_optvalue);
+        node->get_parameter("isSingleChannel", b_optvalue);
+        laser.setlidaropt(LidarPropSingleChannel, &b_optvalue, sizeof(bool));
+        /// intensity
+        // b_optvalue = false;
+        // node->declare_parameter("intensity", b_optvalue);
+        // node->get_parameter("intensity", b_optvalue);
+        // laser.setlidaropt(LidarPropIntenstiy, &b_optvalue, sizeof(bool));
+        laser.setAutoIntensity(true);
+        /// Motor DTR
+        b_optvalue = false;
+        node->declare_parameter("support_motor_dtr", b_optvalue);
+        node->get_parameter("support_motor_dtr", b_optvalue);
+        laser.setlidaropt(LidarPropSupportMotorDtrCtrl, &b_optvalue, sizeof(bool));
+        
+        //////////////////////float property/////////////////
+        /// unit: °
+        float f_optvalue = 180.0f;
+        node->declare_parameter("angle_max", f_optvalue);
+        node->get_parameter("angle_max", f_optvalue);
+        laser.setlidaropt(LidarPropMaxAngle, &f_optvalue, sizeof(float));
+        f_optvalue = -180.0f;
+        node->declare_parameter("angle_min", f_optvalue);
+        node->get_parameter("angle_min", f_optvalue);
+        laser.setlidaropt(LidarPropMinAngle, &f_optvalue, sizeof(float));
+        /// unit: m
+        f_optvalue = 64.f;
+        node->declare_parameter("range_max", f_optvalue);
+        node->get_parameter("range_max", f_optvalue);
+        laser.setlidaropt(LidarPropMaxRange, &f_optvalue, sizeof(float));
+        f_optvalue = 0.1f;
+        node->declare_parameter("range_min", f_optvalue);
+        node->get_parameter("range_min", f_optvalue);
+        laser.setlidaropt(LidarPropMinRange, &f_optvalue, sizeof(float));
+        /// unit: Hz
+        f_optvalue = 10.f;
+        node->declare_parameter("frequency", f_optvalue);
+        node->get_parameter("frequency", f_optvalue);
+        laser.setlidaropt(LidarPropScanFrequency, &f_optvalue, sizeof(float));
+        
+        bool invalid_range_is_inf = false;
+        node->declare_parameter("invalid_range_is_inf", invalid_range_is_inf);
+        node->get_parameter("invalid_range_is_inf", invalid_range_is_inf);
+        
+        
+        bool ret = laser.initialize();
+        if (ret) {
+        ret = laser.turnOn();
+        } else {
+        RCLCPP_ERROR(node->get_logger(), "%s\n", laser.DescribeError());
+        }
+        
+        auto laser_pub = node->create_publisher<sensor_msgs::msg::LaserScan>("scan", rclcpp::SensorDataQoS());
+        auto pc_pub = node->create_publisher<sensor_msgs::msg::PointCloud>("point_cloud", rclcpp::SensorDataQoS());
+        
+        auto stop_scan_service =
+        [&laser](const std::shared_ptr<rmw_request_id_t> request_header,
+        const std::shared_ptr<std_srvs::srv::Empty::Request> req,
+        std::shared_ptr<std_srvs::srv::Empty::Response> response) -> bool
+        {
+        return laser.turnOff();
+        };
+        
+        auto stop_service = node->create_service<std_srvs::srv::Empty>("stop_scan",stop_scan_service);
+        
+        auto start_scan_service =
+        [&laser](const std::shared_ptr<rmw_request_id_t> request_header,
+        const std::shared_ptr<std_srvs::srv::Empty::Request> req,
+        std::shared_ptr<std_srvs::srv::Empty::Response> response) -> bool
+        {
+        return laser.turnOn();
+        };
+        
+        auto start_service = node->create_service<std_srvs::srv::Empty>("start_scan",start_scan_service);
+        
+        rclcpp::WallRate loop_rate(20);
+        
+        while (ret && rclcpp::ok()) {
+        
+            LaserScan scan;//
+        
+            if (laser.doProcessSimple(scan)) {
+        
+              auto scan_msg = std::make_shared<sensor_msgs::msg::LaserScan>();
+              auto pc_msg = std::make_shared<sensor_msgs::msg::PointCloud>();
+        
+              scan_msg->header.stamp.sec = RCL_NS_TO_S(scan.stamp);
+              scan_msg->header.stamp.nanosec =  scan.stamp - RCL_S_TO_NS(scan_msg->header.stamp.sec);
+              scan_msg->header.frame_id = frame_id;
+              pc_msg->header = scan_msg->header;
+              scan_msg->angle_min = scan.config.min_angle;
+              scan_msg->angle_max = scan.config.max_angle;
+              scan_msg->angle_increment = scan.config.angle_increment;
+              scan_msg->scan_time = scan.config.scan_time;
+              scan_msg->time_increment = scan.config.time_increment;
+              scan_msg->range_min = scan.config.min_range;
+              scan_msg->range_max = scan.config.max_range;
+              
+              int size = (scan.config.max_angle - scan.config.min_angle)/ scan.config.angle_increment + 1;
+              scan_msg->ranges.resize(size);
+              scan_msg->intensities.resize(size);
+        
+              pc_msg->channels.resize(2);
+              int idx_intensity = 0;
+              pc_msg->channels[idx_intensity].name = "intensities";
+              int idx_timestamp = 1;
+              pc_msg->channels[idx_timestamp].name = "stamps";
+        
+              for(size_t i=0; i < scan.points.size(); i++) {
+                int index = std::ceil((scan.points[i].angle - scan.config.min_angle)/scan.config.angle_increment);
+                if(index >=0 && index < size) {
+              if (scan.points[i].range >= scan.config.min_range) {
+                    scan_msg->ranges[index] = scan.points[i].range;
+                    scan_msg->intensities[index] = scan.points[i].intensity;
+              }
+                }
+        
+            if (scan.points[i].range >= scan.config.min_range &&
+                     scan.points[i].range <= scan.config.max_range) {
+                  geometry_msgs::msg::Point32 point;
+                  point.x = scan.points[i].range * cos(scan.points[i].angle);
+                  point.y = scan.points[i].range * sin(scan.points[i].angle);
+                  point.z = 0.0;
+                  pc_msg->points.push_back(point);
+                  pc_msg->channels[idx_intensity].values.push_back(scan.points[i].intensity);
+                  pc_msg->channels[idx_timestamp].values.push_back(i * scan.config.time_increment);
+                }
+        
+              }
+        
+              laser_pub->publish(*scan_msg);
+              pc_pub->publish(*pc_msg);
+        
+            } else {
+              RCLCPP_ERROR(node->get_logger(), "Failed to get scan");
+            }
+            if(!rclcpp::ok()) {
+              break;
+            }
+            rclcpp::spin_some(node);
+            loop_rate.sleep();
+        }
+        
+        
+        RCLCPP_INFO(node->get_logger(), "[YDLIDAR INFO] Now YDLIDAR is stopping .......");
+        laser.turnOff();
+        laser.disconnecting();
+        rclcpp::shutdown();
+        
+        return 0;
+        }
+
+        ydlidar_ros2/launch/ydlidar.launch.py，内容如下：
+        from ament_index_python.packages import get_package_share_directory
+
+        from launch import LaunchDescription
+        from launch_ros.actions import LifecycleNode
+        from launch_ros.actions import Node
+        from launch.actions import DeclareLaunchArgument
+        from launch.substitutions import LaunchConfiguration
+        from launch.actions import LogInfo
+        
+        import lifecycle_msgs.msg
+        import os
+        
+        
+        def generate_launch_description():
+        share_dir = get_package_share_directory('ydlidar')
+        parameter_file = LaunchConfiguration('params_file')
+        node_name = 'ydlidar_node'
+        
+            params_declare = DeclareLaunchArgument('params_file',
+                                                   default_value=os.path.join(
+                                                       share_dir, 'params', 'ydlidar.yaml'),
+                                                   description='FPath to the ROS2 parameters file to use.')
+        
+            driver_node = LifecycleNode(package='ydlidar',
+                                        executable='ydlidar_node',
+                                        name='ydlidar_node',
+                                        output='screen',
+                                        emulate_tty=True,
+                                        parameters=[parameter_file],
+                                        namespace='/',
+                                        )
+            return LaunchDescription([
+                params_declare,
+                driver_node,
+            ])
+
+##### 6.3.6、/tf和/joint_states
+        编写机器人的URDF，通过 robot_state_publisher 来发布机器人的tf
+        机器人URDF是父坐标系为base_footprint开始，
+        base_footprint到base_link的tf(URDF中是直接过去的)，
+        然后就是base_link到机器人各个部件(如传感器和执行器等)的坐标系的tf关系
+        URDF文件(fishbot_description/urdf/fishbot.urdf)如下：
+            <?xml version="1.0"?>
+            <robot name="fishbot">
+              <link name="base_footprint" />
+            
+              <!-- base link -->
+              <link name="base_link">
+              <visual>
+                <origin xyz="0 0 0.0" rpy="0 0 0" />
+                <geometry>
+                  <cylinder length="0.12" radius="0.10" />
+                </geometry>
+                <material name="blue">
+                  <color rgba="0.1 0.1 1.0 0.5" />
+                </material>
+              </visual>
+              </link>
+            
+              <joint name="base_joint" type="fixed">
+                <parent link="base_footprint" />
+                <child link="base_link" />
+                <origin xyz="0.0 0.0 0.076" rpy="0 0 0" />
+              </joint>
+            
+              <!-- laser link -->
+              <link name="laser_link">
+              <visual>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                  <cylinder length="0.02" radius="0.02" />  
+                </geometry>
+                <material name="black">
+                  <color rgba="0.0 0.0 0.0 0.5" />
+                </material>
+              </visual>
+              </link>
+              <joint name="laser_joint" type="fixed">
+                <parent link="base_link" />
+                <child link="laser_link" />
+                <origin xyz="0 0 0.075" rpy="0 0 0" />
+              </joint>
+            
+            </robot>
+
+            编写完python的launch文件(fishbot_bringup/launch/urdf2tf.launch.py)，通过robot_state_publisher发布tf关系，通过rqt查看tf关系
+            launch文件如下：
+                import launch
+                import launch_ros
+                from ament_index_python.packages import get_package_share_directory
+                
+                
+                def generate_launch_description():
+                # 获取默认路径
+                urdf_tutorial_path = get_package_share_directory('fishbot_description')
+                fishbot_model_path = urdf_tutorial_path + '/urdf/fishbot.urdf'
+                # 为 Launch 声明参数
+                action_declare_arg_mode_path = launch.actions.DeclareLaunchArgument(
+                name='model', default_value=str(fishbot_model_path),
+                description='URDF 的绝对路径')
+                # 获取文件内容生成新的参数
+                robot_description = launch_ros.parameter_descriptions.ParameterValue(
+                launch.substitutions.Command(
+                ['cat ', launch.substitutions.LaunchConfiguration('model')]),
+                value_type=str)
+                # 状态发布节点
+                robot_state_publisher_node = launch_ros.actions.Node(
+                package='robot_state_publisher',
+                executable='robot_state_publisher',
+                parameters=[{'robot_description': robot_description}]
+                )
+                # 关节状态发布节点
+                joint_state_publisher_node = launch_ros.actions.Node(
+                package='joint_state_publisher',
+                executable='joint_state_publisher',
+                )
+                return launch.LaunchDescription([
+                action_declare_arg_mode_path, joint_state_publisher_node,
+                robot_state_publisher_node,
+                ])
+
+##### 6.3.7、发布里程计tf
+        里程计tf是父坐标系为odom开始，发布从odom到base_footprint的tf关系
+        前面已经通过小车发布了odom的话题，就可以编写一个程序(一个cpp的node就行了)发布odom到base_footprint的tf关系。
+        这个cpp程序的内容：
+        启动一个订阅，订阅/odom话题内容
+        启动一个发布，发布odom到base_footprint的tf关系
+        在订阅回调中，得到/odom内容后，将/odom中的header、child_frame_id、pose中的位姿信息。用广播器广播出去
+
+##### 6.3.8、开始建图
+        是对上面几个小节的动作的合集。
+        launch文件包含以下几个动作
+        发布机器人底盘到各个部件的tf关系                       urdf2tf
+        里程计到机器人底盘的tf                                odom2tf
+        小车microros到导航系统ros2的衔接                      microros_agent
+        雷达转接板的wifi到导航系统ros2中串口节点的，用来驱动雷达    ros_serail2wifi
+        雷达驱动                                            ydlidar_delay
+
+        这个python编写的launch文件(fishbot_bringup/launch/bringup.launch.py)如下：
+            import launch
+            import launch_ros
+            from ament_index_python.packages import get_package_share_directory
+            from launch.launch_description_sources import PythonLaunchDescriptionSource
+            
+            def generate_launch_description():
+            fishbot_bringup_dir = get_package_share_directory(
+            'fishbot_bringup')
+            ydlidar_ros2_dir = get_package_share_directory(
+            'ydlidar')
+            
+                urdf2tf = launch.actions.IncludeLaunchDescription(
+                    PythonLaunchDescriptionSource(
+                        [fishbot_bringup_dir, '/launch', '/urdf2tf.launch.py']),
+                )
+            
+                odom2tf = launch_ros.actions.Node(
+                    package='fishbot_bringup',
+                    executable='odom2tf',
+                    output='screen'
+                )
+            
+                microros_agent = launch_ros.actions.Node(
+                    package='micro_ros_agent',
+                    executable='micro_ros_agent',
+                    arguments=['udp4','--port','8888'],
+                    output='screen'
+                )
+            
+                ros_serail2wifi =  launch_ros.actions.Node(
+                    package='ros_serail2wifi',
+                    executable='tcp_server',
+                    parameters=[{'serial_port': '/tmp/tty_laser'}],
+                    output='screen'
+                )
+            
+                ydlidar = launch.actions.IncludeLaunchDescription(
+                    PythonLaunchDescriptionSource(
+                        [ydlidar_ros2_dir, '/launch', '/ydlidar_launch.py']),
+                )
+            
+                # 使用 TimerAction 启动后 5 秒执行 ydlidar 节点
+                ydlidar_delay = launch.actions.TimerAction(period=5.0, actions=[ydlidar])
+                
+                return launch.LaunchDescription([
+                    urdf2tf,
+                    odom2tf,
+                    microros_agent,
+                    ros_serail2wifi,
+                    ydlidar_delay
+                ])
+        到这里，启动好launch，打开小车，通过 ros2 topic list，可以看到建图和导航需要的话题都有了
+        /cmd_vel
+        /scan
+        /tf
+        /tf_static
+        /odom
+        /joint_states
+        然后通过 slam_toolbox来进行建图了,slam_toolbox和navgation2中的amcl都可以完成 /map到/odom的tf发布。到此，完整的移动机器人坐标框架就完成了。
+
+### 小结
+
+nav2 slam-toolbox gazebo 都是基于ros2的优秀的仿真软件，什么叫基于，就是基于roa2的通信机制。
+熟练的使用ros2的命令行和rqt查看ros2工作节点间的通信内容、rviz查看tf间的坐标关系、以及工具提供的标准的话题和服务的接口
+是完整运行建图与导航的关键。
+
