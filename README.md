@@ -1527,18 +1527,45 @@ nav2 通过gazebo的发布，来完成导航系统的外部信息交互
                     ros_serail2wifi,
                     ydlidar_delay
                 ])
-        到这里，启动好launch，打开小车，通过 ros2 topic list，可以看到建图和导航需要的话题都有了
+        到这里步骤是：
+        1、启动好launch，
+        2、打开小车，
+        3、通过 ros2 topic list，可以看到建图和导航需要的话题都有了
         /cmd_vel
         /scan
         /tf
         /tf_static
         /odom
-        /joint_states
-        然后通过 slam_toolbox来进行建图了,slam_toolbox和navgation2中的amcl都可以完成 /map到/odom的tf发布。到此，完整的移动机器人坐标框架就完成了。
+        /robot_description
+
+        /odom到base_footprint的tf发布是由odom2tf.cpp的代码完成的
+        /base_footprint到/base_link，然后/base_link到机器人各个部件的tf发布是由urdf2tf.launch.py完成的
+        
+        4、然后通过 slam_toolbox来进行建图了 ros2 launch slam_toolbox online_slam_toolbox.launch.py use_sim_time:=true
+        /map到/odom的tf发布是由slam_toolbox来完成的。
+        在下节的导航时，其实并不用在手动启动slam_toolbox，而是直接启动nav2
+        因为slam_toolbox和navgation2中的amcl都可以完成 /map到/odom的tf发布。
+            nva2的amcl模块介绍(amcl全称daptive Monte Carlo Localization自适应蒙特卡洛定位 https://navigation.ros.org/managers/amcl.html)
+            nav2依赖于amcl模块进行定位，该模块通过整合已知地图map、雷达scan数据以及里程计信息odom来实现精准定位
+
+        到此，完整的移动机器人坐标框架就完成了。
+
+##### 6.3.9、使用navigation2完成导航
+    fishbot_navigation2/launch/fishbot_nav2.launch.py，可以使用前面学过的导航的python的launch文件，
+    真机实验时，上节的fishbot_bringup起到的作用和模拟环境中gazebo_ros中起到的作用应该是一致的。
+    启动的步骤就是：
+    1、启动6.3.8中fishbot_bringup包中的launch文件
+    2、启动真机小车，完成真机状态下，移动机器人的必要数据包括坐标系tf
+    3、启动本节中的launch文件，修改参数 use_sim_time 为False
+    
+    到此，这样就可以实验导航了
 
 ### 小结
 
-nav2 slam-toolbox gazebo 都是基于ros2的优秀的仿真软件，什么叫基于，就是基于roa2的通信机制。
-熟练的使用ros2的命令行和rqt查看ros2工作节点间的通信内容、rviz查看tf间的坐标关系、以及工具提供的标准的话题和服务的接口
-是完整运行建图与导航的关键。
+    nav2 slam-toolbox gazebo 都是基于ros2的优秀的仿真软件，什么叫基于，就是基于roa2的通信机制。
+    熟练的使用ros2的命令行和rqt查看ros2工作节点间的通信内容、rviz查看tf间的坐标关系、以及工具提供的标准的话题和服务的接口
+    是完整运行建图与导航的关键。
 
+    模拟实验和真机实验需要对照学习，方法是：
+    1、从移动机器人的坐标系框架，以及各个必要话题的内容，发布者出发，
+    2、将模拟实验中gazebo替代真机中的部分对照起来
