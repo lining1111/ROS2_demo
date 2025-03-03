@@ -9,4 +9,7 @@ colcon_add_subdirectories(
         BASE_PATHS "${PROJECT_SOURCE_DIR}/src/"
         --packages-select
         fishros_cpp
+        #fishros
+        #fishros_navigation2
+        #fishros_description
 )
